@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import { Text, View, TextInput, TouchableHighlight } from 'react-native'
 import { connect } from 'react-redux'
-import { login, signUp } from '../actions'
+import { login, showSignUp } from '../actions'
 
 type SignUpState = {
   username: string;

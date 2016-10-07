@@ -2,76 +2,74 @@
 
 import React, { Component } from 'react'
 import { Text, View, TextInput, TouchableHighlight } from 'react-native'
-import { connect } from 'react-redux'
-import { login, signUp } from '../actions'
-import {Actions} from 'react-native-router-flux';
+import { connect, Dispatch, State } from 'react-redux'
+import { login, showSignUp } from '../actions'
+import Button from '../components/Button'
+import styles, { TREATME_RED } from '../styles'
 
-type LoginState = {
-  username: string;
-  password: string;
+type LoginProps = {
+  loginError: ?string;
+  onClickSignIn: (state: State) => void;
+  onClickSignUp: (state: State) => void;
 }
 
 class LoginForm  extends Component {
-  state: LoginState;
-  onClickSignIn: (state: LoginState) => void;
-  onClickSignUp: (state: LoginState) => void;
+  props: LoginProps
+  state: State
 
-  constructor(props: {state: LoginState, onClickSignIn: (state: LoginState) => void, onClickSignUp: (state: LoginState) => void}) {
+  constructor(props: LoginProps) {
     super(props)
-    this.state = props.state;
-    this.onClickSignIn = props.onClickSignIn;
-    this.onClickSignUp = props.onClickSignUp;
+    this.state = {}
   }
 
   render() {
     return (
-      <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', padding: 10}}>
-        <TextInput
-          style = {{flex: 1, height: 50}}
-          value = {this.state.username}
-          onChangeText = {(text: string) => this.setState({username: text}) }
-          placeholder = "username"
-        />
-        <TextInput
-          style = {{flex: 1, height: 50}}
-          value = {this.state.password}
-          onChangeText = {(text: string) => this.setState({password: text}) }
-          placeholder = "password"
-          secureTextEntry = {true}
-        />
-        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableHighlight
-            style={{flex: 1, height: 50}}
-            onPress= {() => this.onClickSignIn(this.state)}
-          >
-            <Text>Sign In</Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={{flex: 1, height: 50}}
-            onPress= {() => this.onClickSignUp(this.state)}
-          >
-            <Text>Sign Up</Text>
-          </TouchableHighlight>
+      <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+        <View style={{flex: 1, height: 250, flexDirection: 'column', alignItems: 'center', padding: 40}}>
+          <TextInput
+            style = {[styles.input, {flex: 1, marginBottom: 10}]}
+            value = {this.state.username}
+            onChangeText = {(text: string) => this.setState({username: text}) }
+            placeholder = "username"
+          />
+          <TextInput
+            style = {[styles.input, {flex: 1, marginBottom: 10}]}
+            value = {this.state.password}
+            onChangeText = {(text: string) => this.setState({password: text}) }
+            placeholder = "password"
+            secureTextEntry = {true}
+          />
+          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
+            <Button
+              disabled={!(this.state.username && this.state.password)}
+              style={{marginRight: 5}}
+              onPress = {() => this.props.onClickSignIn(this.state.username, this.state.password)}
+              text = "Sign In"/>
+            <Button
+              style={{marginLeft: 5}}
+              onPress = {() => this.props.onClickSignUp(this.state.username)}
+              text = "Sign Up"/>
+          </View>
+          <Text style={{flex: 0.5, color: TREATME_RED, textAlign: 'center'}}>{this.props.loginError}</Text>
         </View>
       </View>
     )
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: State = {}): Object => {
   return {
-    state: {}
+    loginError: state.user.loginError
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch): Object => {
   return {
-    onClickSignIn: (state: LoginState): void => {
-      console.log("Sign In", state.username, state.password);
+    onClickSignIn: (username: String, password: String): void => {
+      dispatch(login(username, password));
     },
-    onClickSignUp: (state: LoginState): void => {
-      console.log("Sign Up", state.username, state.password);
-      Actions.signup({username: state.username});
+    onClickSignUp: (username: String): void => {
+      dispatch(showSignUp(username));
     }
   }
 }
