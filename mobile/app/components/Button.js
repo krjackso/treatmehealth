@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { Text, TouchableHighlight } from 'react-native'
-import { TREATME_BLUE } from '../styles'
+import { TREATME_BLUE, hexAlpha } from '../styles'
 
 export default class Button extends Component {
   render() {
     return (
       <TouchableHighlight
         style={{
-          flex: 1,
           flexDirection: 'row',
           alignItems: 'center',
           borderWidth: 1,
@@ -19,7 +18,8 @@ export default class Button extends Component {
           ...this.props.style
         }}
         disabled= {this.props.disabled}
-        underlayColor= 'transparent'
+        underlayColor= {TREATME_BLUE}
+        activeOpacity= {0.5}
         onPress= {this.props.onPress}
       >
         <Text style={{flex: 1, color: 'white', textAlign: 'center'}}>{this.props.text}</Text>

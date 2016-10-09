@@ -12,8 +12,17 @@ export default StyleSheet.create({
     borderColor: 'black',
     borderRadius: 5,
     backgroundColor: 'white',
-    color: 'black',
     padding: 5,
-    paddingLeft: 15
+    paddingLeft: 15,
+    marginBottom: 10,
+    height: 40
+  },
+  inputText: {
+    fontSize: 16,
+    color: 'black'
+  },
+  placeholderText: {
+    fontSize: 16,
+    color: 'lightgray'
   }
 });

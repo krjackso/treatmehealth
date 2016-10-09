@@ -20,12 +20,17 @@ const user = (state: User = {loggedIn: false}, action: UserAction): Object => {
         ...state,
         loginError: action.error
       }
-    case 'USER_SIGNUP':
+    case 'USER_SIGNUP_SUCCESS':
       return {
         ...state,
         username: action.username,
         loggedIn: true,
         id: action.id
+      }
+    case 'USER_SIGNUP_ERROR':
+      return {
+        ...state,
+        signUpError: action.error
       }
     default: return state
   }

@@ -1,8 +1,8 @@
-const logIt = (anything) => dispatch => {
-  console.log(anything);
-}
+// @flow
 
-const loginError = (error: String) => {
+import { Dispatch, State } from 'react-redux'
+
+const loginError = (error: string) => {
   console.log("LOGIN ERROR")
   return {
     type: 'USER_LOGIN_ERROR',
@@ -18,7 +18,7 @@ const loginSuccess = (user: Object) => {
   }
 }
 
-export const login = (username: string, password: string) => dispatch => {
+export const login = (username: string, password: string): any => (dispatch: Dispatch) => {
   if (username == null || username.length == 0) {
     return dispatch(loginError("Enter your username"))
   }
@@ -28,12 +28,45 @@ export const login = (username: string, password: string) => dispatch => {
   }
 
   return fetch("http://localhost:8080/api/auth/me")
-    .then(dispatch(logIt("Done loggin in")))
-    .catch(dispatch(loginError("Failed to login!")))
+    .then( () => {
+      console.log("Logged in")
+      dispatch(loginSuccess({}))
+    })
+    .catch( error => dispatch(loginError("Failed to login: " + error)))
 }
 
-export const signUp = (username: string, password: string, email: string): SignUpAction => dispatch => {
+const signUpError = (error: string) => {
+  return {
+    type: 'USER_SIGNUP_ERROR',
+    error
+  }
+}
+
+const signUpSuccess = (user: Object) => {
+  return {
+    type: 'USER_SIGNUP_SUCCESS',
+    username: 'keilan',
+    id: 0
+  }
+}
+
+export const signUp = (username: string, email: string, password: string, passwordConfirm: string, zip: string, dob: Date) => (dispatch: Dispatch) => {
+
+  if (!username || !email || !password || !passwordConfirm || !zip || !dob) {
+    return dispatch(signUpError("Please fill out every field"))
+  }
+
+  if (password != passwordConfirm) {
+    return dispatch(signUpError("Passwords must match"))
+  }
+
   return fetch("http://localhost:8080/api/users")
+    .then( () => {
+      console.log("Signed up")
+      dispatch(signUpSuccess({}))
+    })
+    .catch( error => {
+      console.log(error)
+      dispatch(signUpError("" + error))
+    })
 }
-
-type UserAction = LoginAction

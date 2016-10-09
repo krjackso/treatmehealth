@@ -25,32 +25,32 @@ class LoginForm  extends Component {
   render() {
     return (
       <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-        <View style={{flex: 1, height: 250, flexDirection: 'column', alignItems: 'center', padding: 40}}>
+        <View style={{flex: 1, flexDirection: 'column', alignItems: 'center', padding: 40}}>
           <TextInput
-            style = {[styles.input, {flex: 1, marginBottom: 10}]}
+            style = {[styles.input, styles.inputText]}
             value = {this.state.username}
             onChangeText = {(text: string) => this.setState({username: text}) }
             placeholder = "username"
           />
           <TextInput
-            style = {[styles.input, {flex: 1, marginBottom: 10}]}
+            style = {[styles.input, styles.inputText]}
             value = {this.state.password}
             onChangeText = {(text: string) => this.setState({password: text}) }
             placeholder = "password"
             secureTextEntry = {true}
           />
-          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
             <Button
               disabled={!(this.state.username && this.state.password)}
-              style={{marginRight: 5}}
+              style={{marginRight: 5, flex: 1}}
               onPress = {() => this.props.onClickSignIn(this.state.username, this.state.password)}
               text = "Sign In"/>
             <Button
-              style={{marginLeft: 5}}
+              style={{marginLeft: 5, flex: 1}}
               onPress = {() => this.props.onClickSignUp(this.state.username)}
               text = "Sign Up"/>
           </View>
-          <Text style={{flex: 0.5, color: TREATME_RED, textAlign: 'center'}}>{this.props.loginError}</Text>
+          <Text style={{minHeight: 40, color: TREATME_RED, textAlign: 'center'}}>{this.props.loginError}</Text>
         </View>
       </View>
     )
@@ -66,7 +66,7 @@ const mapStateToProps = (state: State = {}): Object => {
 const mapDispatchToProps = (dispatch: Dispatch): Object => {
   return {
     onClickSignIn: (username: String, password: String): void => {
-      dispatch(login(username, password));
+      dispatch(login(username, password, 8787));
     },
     onClickSignUp: (username: String): void => {
       dispatch(showSignUp(username));
