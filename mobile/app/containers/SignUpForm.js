@@ -120,7 +120,7 @@ class SignUpForm  extends Component {
 
 const mapStateToProps = (state: State) => {
   return {
-    signUpError: state.user.signUpError
+    signUpError: state.ui.signUpError
   }
 }
 

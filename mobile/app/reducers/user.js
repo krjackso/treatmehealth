@@ -1,37 +1,12 @@
-type User = {
-  username: ?string,
-  id: ?number,
-  loggedIn: boolean,
-  loginError: ?string
-}
+// @flow
 
-const user = (state: User = {loggedIn: false}, action: UserAction): Object => {
+import { State, Action } from 'react-redux'
+import { USER_UPDATED } from '../actions/user'
+
+const user = (state: State = {}, action: Action): State => {
   switch(action.type) {
-    case 'USER_LOGIN_SUCCESS':
-      return {
-        ...state,
-        username: action.username,
-        loggedIn: true,
-        id: action.id,
-        loginError: null
-      }
-    case 'USER_LOGIN_ERROR':
-      return {
-        ...state,
-        loginError: action.error
-      }
-    case 'USER_SIGNUP_SUCCESS':
-      return {
-        ...state,
-        username: action.username,
-        loggedIn: true,
-        id: action.id
-      }
-    case 'USER_SIGNUP_ERROR':
-      return {
-        ...state,
-        signUpError: action.error
-      }
+    case USER_UPDATED:
+      return action.user
     default: return state
   }
 }

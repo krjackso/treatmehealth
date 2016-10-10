@@ -8,6 +8,7 @@ import Button from '../components/Button'
 import styles, { TREATME_RED } from '../styles'
 
 type LoginProps = {
+  username: ?string;
   loginError: ?string;
   onClickSignIn: (state: State) => void;
   onClickSignUp: (state: State) => void;
@@ -20,6 +21,10 @@ class LoginForm  extends Component {
   constructor(props: LoginProps) {
     super(props)
     this.state = {}
+
+    if (this.props.username != null) {
+      this.state.username = this.props.username
+    }
   }
 
   render() {
@@ -59,16 +64,17 @@ class LoginForm  extends Component {
 
 const mapStateToProps = (state: State = {}): Object => {
   return {
-    loginError: state.user.loginError
+    username: state.auth.username,
+    loginError: state.ui.loginError
   }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): Object => {
   return {
-    onClickSignIn: (username: String, password: String): void => {
-      dispatch(login(username, password, 8787));
+    onClickSignIn: (username: string, password: string): void => {
+      dispatch(login(username, password));
     },
-    onClickSignUp: (username: String): void => {
+    onClickSignUp: (username: string): void => {
       dispatch(showSignUp(username));
     }
   }
