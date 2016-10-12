@@ -1,8 +1,9 @@
 // @flow
 
-import { Dispatch, State } from 'react-redux'
+import { Dispatch } from 'react-redux'
 import { showLoginError, showSignUpError, showLogin } from './ui'
 import { setUser } from './user'
+import TreatMe from './treatmeapi'
 
 export const AUTH_USER = 'AUTH_USER'
 export const AUTH_SUCCESS = 'AUTH_SUCCESS'
@@ -43,10 +44,10 @@ export const login = (username: string, password: string): any => (dispatch: Dis
     return dispatch(loginError("Enter your password"))
   }
 
-  return fetch("http://localhost:8080/api/auth/me")
-    .then( () => {
-      console.log("Logged in")
-      dispatch(loginSuccess('acc', 'ref', {}))
+  return TreatMe.login(username, password)
+    .then( (data) => {
+      console.log("Logged in", data)
+      dispatch(loginSuccess(data.accessToken, data.refreshToken, data.user))
     })
     .catch( error => dispatch(loginError("Failed to login: " + error)))
 }
@@ -68,15 +69,14 @@ export const signUp = (username: string, email: string, password: string, passwo
     return dispatch(signUpError("Passwords must match"))
   }
 
-  return fetch("http://localhost:8080/api/users")
-    .then( () => {
-      console.log("Signed up")
-      dispatch(loginSuccess('acc', 'ref', {}))
+  return TreatMe.signUp(username, email, password, zip, dob)
+    .then( (data) => {
+      console.log("Signed up", data)
+      dispatch(loginSuccess(data.accessToken, data.refreshToken, data.user))
     })
     .catch( error => {
-      console.log(error)
-      //dispatch(signUpError("" + error))
-      dispatch(loginSuccess('acc', 'ref', {username: 'krjackso'}))
+      console.log("Sign up error", error)
+      dispatch(signUpError("Failed to sign up: " + error))
     })
 }
 
@@ -87,7 +87,7 @@ export const checkAuth = () => (dispatch: Dispatch, getState: Function) => {
     return dispatch(showLogin())
   }
 
-  return fetch("http://localhost:8080/api/auth/refresh")
+  return TreatMe.refreshAuth(auth.refreshToken)
     .then((auth) => {
       dispatch(authSuccess(auth.accessToken, auth.refreshToken, auth.id))
     })
