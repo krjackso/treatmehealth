@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/krjackso/treatmehealth/api/controllers"
@@ -10,8 +9,6 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello World!!")
-
 	datastore := services.NewDatastore("treatme-health", "dev")
 
 	userModel := &models.UserModelImpl{Datastore: datastore}

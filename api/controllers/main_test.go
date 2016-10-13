@@ -7,38 +7,51 @@ import (
 	"github.com/pressly/chi"
 	"os"
 	"testing"
+	"time"
 )
 
 type UserModelMock struct{}
 
+var testUser *models.User = &models.User{
+	Id:       1,
+	Username: "testuser",
+	Email:    "testuser@example.com",
+}
+
 func (self *UserModelMock) GetById(ctx context.Context, id int64) (*models.User, error) {
-	if id == 1 {
-		user := &models.User{
-			Id:        1,
-			FirstName: "Test",
-			LastName:  "User",
-			Email:     "testuser@example.com",
-			Username:  "testuser",
-		}
-		return user, nil
+	if id == testUser.Id {
+		return testUser, nil
 	} else {
 		return nil, nil
 	}
 }
 
 func (self *UserModelMock) GetByUsername(ctx context.Context, username string) (*models.User, error) {
-	if username == "testuser" {
-		user := &models.User{
-			Id:        1,
-			FirstName: "Test",
-			LastName:  "User",
-			Email:     "testuser@example.com",
-			Username:  "testuser",
-		}
-		return user, nil
+	if username == testUser.Username {
+		return testUser, nil
 	} else {
 		return nil, nil
 	}
+}
+
+func (self *UserModelMock) GetByEmail(ctx context.Context, email string) (*models.User, error) {
+	if email == testUser.Email {
+		return testUser, nil
+	} else {
+		return nil, nil
+	}
+}
+
+func (self *UserModelMock) Create(ctx context.Context, username string, email string, credential models.Credential, zip string, dob time.Time) (*models.User, error) {
+	user := &models.User{
+		Id:         2,
+		Username:   username,
+		Email:      email,
+		Credential: credential,
+		Zip:        zip,
+		Dob:        dob,
+	}
+	return user, nil
 }
 
 var (

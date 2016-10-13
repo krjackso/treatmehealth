@@ -16,7 +16,7 @@ func Bootstrap(userModel models.UserModel) *chi.Mux {
 
 	userCtl := &UserControllerImpl{userModel: userModel}
 	router.Get("/api/users/:id", userCtl.Get)
-	router.Get("/api/usernames/:username", userCtl.List)
+	router.Put("/api/users", userCtl.Put)
 
 	return router
 }
