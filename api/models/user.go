@@ -15,6 +15,7 @@ type User struct {
 	Zip        string
 	Dob        time.Time
 	Credential Credential `json:"-" datastore:",noindex"`
+	CreatedAt  time.Time  `json:"-"`
 }
 
 type UserModelImpl struct {
@@ -26,11 +27,21 @@ type UserModel interface {
 	GetByUsername(context.Context, string) (*User, error)
 	GetByEmail(context.Context, string) (*User, error)
 	Create(context.Context, string, string, Credential, string, time.Time) (*User, error)
+	GetRefreshToken(context.Context, int64, string) (*RefreshToken, error)
+	AddRefreshToken(context.Context, int64, *RefreshToken) error
+}
+
+func NewUserKey(ctx context.Context, id int64) *datastore.Key {
+	return datastore.NewKey(ctx, "User", "", id, nil)
+}
+
+func NewRefreshTokenKey(ctx context.Context, userKey *datastore.Key, token string) *datastore.Key {
+	return datastore.NewKey(ctx, "RefreshToken", token, 0, userKey)
 }
 
 func (self *UserModelImpl) GetById(ctx context.Context, id int64) (*User, error) {
 	ctx = self.Datastore.NewContext(ctx)
-	key := datastore.NewKey(ctx, "User", "", id, nil)
+	key := NewUserKey(ctx, id)
 
 	user := &User{Id: key.ID()}
 	err := self.Datastore.Client.Get(ctx, key, user)
@@ -98,14 +109,15 @@ func (self *UserModelImpl) Create(ctx context.Context, username string, email st
 	ctx = self.Datastore.NewContext(ctx)
 
 	// Create the user
-	key := datastore.NewIncompleteKey(ctx, "User", nil)
+	key := NewUserKey(ctx, 0)
 
 	user := &User{
 		Username:   username,
 		Email:      email,
 		Credential: credential,
 		Zip:        zip,
-		Dob:        dob,
+		Dob:        dob.UTC(),
+		CreatedAt:  time.Now().UTC(),
 	}
 
 	key, err := self.Datastore.Client.Put(ctx, key, user)
@@ -116,4 +128,48 @@ func (self *UserModelImpl) Create(ctx context.Context, username string, email st
 	user.Id = key.ID()
 
 	return user, nil
+}
+
+func (self *UserModelImpl) GetRefreshToken(ctx context.Context, userId int64, token string) (*RefreshToken, error) {
+	ctx = self.Datastore.NewContext(ctx)
+
+	userKey := NewUserKey(ctx, userId)
+	tokenKey := NewRefreshTokenKey(ctx, userKey, token)
+
+	var refreshToken *RefreshToken
+	err := self.Datastore.Client.Get(ctx, tokenKey, refreshToken)
+	if err != nil {
+		return nil, err
+	}
+	return refreshToken, nil
+}
+
+func (self *UserModelImpl) AddRefreshToken(ctx context.Context, userId int64, token *RefreshToken) error {
+	ctx = self.Datastore.NewContext(ctx)
+
+	userKey := NewUserKey(ctx, userId)
+	tokenKey := NewRefreshTokenKey(ctx, userKey, token.Token)
+
+	_, err := self.Datastore.Client.Put(ctx, tokenKey, token)
+	if err != nil {
+		println("Failed to put token")
+		return err
+	}
+
+	query := datastore.NewQuery("RefreshToken").Ancestor(userKey).KeysOnly().Filter("ExpiresAt <=", time.Now().UTC())
+
+	var n struct{}
+	expiredTokens, err := self.Datastore.Client.GetAll(ctx, query, n)
+	if err != nil {
+		println("Failed to get old tokens")
+		return err
+	}
+
+	err = self.Datastore.Client.DeleteMulti(ctx, expiredTokens)
+	if err != nil {
+		println("Failed to delete old tokens")
+		return err
+	}
+
+	return nil
 }

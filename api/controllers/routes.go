@@ -13,6 +13,7 @@ func Bootstrap(userModel models.UserModel) *chi.Mux {
 
 	router.Get("/api/auth/me", authCtl.Me)
 	router.Head("/api/auth", authCtl.Index)
+	router.Post("/api/auth/login", authCtl.Login)
 
 	userCtl := &UserControllerImpl{userModel: userModel}
 	router.Get("/api/users/:id", userCtl.Get)

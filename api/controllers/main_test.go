@@ -12,10 +12,14 @@ import (
 
 type UserModelMock struct{}
 
+var testUserDob, _ = time.Parse("02/01/2006", "07/02/1992")
 var testUser *models.User = &models.User{
-	Id:       1,
-	Username: "testuser",
-	Email:    "testuser@example.com",
+	Id:         1,
+	Username:   "testuser",
+	Email:      "testuser@example.com",
+	Credential: models.NewCredential("password"),
+	Zip:        "92103",
+	Dob:        testUserDob,
 }
 
 func (self *UserModelMock) GetById(ctx context.Context, id int64) (*models.User, error) {
