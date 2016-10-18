@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	dateLayout = "02/01/2006"
+	dateLayout = "1/2/2006"
 )
 
 type UserControllerImpl struct {
