@@ -3,10 +3,10 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/asaskevich/govalidator"
 	"github.com/krjackso/treatmehealth/api/models"
 	"github.com/pressly/chi"
+	"github.com/pressly/chi/render"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -29,8 +29,7 @@ type UserController interface {
 func (self *UserControllerImpl) Get(w http.ResponseWriter, r *http.Request) {
 	userId, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
-		w.WriteHeader(400)
-		fmt.Fprintf(w, "id must be a number")
+		http.Error(w, "id must be a number", http.StatusBadRequest)
 		return
 	}
 
@@ -41,17 +40,11 @@ func (self *UserControllerImpl) Get(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	if user == nil {
-		w.WriteHeader(404)
+		http.Error(w, "", http.StatusNotFound)
 		return
 	}
 
-	body, err := json.Marshal(user)
-	if err != nil {
-		panic(err)
-	}
-
-	jsonstring := string(body[:])
-	fmt.Fprintf(w, jsonstring)
+	render.JSON(w, r, user)
 }
 
 type PutUserData struct {
@@ -87,22 +80,20 @@ func validateUserData(data PutUserData) error {
 func (self *UserControllerImpl) Put(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		w.WriteHeader(400)
+		http.Error(w, "", http.StatusBadRequest)
 		return
 	}
 
 	var data PutUserData
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		w.WriteHeader(400)
-		fmt.Fprintf(w, err.Error())
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	err = validateUserData(data)
 	if err != nil {
-		w.WriteHeader(400)
-		fmt.Fprintf(w, err.Error())
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -115,8 +106,7 @@ func (self *UserControllerImpl) Put(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	if user != nil {
-		w.WriteHeader(409)
-		fmt.Fprintf(w, "Username not available")
+		http.Error(w, "Username not available", http.StatusConflict)
 		return
 	}
 
@@ -125,8 +115,7 @@ func (self *UserControllerImpl) Put(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	if user != nil {
-		w.WriteHeader(409)
-		fmt.Fprintf(w, "Email not available")
+		http.Error(w, "Email not available", http.StatusConflict)
 		return
 	}
 
@@ -137,7 +126,6 @@ func (self *UserControllerImpl) Put(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	// asdfsd
 	refreshToken := models.NewRefreshToken()
 
 	err = self.UserModel.AddRefreshToken(ctx, user.Id, refreshToken)
@@ -147,14 +135,10 @@ func (self *UserControllerImpl) Put(w http.ResponseWriter, r *http.Request) {
 
 	accessToken, expiresAt := models.NewAccessToken(user.Id)
 
-	body, err = json.Marshal(&AuthResponse{
+	render.Status(r, http.StatusCreated)
+	render.JSON(w, r, &AuthResponse{
 		RefreshToken: refreshToken.Token,
 		AccessToken:  accessToken,
 		ExpiresAt:    expiresAt,
 	})
-	if err != nil {
-		panic(err)
-	}
-	w.WriteHeader(201)
-	fmt.Fprint(w, string(body[:]))
 }

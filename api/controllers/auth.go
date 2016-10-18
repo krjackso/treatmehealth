@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/pressly/chi/render"
+
 	"github.com/krjackso/treatmehealth/api/models"
 	"github.com/krjackso/treatmehealth/api/util/authutil"
 )
@@ -46,8 +48,7 @@ func (self *AuthControllerImpl) Index(w http.ResponseWriter, r *http.Request) {
 func (self *AuthControllerImpl) Login(w http.ResponseWriter, r *http.Request) {
 	auth := authutil.NewBasicAuthorization(r.Header)
 	if auth == nil {
-		w.WriteHeader(400)
-		fmt.Fprintf(w, "Invalid Authorization header")
+		http.Error(w, "Invalid Authorization Header", http.StatusBadRequest)
 		return
 	}
 
@@ -58,12 +59,12 @@ func (self *AuthControllerImpl) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if user == nil {
-		w.WriteHeader(401)
+		http.Error(w, "", http.StatusUnauthorized)
 		return
 	}
 
 	if !user.Credential.Verify(auth.Password) {
-		w.WriteHeader(401)
+		http.Error(w, "", http.StatusUnauthorized)
 		return
 	}
 
@@ -76,22 +77,17 @@ func (self *AuthControllerImpl) Login(w http.ResponseWriter, r *http.Request) {
 
 	accessToken, expiresAt := models.NewAccessToken(user.Id)
 
-	body, err := json.Marshal(&AuthResponse{
+	render.JSON(w, r, &AuthResponse{
 		RefreshToken: refreshToken.Token,
 		AccessToken:  accessToken,
 		ExpiresAt:    expiresAt,
 	})
-	if err != nil {
-		panic(err)
-	}
-	fmt.Fprint(w, string(body[:]))
 }
 
 func (self *AuthControllerImpl) Refresh(w http.ResponseWriter, r *http.Request) {
 	auth := authutil.NewBasicAuthorization(r.Header)
 	if auth == nil {
-		w.WriteHeader(400)
-		fmt.Fprintf(w, "Invalid Authorization header")
+		http.Error(w, "Invalid Authorization header", http.StatusBadRequest)
 		return
 	}
 
@@ -102,7 +98,7 @@ func (self *AuthControllerImpl) Refresh(w http.ResponseWriter, r *http.Request) 
 	}
 
 	if user == nil {
-		w.WriteHeader(401)
+		http.Error(w, "", http.StatusUnauthorized)
 		return
 	}
 
@@ -112,24 +108,20 @@ func (self *AuthControllerImpl) Refresh(w http.ResponseWriter, r *http.Request) 
 	}
 
 	if token == nil {
-		w.WriteHeader(401)
+		http.Error(w, "", http.StatusUnauthorized)
 		return
 	}
 
 	if token.ExpiresAt.Before(time.Now().UTC()) {
-		w.WriteHeader(401)
+		http.Error(w, "", http.StatusUnauthorized)
 		return
 	}
 
 	accessToken, expiresAt := models.NewAccessToken(user.Id)
 
-	body, err := json.Marshal(&AuthResponse{
+	render.JSON(w, r, &AuthResponse{
 		AccessToken: accessToken,
 		ExpiresAt:   expiresAt,
 	})
-	if err != nil {
-		panic(err)
-	}
-	fmt.Fprint(w, string(body[:]))
 
 }

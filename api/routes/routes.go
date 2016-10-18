@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/pressly/chi"
+	"github.com/pressly/chi/middleware"
 
 	"github.com/krjackso/treatmehealth/api/controllers"
 	"github.com/krjackso/treatmehealth/api/models"
@@ -9,6 +10,11 @@ import (
 
 func Bootstrap(userModel models.UserModel) *chi.Mux {
 	router := chi.NewRouter()
+
+	router.Use(middleware.RequestID)
+	router.Use(middleware.RealIP)
+	router.Use(middleware.Logger)
+	router.Use(middleware.Recoverer)
 
 	authCtl := &controllers.AuthControllerImpl{UserModel: userModel}
 
