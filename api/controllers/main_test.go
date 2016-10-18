@@ -2,8 +2,8 @@ package controllers_test
 
 import (
 	"context"
-	"github.com/krjackso/treatmehealth/api/controllers"
 	"github.com/krjackso/treatmehealth/api/models"
+	"github.com/krjackso/treatmehealth/api/routes"
 	"github.com/pressly/chi"
 	"os"
 	"testing"
@@ -58,13 +58,23 @@ func (self *UserModelMock) Create(ctx context.Context, username string, email st
 	return user, nil
 }
 
+func (self *UserModelMock) GetRefreshToken(ctx context.Context, userId int64, token string) (*models.RefreshToken, error) {
+	refreshToken := models.NewRefreshToken()
+	refreshToken.Token = token
+	return refreshToken, nil
+}
+
+func (self *UserModelMock) AddRefreshToken(ctx context.Context, userId int64, token *models.RefreshToken) error {
+	return nil
+}
+
 var (
 	router *chi.Mux
 )
 
 func TestMain(m *testing.M) {
 	userModel := &UserModelMock{}
-	router = controllers.Bootstrap(userModel)
+	router = routes.Bootstrap(userModel)
 	ret := m.Run()
 	os.Exit(ret)
 }

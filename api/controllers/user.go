@@ -18,7 +18,7 @@ const (
 )
 
 type UserControllerImpl struct {
-	userModel models.UserModel
+	UserModel models.UserModel
 }
 
 type UserController interface {
@@ -36,7 +36,7 @@ func (self *UserControllerImpl) Get(w http.ResponseWriter, r *http.Request) {
 
 	ctx := r.Context()
 
-	user, err := self.userModel.GetById(ctx, userId)
+	user, err := self.UserModel.GetById(ctx, userId)
 	if err != nil {
 		panic(err)
 	}
@@ -110,7 +110,7 @@ func (self *UserControllerImpl) Put(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// See if there is already a user for this username/email
-	user, err := self.userModel.GetByUsername(ctx, data.Username)
+	user, err := self.UserModel.GetByUsername(ctx, data.Username)
 	if err != nil {
 		panic(err)
 	}
@@ -120,7 +120,7 @@ func (self *UserControllerImpl) Put(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err = self.userModel.GetByEmail(ctx, data.Email)
+	user, err = self.UserModel.GetByEmail(ctx, data.Email)
 	if err != nil {
 		panic(err)
 	}
@@ -132,17 +132,29 @@ func (self *UserControllerImpl) Put(w http.ResponseWriter, r *http.Request) {
 
 	credential := models.NewCredential(data.Password)
 
-	user, err = self.userModel.Create(ctx, data.Username, data.Email, credential, data.Zip, dob)
+	user, err = self.UserModel.Create(ctx, data.Username, data.Email, credential, data.Zip, dob)
 	if err != nil {
 		panic(err)
 	}
 
-	body, err = json.Marshal(user)
+	// asdfsd
+	refreshToken := models.NewRefreshToken()
+
+	err = self.UserModel.AddRefreshToken(ctx, user.Id, refreshToken)
+	if err != nil {
+		println("Error adding refresh token: " + err.Error())
+	}
+
+	accessToken, expiresAt := models.NewAccessToken(user.Id)
+
+	body, err = json.Marshal(&AuthResponse{
+		RefreshToken: refreshToken.Token,
+		AccessToken:  accessToken,
+		ExpiresAt:    expiresAt,
+	})
 	if err != nil {
 		panic(err)
 	}
-
-	jsonstring := string(body[:])
 	w.WriteHeader(201)
-	fmt.Fprintf(w, jsonstring)
+	fmt.Fprint(w, string(body[:]))
 }

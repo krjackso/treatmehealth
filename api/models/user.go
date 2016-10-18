@@ -136,10 +136,14 @@ func (self *UserModelImpl) GetRefreshToken(ctx context.Context, userId int64, to
 	userKey := NewUserKey(ctx, userId)
 	tokenKey := NewRefreshTokenKey(ctx, userKey, token)
 
-	var refreshToken *RefreshToken
+	refreshToken := &RefreshToken{}
 	err := self.Datastore.Client.Get(ctx, tokenKey, refreshToken)
 	if err != nil {
-		return nil, err
+		if err == datastore.ErrNoSuchEntity {
+			return nil, nil
+		} else {
+			return nil, err
+		}
 	}
 	return refreshToken, nil
 }

@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/krjackso/treatmehealth/api/controllers"
 	"github.com/krjackso/treatmehealth/api/models"
+	"github.com/krjackso/treatmehealth/api/routes"
 	"github.com/krjackso/treatmehealth/api/services"
 )
 
@@ -13,8 +13,7 @@ func main() {
 
 	userModel := &models.UserModelImpl{Datastore: datastore}
 
-	router := controllers.Bootstrap(userModel)
+	router := routes.Bootstrap(userModel)
 
 	http.ListenAndServe(":8080", router)
-
 }
