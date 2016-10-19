@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -10,6 +8,7 @@ import (
 
 	"github.com/krjackso/treatmehealth/api/models"
 	"github.com/krjackso/treatmehealth/api/util/authutil"
+	"github.com/krjackso/treatmehealth/api/util/routes"
 )
 
 type AuthControllerImpl struct {
@@ -17,7 +16,6 @@ type AuthControllerImpl struct {
 }
 
 type AuthController interface {
-	Me(http.ResponseWriter, http.Request)
 	Index(http.ResponseWriter, http.Request)
 	Login(http.ResponseWriter, http.Request)
 	Refresh(http.ResponseWriter, http.Request)
@@ -27,18 +25,7 @@ type AuthResponse struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token,omitempty"`
 	ExpiresAt    int64  `json:"expires_at"`
-}
-
-func (self *AuthControllerImpl) Me(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	user, err := self.UserModel.GetById(ctx, 1)
-	body, err := json.Marshal(user)
-	if err != nil {
-		fmt.Printf("Error: %s", err)
-		return
-	}
-	jsonstring := string(body[:])
-	fmt.Fprintf(w, jsonstring)
+	Href         string `json:"href"`
 }
 
 func (self *AuthControllerImpl) Index(w http.ResponseWriter, r *http.Request) {
@@ -81,6 +68,7 @@ func (self *AuthControllerImpl) Login(w http.ResponseWriter, r *http.Request) {
 		RefreshToken: refreshToken.Token,
 		AccessToken:  accessToken,
 		ExpiresAt:    expiresAt,
+		Href:         routes.HyperGetUser(user.Id),
 	})
 }
 
@@ -122,6 +110,6 @@ func (self *AuthControllerImpl) Refresh(w http.ResponseWriter, r *http.Request) 
 	render.JSON(w, r, &AuthResponse{
 		AccessToken: accessToken,
 		ExpiresAt:   expiresAt,
+		Href:        routes.HyperGetUser(user.Id),
 	})
-
 }
