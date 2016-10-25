@@ -3,7 +3,7 @@ package controllers_test
 import (
 	"context"
 	"github.com/krjackso/treatmehealth/api/models"
-	"github.com/krjackso/treatmehealth/api/routes"
+	rt "github.com/krjackso/treatmehealth/api/router"
 	"github.com/pressly/chi"
 	"os"
 	"testing"
@@ -21,6 +21,9 @@ var testUser *models.User = &models.User{
 	Zip:        "92103",
 	Dob:        testUserDob,
 }
+
+var testAuthToken1, _ = models.NewAccessToken(1)
+var testAuthToken2, _ = models.NewAccessToken(2)
 
 func (self *UserModelMock) GetById(ctx context.Context, id int64) (*models.User, error) {
 	if id == testUser.Id {
@@ -68,13 +71,17 @@ func (self *UserModelMock) AddRefreshToken(ctx context.Context, userId int64, to
 	return nil
 }
 
+func (self *UserModelMock) RemoveRefreshTokens(ctx context.Context, userId int64) error {
+	return nil
+}
+
 var (
 	router *chi.Mux
 )
 
 func TestMain(m *testing.M) {
 	userModel := &UserModelMock{}
-	router = routes.Bootstrap(userModel)
+	router = rt.NewRouter(userModel)
 	ret := m.Run()
 	os.Exit(ret)
 }

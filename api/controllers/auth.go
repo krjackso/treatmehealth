@@ -60,6 +60,8 @@ func (self *AuthControllerImpl) Login(w http.ResponseWriter, r *http.Request) {
 	err = self.UserModel.AddRefreshToken(ctx, user.Id, refreshToken)
 	if err != nil {
 		println("Error adding refresh token: " + err.Error())
+		http.Error(w, "", http.StatusInternalServerError)
+		return
 	}
 
 	accessToken, expiresAt := models.NewAccessToken(user.Id)
@@ -70,6 +72,17 @@ func (self *AuthControllerImpl) Login(w http.ResponseWriter, r *http.Request) {
 		ExpiresAt:    expiresAt,
 		Href:         routes.HyperGetUser(user.Id),
 	})
+}
+
+func (self *AuthControllerImpl) Logout(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userId := authutil.UserIdFromContext(ctx)
+
+	err := self.UserModel.RemoveRefreshTokens(ctx, userId)
+
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (self *AuthControllerImpl) Refresh(w http.ResponseWriter, r *http.Request) {

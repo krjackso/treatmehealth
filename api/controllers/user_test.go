@@ -9,12 +9,14 @@ import (
 )
 
 var getCases = map[string]struct {
+	authToken  string
 	userId     string
 	statusCode int
 }{
-	"user exists":         {"1", http.StatusOK},
-	"user does not exist": {"2", http.StatusNotFound},
-	"invalid user id":     {"asdf", http.StatusBadRequest},
+	"user exists":           {testAuthToken1, "1", http.StatusOK},
+	"user does not exist":   {testAuthToken2, "2", http.StatusNotFound},
+	"invalid user id":       {testAuthToken1, "asdf", http.StatusBadRequest},
+	"cannot get other user": {testAuthToken2, "1", http.StatusForbidden},
 }
 
 func TestGet(t *testing.T) {
@@ -22,6 +24,7 @@ func TestGet(t *testing.T) {
 		test := tt
 		t.Run(name, func(t *testing.T) {
 			req, _ := http.NewRequest("GET", "/api/users/"+test.userId, nil)
+			req.Header.Set("Authorization", "Bearer "+test.authToken)
 			record := httptest.NewRecorder()
 			router.ServeHTTP(record, req)
 			if status := record.Code; status != test.statusCode {

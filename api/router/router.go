@@ -26,7 +26,6 @@ func NewRouter(userModel models.UserModel) *chi.Mux {
 	router.Use(middleware.RealIP)
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
-	router.Use(middleware.CloseNotify)
 
 	authCtl := &controllers.AuthControllerImpl{UserModel: userModel}
 	userCtl := &controllers.UserControllerImpl{UserModel: userModel}
@@ -45,13 +44,13 @@ func NewRouter(userModel models.UserModel) *chi.Mux {
 		router.Head(routes.CheckAuth, authCtl.Index)
 		router.Post(routes.Login, authCtl.Login)
 		router.Post(routes.RefreshAuth, authCtl.Refresh)
-
 		router.Put(routes.PutUser, userCtl.Put)
 
 		// Authenticated routes
 		router.Group(func(router chi.Router) {
 			router.Use(Authenticated)
 
+			router.Post(routes.Logout, authCtl.Logout)
 			router.Get(routes.GetUser, userCtl.Get)
 		})
 	})

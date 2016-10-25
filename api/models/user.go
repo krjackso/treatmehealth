@@ -29,6 +29,7 @@ type UserModel interface {
 	Create(context.Context, string, string, Credential, string, time.Time) (*User, error)
 	GetRefreshToken(context.Context, int64, string) (*RefreshToken, error)
 	AddRefreshToken(context.Context, int64, *RefreshToken) error
+	RemoveRefreshTokens(context.Context, int64) error
 }
 
 func NewUserKey(ctx context.Context, id int64) *datastore.Key {
@@ -172,6 +173,29 @@ func (self *UserModelImpl) AddRefreshToken(ctx context.Context, userId int64, to
 	err = self.Datastore.Client.DeleteMulti(ctx, expiredTokens)
 	if err != nil {
 		println("Failed to delete old tokens")
+		return err
+	}
+
+	return nil
+}
+
+func (self *UserModelImpl) RemoveRefreshTokens(ctx context.Context, userId int64) error {
+	ctx = self.Datastore.NewContext(ctx)
+
+	userKey := NewUserKey(ctx, userId)
+
+	query := datastore.NewQuery("RefreshToken").Ancestor(userKey).KeysOnly()
+
+	var n struct{}
+	refreshTokens, err := self.Datastore.Client.GetAll(ctx, query, n)
+	if err != nil {
+		println("Failed to get tokens: " + err.Error())
+		return err
+	}
+
+	err = self.Datastore.Client.DeleteMulti(ctx, refreshTokens)
+	if err != nil {
+		println("Failed to delete tokens: " + err.Error())
 		return err
 	}
 
