@@ -46,8 +46,14 @@ func NewRouter(userModel models.UserModel) *chi.Mux {
 		router.Post(routes.Login, authCtl.Login)
 		router.Post(routes.RefreshAuth, authCtl.Refresh)
 
-		router.Get(routes.GetUser, userCtl.Get)
 		router.Put(routes.PutUser, userCtl.Put)
+
+		// Authenticated routes
+		router.Group(func(router chi.Router) {
+			router.Use(Authenticated)
+
+			router.Get(routes.GetUser, userCtl.Get)
+		})
 	})
 
 	return router

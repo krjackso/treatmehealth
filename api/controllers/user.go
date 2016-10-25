@@ -5,16 +5,14 @@ import (
 	"errors"
 	"github.com/asaskevich/govalidator"
 	"github.com/krjackso/treatmehealth/api/models"
+	"github.com/krjackso/treatmehealth/api/util"
+	"github.com/krjackso/treatmehealth/api/util/authutil"
 	"github.com/pressly/chi"
 	"github.com/pressly/chi/render"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 	"time"
-)
-
-const (
-	dateLayout = "1/2/2006"
 )
 
 type UserControllerImpl struct {
@@ -34,6 +32,12 @@ func (self *UserControllerImpl) Get(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := r.Context()
+	authUserId := authutil.UserIdFromContext(ctx)
+
+	if authUserId != userId {
+		http.Error(w, "", http.StatusForbidden)
+		return
+	}
 
 	user, err := self.UserModel.GetById(ctx, userId)
 	if err != nil {
@@ -56,7 +60,7 @@ type PutUserData struct {
 }
 
 func validateUserData(data PutUserData) error {
-	dob, dobErr := time.Parse(dateLayout, data.Dob)
+	dob, dobErr := util.ParseDate(data.Dob)
 	eighteenYearsAgo := time.Now().AddDate(-18, 0, 0)
 
 	switch {
@@ -97,7 +101,7 @@ func (self *UserControllerImpl) Put(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dob, _ := time.Parse(dateLayout, data.Dob)
+	dob, _ := util.ParseDate(data.Dob)
 	ctx := r.Context()
 
 	// See if there is already a user for this username/email

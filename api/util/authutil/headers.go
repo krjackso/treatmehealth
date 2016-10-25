@@ -15,8 +15,6 @@ type BasicAuthorization struct {
 	Password string
 }
 
-type BearerAuthorizatoin string
-
 func NewBasicAuthorization(h http.Header) *BasicAuthorization {
 	authorization := h.Get("Authorization")
 	if authorization == "" {
@@ -47,4 +45,18 @@ func NewBasicAuthorization(h http.Header) *BasicAuthorization {
 		Username: parts[0],
 		Password: parts[1],
 	}
+}
+
+func NewBearerAuthorization(h http.Header) (bearer string, ok bool) {
+	authorization := h.Get("Authorization")
+	if authorization == "" {
+		return "", false
+	}
+
+	parts := BearerRegex.FindStringSubmatch(authorization)
+	if len(parts) != 2 {
+		return "", false
+	}
+
+	return string(parts[1]), true
 }

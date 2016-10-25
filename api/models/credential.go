@@ -5,8 +5,10 @@ import (
 	"crypto/rand"
 	"crypto/sha512"
 	"encoding/base64"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/pbkdf2"
+	"strconv"
 	"time"
 )
 
@@ -17,9 +19,9 @@ const (
 
 	jwtIssuer          = "http://localhost"
 	jwtSecret          = "supersecret"
-	jwtAccessExpire    = 5 * time.Minute
+	jwtAccessExpire    = 30 * time.Minute
 	refreshTokenLen    = 40
-	refreshTokenExpire = 5 * time.Minute
+	refreshTokenExpire = 30 * time.Minute
 )
 
 type Credential struct {
@@ -58,7 +60,7 @@ func NewAccessToken(userId int64) (token string, expiresAt int64) {
 		Issuer:    jwtIssuer,
 		IssuedAt:  time.Now().Unix(),
 		Audience:  "self",
-		Subject:   string(userId),
+		Subject:   strconv.FormatInt(userId, 10),
 		ExpiresAt: expiresAt,
 	}
 
@@ -69,6 +71,31 @@ func NewAccessToken(userId int64) (token string, expiresAt int64) {
 	}
 
 	return token, expiresAt
+}
+
+func VerifyAccessToken(tokenString string) (userId int64, ok bool) {
+	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if token.Method.Alg() != jwt.SigningMethodHS256.Alg() {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(jwtSecret), nil
+	})
+
+	if err != nil {
+		return 0, false
+	}
+
+	claims, ok := token.Claims.(*jwt.StandardClaims)
+	if !ok || !token.Valid {
+		return 0, false
+	}
+
+	userId, err = strconv.ParseInt(claims.Subject, 10, 64)
+	if err != nil {
+		return 0, false
+	}
+
+	return userId, true
 }
 
 type RefreshToken struct {
