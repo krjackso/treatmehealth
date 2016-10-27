@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import reducers from './reducers'
 import App from './components/App'
 import { persistStore, autoRehydrate } from 'redux-persist'
-import { checkAuth } from './actions/auth'
+import { bootstrap } from './actions'
 
 let store = createStore(
   reducers,
@@ -18,7 +18,7 @@ let store = createStore(
 )
 
 const initialAuthCheck = () => {
-  store.dispatch(checkAuth())
+  store.dispatch(bootstrap())
 }
 
 persistStore(

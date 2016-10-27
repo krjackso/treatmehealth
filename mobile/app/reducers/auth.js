@@ -32,3 +32,5 @@ const auth = (state: State = {loggedIn: false}, action: Action): State => {
 }
 
 export default auth
+
+export const getAuth = (state: State) => state.auth

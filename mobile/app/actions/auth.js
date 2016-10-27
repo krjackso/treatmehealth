@@ -4,6 +4,8 @@ import { Dispatch } from 'react-redux'
 import { showLoginError, showSignUpError, showLogin } from './ui'
 import { setUser } from './user'
 import TreatMe from './treatmeapi'
+import { getAuth } from '../reducers/auth'
+import { getApi } from '../reducers/api'
 
 export const AUTH_USER = 'AUTH_USER'
 export const AUTH_SUCCESS = 'AUTH_SUCCESS'
@@ -35,7 +37,7 @@ const loginSuccess = (accessToken: string, refreshToken: string, user: Object) =
   dispatch(authSuccess(accessToken, refreshToken, user.id))
 }
 
-export const login = (username: string, password: string): any => (dispatch: Dispatch) => {
+export const login = (username: string, password: string): any => (dispatch: Dispatch, getState: Function) => {
   if (username == null || username.length == 0) {
     return dispatch(loginError("Enter your username"))
   }
@@ -44,7 +46,8 @@ export const login = (username: string, password: string): any => (dispatch: Dis
     return dispatch(loginError("Enter your password"))
   }
 
-  return TreatMe.login(username, password)
+  let links = getState().api
+  return TreatMe.login(links, username, password)
     .then( (data) => {
       console.log("Logged in", data)
       dispatch(loginSuccess(data.accessToken, data.refreshToken, data.user))
@@ -59,7 +62,7 @@ const signUpError = (error: string) => (dispatch: Dispatch) => {
   })
 }
 
-export const signUp = (username: string, email: string, password: string, passwordConfirm: string, zip: string, dob: Date) => (dispatch: Dispatch) => {
+export const signUp = (username: string, email: string, password: string, passwordConfirm: string, zip: string, dob: Date) => (dispatch: Dispatch, getState: Function) => {
 
   if (!username || !email || !password || !passwordConfirm || !zip || !dob) {
     return dispatch(signUpError("Please fill out every field"))
@@ -69,7 +72,8 @@ export const signUp = (username: string, email: string, password: string, passwo
     return dispatch(signUpError("Passwords must match"))
   }
 
-  return TreatMe.signUp(username, email, password, zip, dob)
+  let links = getState().api
+  return TreatMe.signUp(links, username, email, password, zip, dob)
     .then( (data) => {
       console.log("Signed up", data)
       dispatch(loginSuccess(data.accessToken, data.refreshToken, data.user))
@@ -81,13 +85,14 @@ export const signUp = (username: string, email: string, password: string, passwo
 }
 
 export const checkAuth = () => (dispatch: Dispatch, getState: Function) => {
-  let auth = getState().auth
+  let auth = getAuth(getState())
+  let api = getApi(getState())
 
   if (!auth || !auth.loggedIn || !auth.accessToken || !auth.refreshToken) {
     return dispatch(showLogin())
   }
 
-  return TreatMe.refreshAuth(auth.refreshToken)
+  return TreatMe.refreshAuth(api, auth.username, auth.refreshToken)
     .then((auth) => {
       dispatch(authSuccess(auth.accessToken, auth.refreshToken, auth.id))
     })

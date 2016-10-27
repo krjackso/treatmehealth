@@ -3,7 +3,8 @@
 import React, { Component } from 'react'
 import { Text, View, TextInput, TouchableHighlight } from 'react-native'
 import { connect, Dispatch, State } from 'react-redux'
-import { login, showSignUp } from '../actions'
+import { login } from '../actions/auth'
+import { showSignUp } from '../actions/ui'
 import Button from '../components/Button'
 import styles, { TREATME_RED } from '../styles'
 

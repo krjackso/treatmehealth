@@ -16,7 +16,6 @@ export const showSignUp = (username: string) => (dispatch: Dispatch) => {
 }
 
 export const showProfile = (username: string) => (dispatch: Dispatch) => {
-  console.log("showProfile")
   routes.profile({username})
 }
 
