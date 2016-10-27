@@ -1,0 +1,9 @@
+TreatMe.xcodeproj/xcuserdata/krjackso.xcuserdatad/xcdebugger/
+TreatMe.xcodeproj/project.xcworkspace/xcuserdata/
+TreatMe.xcworkspace/xcuserdata/
+Carthage/
+build/
+*.ipa
+*.app.dSYM.zip
+*.cer
+*.mobileprovision

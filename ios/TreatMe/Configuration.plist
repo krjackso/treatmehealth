@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Production</key>
+	<dict>
+		<key>Pusher.Key</key>
+		<string>4467a1745cc1d2064905</string>
+		<key>Pusher.AuthUrl</key>
+		<string>https://api.treatmehealth.com/pusher/auth</string>
+		<key>TreatMe.BootstrapUrl</key>
+		<string>https://api.treatmehealth.com/bootstrap</string>
+	</dict>
+	<key>Development</key>
+	<dict>
+		<key>Pusher.Key</key>
+		<string>4467a1745cc1d2064905</string>
+		<key>Pusher.AuthUrl</key>
+		<string>http://localhost:9000/api/pusher/auth</string>
+		<key>TreatMe.BootstrapUrl</key>
+		<string>http://localhost:9000/api/bootstrap</string>
+	</dict>
+</dict>
+</plist>

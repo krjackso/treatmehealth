@@ -1,0 +1,856 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CC0DAEE31C94ABB8006DD68B /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0DAEE21C94ABB8006DD68B /* Dictionary.swift */; };
+		CC0DAEE71C954410006DD68B /* PusherClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0DAEE61C954410006DD68B /* PusherClient.swift */; };
+		CC0DAF151C965782006DD68B /* Synchronized.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0DAF141C965782006DD68B /* Synchronized.swift */; };
+		CC0DAF1A1C97D312006DD68B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0DAF191C97D312006DD68B /* UIColor.swift */; };
+		CC0DAF1D1C98E7F6006DD68B /* ActiveLabel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0DAF171C97D285006DD68B /* ActiveLabel.framework */; };
+		CC0DAF1F1CACC21E006DD68B /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0DAF1E1CACC21E006DD68B /* Array.swift */; };
+		CC0DAF251CAE11BF006DD68B /* SwiftyDrop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0DAF241CAE11BF006DD68B /* SwiftyDrop.framework */; };
+		CC0DAF271CAE30B7006DD68B /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0DAF261CAE30B7006DD68B /* Delay.swift */; };
+		CC22AF751CB6047800D38CF5 /* Configuration.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC22AF741CB6047800D38CF5 /* Configuration.plist */; };
+		CC22AF771CB6074D00D38CF5 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC22AF761CB6074D00D38CF5 /* Configuration.swift */; };
+		CC22AF791CB9F11500D38CF5 /* TMState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC22AF781CB9F11500D38CF5 /* TMState.swift */; };
+		CC24F8A91CCD7FAB001B96B4 /* Reachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24F8A81CCD7FAB001B96B4 /* Reachability.framework */; };
+		CC24F8B31CCD8523001B96B4 /* Pusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC24F8B21CCD8523001B96B4 /* Pusher.swift */; };
+		CC24F8B51CCD90DE001B96B4 /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24F8B41CCD90DE001B96B4 /* Starscream.framework */; };
+		CC24F8B71CCD90F2001B96B4 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24F8B61CCD90F2001B96B4 /* CryptoSwift.framework */; };
+		CC24F8BB1CCDD0DD001B96B4 /* ChatTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC24F8BA1CCDD0DD001B96B4 /* ChatTitleView.swift */; };
+		CC341C911CCF30F8007A4016 /* UIPaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC341C901CCF30F8007A4016 /* UIPaddedLabel.swift */; };
+		CC4C79831C855D7400462D2D /* Alamofire+Promise+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4C79821C855D7400462D2D /* Alamofire+Promise+Decodable.swift */; };
+		CC513D391C82320600CCCDD0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC513D381C82320600CCCDD0 /* AppDelegate.swift */; };
+		CC513D421C82320600CCCDD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC513D411C82320600CCCDD0 /* Assets.xcassets */; };
+		CC513D451C82320600CCCDD0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC513D431C82320600CCCDD0 /* LaunchScreen.storyboard */; };
+		CC513D501C82320600CCCDD0 /* TreatMeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC513D4F1C82320600CCCDD0 /* TreatMeTests.swift */; };
+		CC513D5B1C82320700CCCDD0 /* TreatMeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC513D5A1C82320700CCCDD0 /* TreatMeUITests.swift */; };
+		CC56498F1C895299006C21AD /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC4C79761C8536ED00462D2D /* Alamofire.framework */; };
+		CC5649901C895299006C21AD /* KeychainSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC4C79731C8535D400462D2D /* KeychainSwift.framework */; };
+		CC5649921C895299006C21AD /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC5649891C86853E006C21AD /* PromiseKit.framework */; };
+		CC5649931C895299006C21AD /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC4C797B1C85500300462D2D /* Swiftz.framework */; };
+		CC5649971C89712F006C21AD /* Decodable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC5649961C89712F006C21AD /* Decodable.framework */; };
+		CC5649991C8976B7006C21AD /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5649981C8976B7006C21AD /* Promise.swift */; };
+		CC56499C1C8A89CB006C21AD /* TreatMeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56499B1C8A89CB006C21AD /* TreatMeData.swift */; };
+		CC56499E1C8A8B16006C21AD /* Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC56499D1C8A8B16006C21AD /* Flow.swift */; };
+		CC5649A01C8A9617006C21AD /* SlackTextViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC56499F1C8A9617006C21AD /* SlackTextViewController.framework */; };
+		CC5649A21C8A9693006C21AD /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5649A11C8A9693006C21AD /* ChatViewController.swift */; };
+		CC5649A51C8A9DB4006C21AD /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC5649A41C8A9DB4006C21AD /* MessageCell.xib */; };
+		CC5649A71C8A9DCD006C21AD /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5649A61C8A9DCD006C21AD /* MessageCell.swift */; };
+		CC5649A91C8AA5EA006C21AD /* MessageCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5649A81C8AA5EA006C21AD /* MessageCollectionViewLayout.swift */; };
+		CC5AD61D1CC20F1000780092 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC5AD61C1CC20F1000780092 /* HockeySDK.framework */; };
+		CC5AD6201CC2B9F400780092 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CC5AD61E1CC20F1800780092 /* HockeySDKResources.bundle */; };
+		CC5AD6221CC7398C00780092 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC5AD6211CC7398C00780092 /* Kingfisher.framework */; };
+		CC5AD6241CC73C5200780092 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5AD6231CC73C5200780092 /* UIImageView.swift */; };
+		CC66E4551C8BE148008049AE /* LeftMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66E4541C8BE148008049AE /* LeftMenuViewController.swift */; };
+		CC66E4571C8BE1DC008049AE /* DrawerController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC66E4561C8BE1DC008049AE /* DrawerController.framework */; };
+		CC66E4591C8BE211008049AE /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66E4581C8BE211008049AE /* MainViewController.swift */; };
+		CC66E45B1C8FE087008049AE /* TreatMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66E45A1C8FE087008049AE /* TreatMe.swift */; };
+		CCA6E8771CCC7D2300BE9BD8 /* ChannelTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA6E8761CCC7D2300BE9BD8 /* ChannelTableCell.swift */; };
+		CCCC49D71CB04B3600E36ABE /* CameraViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCCC49D61CB04B3600E36ABE /* CameraViewController.framework */; };
+		CCCC49DA1CB19FED00E36ABE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC49D91CB19FED00E36ABE /* ProfileViewController.swift */; };
+		CCCC49E01CB1E00500E36ABE /* UserProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC49DF1CB1E00500E36ABE /* UserProfileImage.swift */; };
+		CCCC49E21CB2210600E36ABE /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC49E11CB2210600E36ABE /* UIImage.swift */; };
+		CCEDC91F1C8250E400941D63 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC91E1C8250E400941D63 /* SignInViewController.swift */; };
+		CCEDC9241C825A4400941D63 /* TreatMeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC9231C825A4400941D63 /* TreatMeClient.swift */; };
+		CCEDC9261C827CAE00941D63 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC9251C827CAE00941D63 /* Auth.swift */; };
+		CCEDC9291C82801D00941D63 /* NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC9281C82801D00941D63 /* NSDate.swift */; };
+		CCEDC92C1C82BB6600941D63 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCEDC92B1C82BB6600941D63 /* Main.storyboard */; };
+		CCEDC92E1C82BCBB00941D63 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCEDC92D1C82BCBB00941D63 /* SignIn.storyboard */; };
+		CCEDC9301C82CD2A00941D63 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC92F1C82CD2A00941D63 /* RegisterViewController.swift */; };
+		CCEDC9321C82D9DD00941D63 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC9311C82D9DD00941D63 /* String.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CC513D4C1C82320600CCCDD0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC513D2D1C82320600CCCDD0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC513D341C82320600CCCDD0;
+			remoteInfo = TreatMe;
+		};
+		CC513D571C82320600CCCDD0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC513D2D1C82320600CCCDD0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC513D341C82320600CCCDD0;
+			remoteInfo = TreatMe;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CC0DAEE21C94ABB8006DD68B /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
+		CC0DAEE61C954410006DD68B /* PusherClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PusherClient.swift; sourceTree = "<group>"; };
+		CC0DAF141C965782006DD68B /* Synchronized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronized.swift; sourceTree = "<group>"; };
+		CC0DAF171C97D285006DD68B /* ActiveLabel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActiveLabel.framework; path = Carthage/Build/iOS/ActiveLabel.framework; sourceTree = "<group>"; };
+		CC0DAF191C97D312006DD68B /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		CC0DAF1E1CACC21E006DD68B /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		CC0DAF241CAE11BF006DD68B /* SwiftyDrop.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyDrop.framework; path = Carthage/Build/iOS/SwiftyDrop.framework; sourceTree = "<group>"; };
+		CC0DAF261CAE30B7006DD68B /* Delay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
+		CC22AF741CB6047800D38CF5 /* Configuration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Configuration.plist; sourceTree = "<group>"; };
+		CC22AF761CB6074D00D38CF5 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		CC22AF781CB9F11500D38CF5 /* TMState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMState.swift; sourceTree = "<group>"; };
+		CC24F8A81CCD7FAB001B96B4 /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reachability.framework; path = Carthage/Build/iOS/Reachability.framework; sourceTree = "<group>"; };
+		CC24F8B21CCD8523001B96B4 /* Pusher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pusher.swift; sourceTree = "<group>"; };
+		CC24F8B41CCD90DE001B96B4 /* Starscream.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Starscream.framework; path = Carthage/Build/iOS/Starscream.framework; sourceTree = "<group>"; };
+		CC24F8B61CCD90F2001B96B4 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/iOS/CryptoSwift.framework; sourceTree = "<group>"; };
+		CC24F8BA1CCDD0DD001B96B4 /* ChatTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTitleView.swift; sourceTree = "<group>"; };
+		CC341C901CCF30F8007A4016 /* UIPaddedLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIPaddedLabel.swift; sourceTree = "<group>"; };
+		CC4C79731C8535D400462D2D /* KeychainSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainSwift.framework; path = Carthage/Build/iOS/KeychainSwift.framework; sourceTree = "<group>"; };
+		CC4C79761C8536ED00462D2D /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		CC4C797B1C85500300462D2D /* Swiftz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Swiftz.framework; path = Carthage/Build/iOS/Swiftz.framework; sourceTree = "<group>"; };
+		CC4C79821C855D7400462D2D /* Alamofire+Promise+Decodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alamofire+Promise+Decodable.swift"; sourceTree = "<group>"; };
+		CC513D351C82320600CCCDD0 /* TreatMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TreatMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC513D381C82320600CCCDD0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CC513D411C82320600CCCDD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CC513D441C82320600CCCDD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CC513D461C82320600CCCDD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC513D4B1C82320600CCCDD0 /* TreatMeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TreatMeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC513D4F1C82320600CCCDD0 /* TreatMeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatMeTests.swift; sourceTree = "<group>"; };
+		CC513D511C82320600CCCDD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC513D561C82320600CCCDD0 /* TreatMeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TreatMeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC513D5A1C82320700CCCDD0 /* TreatMeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatMeUITests.swift; sourceTree = "<group>"; };
+		CC513D5C1C82320700CCCDD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC5649891C86853E006C21AD /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
+		CC5649961C89712F006C21AD /* Decodable.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Decodable.framework; path = Carthage/Build/iOS/Decodable.framework; sourceTree = "<group>"; };
+		CC5649981C8976B7006C21AD /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
+		CC56499B1C8A89CB006C21AD /* TreatMeData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreatMeData.swift; sourceTree = "<group>"; };
+		CC56499D1C8A8B16006C21AD /* Flow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flow.swift; sourceTree = "<group>"; };
+		CC56499F1C8A9617006C21AD /* SlackTextViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SlackTextViewController.framework; path = Carthage/Build/iOS/SlackTextViewController.framework; sourceTree = "<group>"; };
+		CC5649A11C8A9693006C21AD /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatViewController.swift; path = TreatMe/Main/Chat/ChatViewController.swift; sourceTree = SOURCE_ROOT; };
+		CC5649A41C8A9DB4006C21AD /* MessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageCell.xib; sourceTree = "<group>"; };
+		CC5649A61C8A9DCD006C21AD /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		CC5649A81C8AA5EA006C21AD /* MessageCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCollectionViewLayout.swift; sourceTree = "<group>"; };
+		CC5AD61A1CC20F0100780092 /* HockeySDK-iOS */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "HockeySDK-iOS"; sourceTree = "<group>"; };
+		CC5AD61C1CC20F1000780092 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework"; sourceTree = "<group>"; };
+		CC5AD61E1CC20F1800780092 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = HockeySDKResources.bundle; path = "HockeySDK-iOS/HockeySDK.embeddedframework/Resources/HockeySDKResources.bundle"; sourceTree = "<group>"; };
+		CC5AD6211CC7398C00780092 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
+		CC5AD6231CC73C5200780092 /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
+		CC66E4541C8BE148008049AE /* LeftMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMenuViewController.swift; sourceTree = "<group>"; };
+		CC66E4561C8BE1DC008049AE /* DrawerController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DrawerController.framework; path = Carthage/Build/iOS/DrawerController.framework; sourceTree = "<group>"; };
+		CC66E4581C8BE211008049AE /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		CC66E45A1C8FE087008049AE /* TreatMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreatMe.swift; sourceTree = "<group>"; };
+		CCA6E8761CCC7D2300BE9BD8 /* ChannelTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelTableCell.swift; sourceTree = "<group>"; };
+		CCCC49D61CB04B3600E36ABE /* CameraViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CameraViewController.framework; path = Carthage/Build/iOS/CameraViewController.framework; sourceTree = "<group>"; };
+		CCCC49D91CB19FED00E36ABE /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		CCCC49DF1CB1E00500E36ABE /* UserProfileImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileImage.swift; sourceTree = "<group>"; };
+		CCCC49E11CB2210600E36ABE /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		CCEDC91E1C8250E400941D63 /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		CCEDC9231C825A4400941D63 /* TreatMeClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreatMeClient.swift; sourceTree = "<group>"; };
+		CCEDC9251C827CAE00941D63 /* Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
+		CCEDC9281C82801D00941D63 /* NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDate.swift; sourceTree = "<group>"; };
+		CCEDC92B1C82BB6600941D63 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		CCEDC92D1C82BCBB00941D63 /* SignIn.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SignIn.storyboard; sourceTree = "<group>"; };
+		CCEDC92F1C82CD2A00941D63 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		CCEDC9311C82D9DD00941D63 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CC513D321C82320600CCCDD0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC24F8B51CCD90DE001B96B4 /* Starscream.framework in Frameworks */,
+				CC24F8A91CCD7FAB001B96B4 /* Reachability.framework in Frameworks */,
+				CC5AD6221CC7398C00780092 /* Kingfisher.framework in Frameworks */,
+				CC24F8B71CCD90F2001B96B4 /* CryptoSwift.framework in Frameworks */,
+				CCCC49D71CB04B3600E36ABE /* CameraViewController.framework in Frameworks */,
+				CC0DAF251CAE11BF006DD68B /* SwiftyDrop.framework in Frameworks */,
+				CC0DAF1D1C98E7F6006DD68B /* ActiveLabel.framework in Frameworks */,
+				CC66E4571C8BE1DC008049AE /* DrawerController.framework in Frameworks */,
+				CC5AD61D1CC20F1000780092 /* HockeySDK.framework in Frameworks */,
+				CC5649A01C8A9617006C21AD /* SlackTextViewController.framework in Frameworks */,
+				CC5649971C89712F006C21AD /* Decodable.framework in Frameworks */,
+				CC56498F1C895299006C21AD /* Alamofire.framework in Frameworks */,
+				CC5649901C895299006C21AD /* KeychainSwift.framework in Frameworks */,
+				CC5649921C895299006C21AD /* PromiseKit.framework in Frameworks */,
+				CC5649931C895299006C21AD /* Swiftz.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC513D481C82320600CCCDD0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC513D531C82320600CCCDD0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		495A75C8470810B66A62628C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CC24F8B61CCD90F2001B96B4 /* CryptoSwift.framework */,
+				CC24F8B41CCD90DE001B96B4 /* Starscream.framework */,
+				CC24F8A81CCD7FAB001B96B4 /* Reachability.framework */,
+				CC5AD6211CC7398C00780092 /* Kingfisher.framework */,
+				CC5AD61E1CC20F1800780092 /* HockeySDKResources.bundle */,
+				CC5AD61C1CC20F1000780092 /* HockeySDK.framework */,
+				CCCC49D61CB04B3600E36ABE /* CameraViewController.framework */,
+				CC0DAF241CAE11BF006DD68B /* SwiftyDrop.framework */,
+				CC0DAF171C97D285006DD68B /* ActiveLabel.framework */,
+				CC66E4561C8BE1DC008049AE /* DrawerController.framework */,
+				CC56499F1C8A9617006C21AD /* SlackTextViewController.framework */,
+				CC5649961C89712F006C21AD /* Decodable.framework */,
+				CC5649891C86853E006C21AD /* PromiseKit.framework */,
+				CC4C797B1C85500300462D2D /* Swiftz.framework */,
+				CC4C79761C8536ED00462D2D /* Alamofire.framework */,
+				CC4C79731C8535D400462D2D /* KeychainSwift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CC24F8B11CCD84E1001B96B4 /* Pusher */ = {
+			isa = PBXGroup;
+			children = (
+				CC24F8B21CCD8523001B96B4 /* Pusher.swift */,
+				CC0DAEE61C954410006DD68B /* PusherClient.swift */,
+			);
+			path = Pusher;
+			sourceTree = "<group>";
+		};
+		CC513D2C1C82320600CCCDD0 = {
+			isa = PBXGroup;
+			children = (
+				CC5AD61A1CC20F0100780092 /* HockeySDK-iOS */,
+				CC513D371C82320600CCCDD0 /* TreatMe */,
+				CC513D4E1C82320600CCCDD0 /* TreatMeTests */,
+				CC513D591C82320600CCCDD0 /* TreatMeUITests */,
+				CC513D361C82320600CCCDD0 /* Products */,
+				495A75C8470810B66A62628C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		CC513D361C82320600CCCDD0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CC513D351C82320600CCCDD0 /* TreatMe.app */,
+				CC513D4B1C82320600CCCDD0 /* TreatMeTests.xctest */,
+				CC513D561C82320600CCCDD0 /* TreatMeUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CC513D371C82320600CCCDD0 /* TreatMe */ = {
+			isa = PBXGroup;
+			children = (
+				CCEDC92A1C82BA0000941D63 /* Main */,
+				CCEDC9271C827FFF00941D63 /* Extensions */,
+				CCEDC9221C8259D000941D63 /* Services */,
+				CCEDC91D1C824F5B00941D63 /* Authentication */,
+				CC513D381C82320600CCCDD0 /* AppDelegate.swift */,
+				CC513D411C82320600CCCDD0 /* Assets.xcassets */,
+				CC513D431C82320600CCCDD0 /* LaunchScreen.storyboard */,
+				CC513D461C82320600CCCDD0 /* Info.plist */,
+				CC22AF741CB6047800D38CF5 /* Configuration.plist */,
+				CC22AF761CB6074D00D38CF5 /* Configuration.swift */,
+			);
+			path = TreatMe;
+			sourceTree = "<group>";
+		};
+		CC513D4E1C82320600CCCDD0 /* TreatMeTests */ = {
+			isa = PBXGroup;
+			children = (
+				CC513D4F1C82320600CCCDD0 /* TreatMeTests.swift */,
+				CC513D511C82320600CCCDD0 /* Info.plist */,
+			);
+			path = TreatMeTests;
+			sourceTree = "<group>";
+		};
+		CC513D591C82320600CCCDD0 /* TreatMeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CC513D5A1C82320700CCCDD0 /* TreatMeUITests.swift */,
+				CC513D5C1C82320700CCCDD0 /* Info.plist */,
+			);
+			path = TreatMeUITests;
+			sourceTree = "<group>";
+		};
+		CC56499A1C8A896C006C21AD /* TreatMe */ = {
+			isa = PBXGroup;
+			children = (
+				CCEDC9231C825A4400941D63 /* TreatMeClient.swift */,
+				CC56499B1C8A89CB006C21AD /* TreatMeData.swift */,
+				CC66E45A1C8FE087008049AE /* TreatMe.swift */,
+			);
+			path = TreatMe;
+			sourceTree = "<group>";
+		};
+		CC5649A31C8A9BFE006C21AD /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				CC5649A11C8A9693006C21AD /* ChatViewController.swift */,
+				CC5649A41C8A9DB4006C21AD /* MessageCell.xib */,
+				CC5649A61C8A9DCD006C21AD /* MessageCell.swift */,
+				CC5649A81C8AA5EA006C21AD /* MessageCollectionViewLayout.swift */,
+				CC24F8BA1CCDD0DD001B96B4 /* ChatTitleView.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		CC66E4531C8BE0F3008049AE /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				CC66E4541C8BE148008049AE /* LeftMenuViewController.swift */,
+				CC66E4581C8BE211008049AE /* MainViewController.swift */,
+				CCA6E8761CCC7D2300BE9BD8 /* ChannelTableCell.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		CCCC49D81CB19FBD00E36ABE /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				CCCC49D91CB19FED00E36ABE /* ProfileViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		CCEDC91D1C824F5B00941D63 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				CCEDC92D1C82BCBB00941D63 /* SignIn.storyboard */,
+				CCEDC91E1C8250E400941D63 /* SignInViewController.swift */,
+				CCEDC9251C827CAE00941D63 /* Auth.swift */,
+				CCEDC92F1C82CD2A00941D63 /* RegisterViewController.swift */,
+			);
+			name = Authentication;
+			path = TreatMe/Authentication;
+			sourceTree = SOURCE_ROOT;
+		};
+		CCEDC9221C8259D000941D63 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				CC24F8B11CCD84E1001B96B4 /* Pusher */,
+				CC56499A1C8A896C006C21AD /* TreatMe */,
+			);
+			name = Services;
+			path = TreatMe/Services;
+			sourceTree = SOURCE_ROOT;
+		};
+		CCEDC9271C827FFF00941D63 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CCEDC9281C82801D00941D63 /* NSDate.swift */,
+				CCEDC9311C82D9DD00941D63 /* String.swift */,
+				CC4C79821C855D7400462D2D /* Alamofire+Promise+Decodable.swift */,
+				CC5649981C8976B7006C21AD /* Promise.swift */,
+				CC0DAEE21C94ABB8006DD68B /* Dictionary.swift */,
+				CC0DAF141C965782006DD68B /* Synchronized.swift */,
+				CC0DAF191C97D312006DD68B /* UIColor.swift */,
+				CC0DAF1E1CACC21E006DD68B /* Array.swift */,
+				CC0DAF261CAE30B7006DD68B /* Delay.swift */,
+				CCCC49E11CB2210600E36ABE /* UIImage.swift */,
+				CC22AF781CB9F11500D38CF5 /* TMState.swift */,
+				CC5AD6231CC73C5200780092 /* UIImageView.swift */,
+				CC341C901CCF30F8007A4016 /* UIPaddedLabel.swift */,
+			);
+			name = Extensions;
+			path = TreatMe/Extensions;
+			sourceTree = SOURCE_ROOT;
+		};
+		CCEDC92A1C82BA0000941D63 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				CCCC49DF1CB1E00500E36ABE /* UserProfileImage.swift */,
+				CCCC49D81CB19FBD00E36ABE /* Settings */,
+				CC66E4531C8BE0F3008049AE /* Navigation */,
+				CC5649A31C8A9BFE006C21AD /* Chat */,
+				CCEDC92B1C82BB6600941D63 /* Main.storyboard */,
+				CC56499D1C8A8B16006C21AD /* Flow.swift */,
+			);
+			name = Main;
+			path = TreatMe/Main;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CC513D341C82320600CCCDD0 /* TreatMe */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC513D5F1C82320700CCCDD0 /* Build configuration list for PBXNativeTarget "TreatMe" */;
+			buildPhases = (
+				CC513D311C82320600CCCDD0 /* Sources */,
+				CC513D321C82320600CCCDD0 /* Frameworks */,
+				CC513D331C82320600CCCDD0 /* Resources */,
+				CC4C79751C85360E00462D2D /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TreatMe;
+			productName = TreatMe;
+			productReference = CC513D351C82320600CCCDD0 /* TreatMe.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CC513D4A1C82320600CCCDD0 /* TreatMeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC513D621C82320700CCCDD0 /* Build configuration list for PBXNativeTarget "TreatMeTests" */;
+			buildPhases = (
+				CC513D471C82320600CCCDD0 /* Sources */,
+				CC513D481C82320600CCCDD0 /* Frameworks */,
+				CC513D491C82320600CCCDD0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CC513D4D1C82320600CCCDD0 /* PBXTargetDependency */,
+			);
+			name = TreatMeTests;
+			productName = TreatMeTests;
+			productReference = CC513D4B1C82320600CCCDD0 /* TreatMeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CC513D551C82320600CCCDD0 /* TreatMeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC513D651C82320700CCCDD0 /* Build configuration list for PBXNativeTarget "TreatMeUITests" */;
+			buildPhases = (
+				CC513D521C82320600CCCDD0 /* Sources */,
+				CC513D531C82320600CCCDD0 /* Frameworks */,
+				CC513D541C82320600CCCDD0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CC513D581C82320600CCCDD0 /* PBXTargetDependency */,
+			);
+			name = TreatMeUITests;
+			productName = TreatMeUITests;
+			productReference = CC513D561C82320600CCCDD0 /* TreatMeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CC513D2D1C82320600CCCDD0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "TreatMe Health";
+				TargetAttributes = {
+					CC513D341C82320600CCCDD0 = {
+						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 6SCG2H4J9L;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
+					CC513D4A1C82320600CCCDD0 = {
+						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = FMLJR53B6M;
+						TestTargetID = CC513D341C82320600CCCDD0;
+					};
+					CC513D551C82320600CCCDD0 = {
+						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = FMLJR53B6M;
+						TestTargetID = CC513D341C82320600CCCDD0;
+					};
+				};
+			};
+			buildConfigurationList = CC513D301C82320600CCCDD0 /* Build configuration list for PBXProject "TreatMe" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CC513D2C1C82320600CCCDD0;
+			productRefGroup = CC513D361C82320600CCCDD0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CC513D341C82320600CCCDD0 /* TreatMe */,
+				CC513D4A1C82320600CCCDD0 /* TreatMeTests */,
+				CC513D551C82320600CCCDD0 /* TreatMeUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CC513D331C82320600CCCDD0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC5AD6201CC2B9F400780092 /* HockeySDKResources.bundle in Resources */,
+				CC513D451C82320600CCCDD0 /* LaunchScreen.storyboard in Resources */,
+				CCEDC92E1C82BCBB00941D63 /* SignIn.storyboard in Resources */,
+				CC513D421C82320600CCCDD0 /* Assets.xcassets in Resources */,
+				CC22AF751CB6047800D38CF5 /* Configuration.plist in Resources */,
+				CCEDC92C1C82BB6600941D63 /* Main.storyboard in Resources */,
+				CC5649A51C8A9DB4006C21AD /* MessageCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC513D491C82320600CCCDD0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC513D541C82320600CCCDD0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CC4C79751C85360E00462D2D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/KeychainSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Swiftz.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Decodable.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/PromiseKit.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SlackTextViewController.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/DrawerController.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Reachability.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ActiveLabel.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftyDrop.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CameraViewController.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CryptoSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Starscream.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CC513D311C82320600CCCDD0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCA6E8771CCC7D2300BE9BD8 /* ChannelTableCell.swift in Sources */,
+				CC56499C1C8A89CB006C21AD /* TreatMeData.swift in Sources */,
+				CC341C911CCF30F8007A4016 /* UIPaddedLabel.swift in Sources */,
+				CC513D391C82320600CCCDD0 /* AppDelegate.swift in Sources */,
+				CC22AF771CB6074D00D38CF5 /* Configuration.swift in Sources */,
+				CCCC49E01CB1E00500E36ABE /* UserProfileImage.swift in Sources */,
+				CC66E45B1C8FE087008049AE /* TreatMe.swift in Sources */,
+				CC5649A91C8AA5EA006C21AD /* MessageCollectionViewLayout.swift in Sources */,
+				CC5649A71C8A9DCD006C21AD /* MessageCell.swift in Sources */,
+				CCCC49E21CB2210600E36ABE /* UIImage.swift in Sources */,
+				CC0DAEE31C94ABB8006DD68B /* Dictionary.swift in Sources */,
+				CC24F8B31CCD8523001B96B4 /* Pusher.swift in Sources */,
+				CC24F8BB1CCDD0DD001B96B4 /* ChatTitleView.swift in Sources */,
+				CC0DAF1F1CACC21E006DD68B /* Array.swift in Sources */,
+				CC0DAF1A1C97D312006DD68B /* UIColor.swift in Sources */,
+				CCEDC91F1C8250E400941D63 /* SignInViewController.swift in Sources */,
+				CC4C79831C855D7400462D2D /* Alamofire+Promise+Decodable.swift in Sources */,
+				CC22AF791CB9F11500D38CF5 /* TMState.swift in Sources */,
+				CCEDC9261C827CAE00941D63 /* Auth.swift in Sources */,
+				CC5AD6241CC73C5200780092 /* UIImageView.swift in Sources */,
+				CC66E4591C8BE211008049AE /* MainViewController.swift in Sources */,
+				CC0DAF151C965782006DD68B /* Synchronized.swift in Sources */,
+				CCEDC9301C82CD2A00941D63 /* RegisterViewController.swift in Sources */,
+				CC5649991C8976B7006C21AD /* Promise.swift in Sources */,
+				CC56499E1C8A8B16006C21AD /* Flow.swift in Sources */,
+				CCEDC9321C82D9DD00941D63 /* String.swift in Sources */,
+				CCEDC9241C825A4400941D63 /* TreatMeClient.swift in Sources */,
+				CC5649A21C8A9693006C21AD /* ChatViewController.swift in Sources */,
+				CC0DAEE71C954410006DD68B /* PusherClient.swift in Sources */,
+				CC0DAF271CAE30B7006DD68B /* Delay.swift in Sources */,
+				CCCC49DA1CB19FED00E36ABE /* ProfileViewController.swift in Sources */,
+				CC66E4551C8BE148008049AE /* LeftMenuViewController.swift in Sources */,
+				CCEDC9291C82801D00941D63 /* NSDate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC513D471C82320600CCCDD0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC513D501C82320600CCCDD0 /* TreatMeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC513D521C82320600CCCDD0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC513D5B1C82320700CCCDD0 /* TreatMeUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CC513D4D1C82320600CCCDD0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC513D341C82320600CCCDD0 /* TreatMe */;
+			targetProxy = CC513D4C1C82320600CCCDD0 /* PBXContainerItemProxy */;
+		};
+		CC513D581C82320600CCCDD0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC513D341C82320600CCCDD0 /* TreatMe */;
+			targetProxy = CC513D571C82320600CCCDD0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CC513D431C82320600CCCDD0 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CC513D441C82320600CCCDD0 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CC22AF6C1CB6030A00D38CF5 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Development;
+		};
+		CC22AF6D1CB6030A00D38CF5 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 0.1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/**",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/HockeySDK-iOS/HockeySDK.embeddedframework",
+				);
+				INFOPLIST_FILE = "TreatMe/Info-dev.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.treatmehealth.TreatMeHealth;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Development;
+		};
+		CC22AF6E1CB6030A00D38CF5 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = TreatMeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.treatmehealth.TreatMeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TreatMe.app/TreatMe";
+			};
+			name = Development;
+		};
+		CC22AF6F1CB6030A00D38CF5 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = TreatMeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.treatmehealth.TreatMeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = TreatMe;
+				USES_XCTRUNNER = YES;
+			};
+			name = Development;
+		};
+		CC22AF701CB6031400D38CF5 /* Production */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Production;
+		};
+		CC22AF711CB6031400D38CF5 /* Production */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 0.1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/**",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/HockeySDK-iOS/HockeySDK.embeddedframework",
+				);
+				INFOPLIST_FILE = TreatMe/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.treatmehealth.TreatMeHealth;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Production;
+		};
+		CC22AF721CB6031400D38CF5 /* Production */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = TreatMeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.treatmehealth.TreatMeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TreatMe.app/TreatMe";
+			};
+			name = Production;
+		};
+		CC22AF731CB6031400D38CF5 /* Production */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = TreatMeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.treatmehealth.TreatMeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = TreatMe;
+				USES_XCTRUNNER = YES;
+			};
+			name = Production;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CC513D301C82320600CCCDD0 /* Build configuration list for PBXProject "TreatMe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC22AF6C1CB6030A00D38CF5 /* Development */,
+				CC22AF701CB6031400D38CF5 /* Production */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Production;
+		};
+		CC513D5F1C82320700CCCDD0 /* Build configuration list for PBXNativeTarget "TreatMe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC22AF6D1CB6030A00D38CF5 /* Development */,
+				CC22AF711CB6031400D38CF5 /* Production */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Production;
+		};
+		CC513D621C82320700CCCDD0 /* Build configuration list for PBXNativeTarget "TreatMeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC22AF6E1CB6030A00D38CF5 /* Development */,
+				CC22AF721CB6031400D38CF5 /* Production */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Production;
+		};
+		CC513D651C82320700CCCDD0 /* Build configuration list for PBXNativeTarget "TreatMeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC22AF6F1CB6030A00D38CF5 /* Development */,
+				CC22AF731CB6031400D38CF5 /* Production */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Production;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CC513D2D1C82320600CCCDD0 /* Project object */;
+}

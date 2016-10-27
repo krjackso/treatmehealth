@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "1F9EA74D80B00BD4AC120F50B25E1C93FAD2EA91",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "476F0FD4FFE5EB719F8FC0D464CB7E220F8131EF" : 0,
+    "1F9EA74D80B00BD4AC120F50B25E1C93FAD2EA91" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "4CFA061F-CD13-4DEF-9EBC-E7F1FDC11D18",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "476F0FD4FFE5EB719F8FC0D464CB7E220F8131EF" : "app\/ios\/pusher-websocket-swift\/",
+    "1F9EA74D80B00BD4AC120F50B25E1C93FAD2EA91" : "app\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "TreatMe",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ios\/TreatMe.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "gitlab.com:treat-me\/treat-me-health.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1F9EA74D80B00BD4AC120F50B25E1C93FAD2EA91"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/pusher\/pusher-websocket-swift.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "476F0FD4FFE5EB719F8FC0D464CB7E220F8131EF"
+    }
+  ]
+}
