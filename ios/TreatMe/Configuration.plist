@@ -16,9 +16,9 @@
 		<key>Pusher.Key</key>
 		<string>4467a1745cc1d2064905</string>
 		<key>Pusher.AuthUrl</key>
-		<string>http://localhost:9000/api/pusher/auth</string>
+		<string>http://localhost:8080/api/pusher/auth</string>
 		<key>TreatMe.BootstrapUrl</key>
-		<string>http://localhost:9000/api/bootstrap</string>
+		<string>http://localhost:8080/api/bootstrap</string>
 	</dict>
 </dict>
 </plist>

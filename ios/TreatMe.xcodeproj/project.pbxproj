@@ -19,9 +19,6 @@
 		CC22AF771CB6074D00D38CF5 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC22AF761CB6074D00D38CF5 /* Configuration.swift */; };
 		CC22AF791CB9F11500D38CF5 /* TMState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC22AF781CB9F11500D38CF5 /* TMState.swift */; };
 		CC24F8A91CCD7FAB001B96B4 /* Reachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24F8A81CCD7FAB001B96B4 /* Reachability.framework */; };
-		CC24F8B31CCD8523001B96B4 /* Pusher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC24F8B21CCD8523001B96B4 /* Pusher.swift */; };
-		CC24F8B51CCD90DE001B96B4 /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24F8B41CCD90DE001B96B4 /* Starscream.framework */; };
-		CC24F8B71CCD90F2001B96B4 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24F8B61CCD90F2001B96B4 /* CryptoSwift.framework */; };
 		CC24F8BB1CCDD0DD001B96B4 /* ChatTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC24F8BA1CCDD0DD001B96B4 /* ChatTitleView.swift */; };
 		CC341C911CCF30F8007A4016 /* UIPaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC341C901CCF30F8007A4016 /* UIPaddedLabel.swift */; };
 		CC4C79831C855D7400462D2D /* Alamofire+Promise+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4C79821C855D7400462D2D /* Alamofire+Promise+Decodable.swift */; };
@@ -51,6 +48,7 @@
 		CC66E4571C8BE1DC008049AE /* DrawerController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC66E4561C8BE1DC008049AE /* DrawerController.framework */; };
 		CC66E4591C8BE211008049AE /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66E4581C8BE211008049AE /* MainViewController.swift */; };
 		CC66E45B1C8FE087008049AE /* TreatMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66E45A1C8FE087008049AE /* TreatMe.swift */; };
+		CC823D021DC1BCEB00A760B2 /* PusherSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC823D011DC1BCEB00A760B2 /* PusherSwift.framework */; };
 		CCA6E8771CCC7D2300BE9BD8 /* ChannelTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA6E8761CCC7D2300BE9BD8 /* ChannelTableCell.swift */; };
 		CCCC49D71CB04B3600E36ABE /* CameraViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCCC49D61CB04B3600E36ABE /* CameraViewController.framework */; };
 		CCCC49DA1CB19FED00E36ABE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC49D91CB19FED00E36ABE /* ProfileViewController.swift */; };
@@ -96,9 +94,6 @@
 		CC22AF761CB6074D00D38CF5 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		CC22AF781CB9F11500D38CF5 /* TMState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMState.swift; sourceTree = "<group>"; };
 		CC24F8A81CCD7FAB001B96B4 /* Reachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reachability.framework; path = Carthage/Build/iOS/Reachability.framework; sourceTree = "<group>"; };
-		CC24F8B21CCD8523001B96B4 /* Pusher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pusher.swift; sourceTree = "<group>"; };
-		CC24F8B41CCD90DE001B96B4 /* Starscream.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Starscream.framework; path = Carthage/Build/iOS/Starscream.framework; sourceTree = "<group>"; };
-		CC24F8B61CCD90F2001B96B4 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/iOS/CryptoSwift.framework; sourceTree = "<group>"; };
 		CC24F8BA1CCDD0DD001B96B4 /* ChatTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTitleView.swift; sourceTree = "<group>"; };
 		CC341C901CCF30F8007A4016 /* UIPaddedLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIPaddedLabel.swift; sourceTree = "<group>"; };
 		CC4C79731C8535D400462D2D /* KeychainSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainSwift.framework; path = Carthage/Build/iOS/KeychainSwift.framework; sourceTree = "<group>"; };
@@ -135,6 +130,7 @@
 		CC66E4561C8BE1DC008049AE /* DrawerController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DrawerController.framework; path = Carthage/Build/iOS/DrawerController.framework; sourceTree = "<group>"; };
 		CC66E4581C8BE211008049AE /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		CC66E45A1C8FE087008049AE /* TreatMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreatMe.swift; sourceTree = "<group>"; };
+		CC823D011DC1BCEB00A760B2 /* PusherSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PusherSwift.framework; path = Carthage/Build/iOS/PusherSwift.framework; sourceTree = "<group>"; };
 		CCA6E8761CCC7D2300BE9BD8 /* ChannelTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelTableCell.swift; sourceTree = "<group>"; };
 		CCCC49D61CB04B3600E36ABE /* CameraViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CameraViewController.framework; path = Carthage/Build/iOS/CameraViewController.framework; sourceTree = "<group>"; };
 		CCCC49D91CB19FED00E36ABE /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -155,10 +151,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC24F8B51CCD90DE001B96B4 /* Starscream.framework in Frameworks */,
+				CC823D021DC1BCEB00A760B2 /* PusherSwift.framework in Frameworks */,
 				CC24F8A91CCD7FAB001B96B4 /* Reachability.framework in Frameworks */,
 				CC5AD6221CC7398C00780092 /* Kingfisher.framework in Frameworks */,
-				CC24F8B71CCD90F2001B96B4 /* CryptoSwift.framework in Frameworks */,
 				CCCC49D71CB04B3600E36ABE /* CameraViewController.framework in Frameworks */,
 				CC0DAF251CAE11BF006DD68B /* SwiftyDrop.framework in Frameworks */,
 				CC0DAF1D1C98E7F6006DD68B /* ActiveLabel.framework in Frameworks */,
@@ -193,8 +188,7 @@
 		495A75C8470810B66A62628C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CC24F8B61CCD90F2001B96B4 /* CryptoSwift.framework */,
-				CC24F8B41CCD90DE001B96B4 /* Starscream.framework */,
+				CC823D011DC1BCEB00A760B2 /* PusherSwift.framework */,
 				CC24F8A81CCD7FAB001B96B4 /* Reachability.framework */,
 				CC5AD6211CC7398C00780092 /* Kingfisher.framework */,
 				CC5AD61E1CC20F1800780092 /* HockeySDKResources.bundle */,
@@ -216,7 +210,6 @@
 		CC24F8B11CCD84E1001B96B4 /* Pusher */ = {
 			isa = PBXGroup;
 			children = (
-				CC24F8B21CCD8523001B96B4 /* Pusher.swift */,
 				CC0DAEE61C954410006DD68B /* PusherClient.swift */,
 			);
 			path = Pusher;
@@ -446,6 +439,7 @@
 					CC513D341C82320600CCCDD0 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 6SCG2H4J9L;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -458,11 +452,13 @@
 					CC513D4A1C82320600CCCDD0 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = FMLJR53B6M;
+						LastSwiftMigration = 0800;
 						TestTargetID = CC513D341C82320600CCCDD0;
 					};
 					CC513D551C82320600CCCDD0 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = FMLJR53B6M;
+						LastSwiftMigration = 0800;
 						TestTargetID = CC513D341C82320600CCCDD0;
 					};
 				};
@@ -537,8 +533,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyDrop.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/CameraViewController.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/CryptoSwift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Starscream.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/PusherSwift.framework",
 			);
 			outputPaths = (
 			);
@@ -564,7 +559,6 @@
 				CC5649A71C8A9DCD006C21AD /* MessageCell.swift in Sources */,
 				CCCC49E21CB2210600E36ABE /* UIImage.swift in Sources */,
 				CC0DAEE31C94ABB8006DD68B /* Dictionary.swift in Sources */,
-				CC24F8B31CCD8523001B96B4 /* Pusher.swift in Sources */,
 				CC24F8BB1CCDD0DD001B96B4 /* ChatTitleView.swift in Sources */,
 				CC0DAF1F1CACC21E006DD68B /* Array.swift in Sources */,
 				CC0DAF1A1C97D312006DD68B /* UIColor.swift in Sources */,
@@ -692,11 +686,12 @@
 					"$(PROJECT_DIR)/HockeySDK-iOS/HockeySDK.embeddedframework",
 				);
 				INFOPLIST_FILE = "TreatMe/Info-dev.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.treatmehealth.TreatMeHealth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Development;
@@ -709,6 +704,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.treatmehealth.TreatMeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TreatMe.app/TreatMe";
 			};
 			name = Development;
@@ -720,6 +716,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.treatmehealth.TreatMeUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = TreatMe;
 				USES_XCTRUNNER = YES;
 			};
@@ -778,11 +775,12 @@
 					"$(PROJECT_DIR)/HockeySDK-iOS/HockeySDK.embeddedframework",
 				);
 				INFOPLIST_FILE = TreatMe/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.treatmehealth.TreatMeHealth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Production;
@@ -795,6 +793,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.treatmehealth.TreatMeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TreatMe.app/TreatMe";
 			};
 			name = Production;
@@ -806,6 +805,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.treatmehealth.TreatMeUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = TreatMe;
 				USES_XCTRUNNER = YES;
 			};

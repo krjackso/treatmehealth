@@ -12,7 +12,7 @@ class ChatTitleView: UIView {
 
     lazy var channelLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.blackColor()
+        label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -37,13 +37,13 @@ class ChatTitleView: UIView {
     }
 
     override func updateConstraints() {
-        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .Width, multiplier: 1.0, constant: 10))
-        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .Height, multiplier: 1.0, constant: 10))
-        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1.0, constant: 0))
-        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .Right, relatedBy: .Equal, toItem: channelLabel, attribute: .Left, multiplier: 1.0, constant: -5))
+        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1.0, constant: 10))
+        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: 10))
+        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .right, relatedBy: .equal, toItem: channelLabel, attribute: .left, multiplier: 1.0, constant: -5))
 
-        self.addConstraint(NSLayoutConstraint(item: channelLabel, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1.0, constant: 0))
-        self.addConstraint(NSLayoutConstraint(item: channelLabel, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1.0, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: channelLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: channelLabel, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0))
 
         super.updateConstraints()
     }
@@ -52,11 +52,11 @@ class ChatTitleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setOnline(online: Bool) {
+    func setOnline(_ online: Bool) {
         if online {
-            self.onlineIndicator.hidden = false
+            self.onlineIndicator.isHidden = false
         } else {
-            self.onlineIndicator.hidden = true
+            self.onlineIndicator.isHidden = true
         }
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 
 extension Array {
 
-    func indexBy<T: Hashable>(transform: (Element -> T)) -> [T: Element] {
+    func indexBy<T: Hashable>(_ transform: ((Element) -> T)) -> [T: Element] {
         return self.reduce([T: Element]()) { (sofar, el) in
             var result = sofar
             let idx = transform(el)

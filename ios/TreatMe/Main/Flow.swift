@@ -12,14 +12,14 @@ import Swiftz
 import PromiseKit
 import SwiftyDrop
 
-let appNotificationSettings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: nil)
+let appNotificationSettings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
 
-public class Flow {
+open class Flow {
 
 
-    public static func goToLogin(source: UIViewController) { goToLogin(Either.Left(source)) }
-    public static func goToLogin(source: UIWindow) { goToLogin(Either.Right(source)) }
-    public static func goToLogin(source: Either<UIViewController, UIWindow>) {
+    open static func goToLogin(_ source: UIViewController) { goToLogin(Either.Left(source)) }
+    open static func goToLogin(_ source: UIWindow) { goToLogin(Either.Right(source)) }
+    open static func goToLogin(_ source: Either<UIViewController, UIWindow>) {
         let storyboard = UIStoryboard(name: "SignIn", bundle: nil)
 
         if let signIn = storyboard.instantiateInitialViewController() {
@@ -27,11 +27,11 @@ public class Flow {
         }
     }
 
-    public static func goToMain(source: UIViewController) { goToMain(Either.Left(source)) }
-    public static func goToMain(source: UIWindow) { goToMain(Either.Right(source)) }
-    public static func goToMain(source: Either<UIViewController, UIWindow>) {
+    open static func goToMain(_ source: UIViewController) { goToMain(Either.Left(source)) }
+    open static func goToMain(_ source: UIWindow) { goToMain(Either.Right(source)) }
+    open static func goToMain(_ source: Either<UIViewController, UIWindow>) {
         // Get the authenticated user, groups, and channels
-        when(TreatMe.client.refreshGroups(), TreatMe.client.refreshUserChannels())
+        when(fulfilled: TreatMe.client.refreshGroups(), TreatMe.client.refreshUserChannels())
         .onError { error in
             debugPrint("Error initializing main: \(error)")
 
@@ -39,12 +39,12 @@ public class Flow {
             Auth.instance.clear()
 
             // Show something to the user
-            Drop.down("Something went wrong when loading your data. Please login again.", state: TMState.Error, duration: 180)
+            Drop.down("Something went wrong when loading your data. Please login again.", state: TMState.error, duration: 180)
             Flow.goToLogin(source)
         }
         .then { _ -> Void in
 
-            if let selectedChannel = TreatMe.data.selectedChannelId, _ = TreatMe.data.channels[selectedChannel] {
+            if let selectedChannel = TreatMe.data.selectedChannelId, let _ = TreatMe.data.channels[selectedChannel] {
                 // A real channel is selected
             } else {
                 // Select the first channel in the first group
@@ -61,14 +61,14 @@ public class Flow {
             PusherClient.instance.start()
         }
 
-        UIApplication.sharedApplication().registerUserNotificationSettings(appNotificationSettings)
+        UIApplication.shared.registerUserNotificationSettings(appNotificationSettings)
 
     }
 
-    public static func presentController(controller: UIViewController, fromSource source: Either<UIViewController, UIWindow>) {
+    open static func presentController(_ controller: UIViewController, fromSource source: Either<UIViewController, UIWindow>) {
         source.either(
             onLeft: { sourceController -> Void in
-                sourceController.presentViewController(controller, animated: true, completion: nil)
+                sourceController.present(controller, animated: true, completion: nil)
             },
             onRight: { window -> Void in
                 window.rootViewController = controller

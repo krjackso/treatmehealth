@@ -17,10 +17,10 @@ class Auth {
 
     var username: String? {
         get {
-            return NSUserDefaults.standardUserDefaults().stringForKey("username")
+            return UserDefaults.standard.string(forKey: "username")
         }
         set(val) {
-            NSUserDefaults.standardUserDefaults().setObject(val!, forKey: "username")
+            UserDefaults.standard.set(val!, forKey: "username")
         }
     }
 
@@ -51,11 +51,11 @@ class Auth {
         }
     }
 
-    var accessExpires: NSDate? {
+    var accessExpires: Date? {
         get {
             return keychain.get("accessExpires").flatMap { value in
-                if let interval = NSTimeInterval(value) {
-                    return NSDate(timeIntervalSince1970: interval)
+                if let interval = TimeInterval(value) {
+                    return NSDate(timeIntervalSince1970: interval) as Date
                 } else {
                     return nil
                 }
@@ -66,21 +66,21 @@ class Auth {
         }
     }
 
-    func setAuthentication(username: String, href: String, accessToken: String, refreshToken: String?, expiresIn: Double) {
+    func setAuthentication(_ username: String, href: String, accessToken: String, refreshToken: String?, expiresIn: Double) {
         self.username = username
         self.userHref = href
         self.accessToken = accessToken
         self.refreshToken = refreshToken
-        self.accessExpires = NSDate().dateByAddingTimeInterval(expiresIn)
+        self.accessExpires = Date().addingTimeInterval(expiresIn)
     }
 
-    func refreshAccess(accessToken: String, expiresIn: Double) {
+    func refreshAccess(_ accessToken: String, expiresIn: Double) {
         self.accessToken = accessToken
-        self.accessExpires = NSDate().dateByAddingTimeInterval(expiresIn)
+        self.accessExpires = Date().addingTimeInterval(expiresIn)
     }
 
     func expired() -> Bool {
-        return accessExpires == nil || accessExpires! < NSDate()
+        return accessExpires == nil || accessExpires! < Date()
     }
 
     func isSet() -> Bool {

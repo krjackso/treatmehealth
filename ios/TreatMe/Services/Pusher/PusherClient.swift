@@ -8,6 +8,7 @@
 
 import Foundation
 import Decodable
+import PusherSwift
 
 let PUSHER_AUTH: String = Configuration.instance.get("Pusher.AuthUrl")
 let PUSHER_KEY: String = Configuration.instance.get("Pusher.Key")
@@ -22,24 +23,28 @@ struct PresenceUser {
     let username: String
 }
 
+class AuthRequestBuilder: AuthRequestBuilderProtocol {
+    func requestFor(socketID: String, channel: PusherChannel) -> NSMutableURLRequest? {
+        let request = NSMutableURLRequest(url: URL(string: PUSHER_AUTH)!)
+        request.httpMethod = "POST"
+        request.httpBody = "{'socket_id':'\(socketID)','channel_name':'\(channel.name)'}".data(using: String.Encoding.utf8)
+        request.addValue(TreatMe.client.authHeaders["Authorization"]!, forHTTPHeaderField: "Authorization")
+        return request
+    }
+}
+
 class PusherClient {
 
     static let instance = PusherClient()
 
     let pusher: Pusher = Pusher(
         key: PUSHER_KEY,
-        options: [
-            "authEndpoint": PUSHER_AUTH,
-            "encrypted": true,
-            "authRequestCustomizer": PusherClient.addAuthorizationHeader,
-            "attemptToReturnJSONObject": true
-        ]
+        options: PusherClientOptions(
+            authMethod: .authRequestBuilder(authRequestBuilder: AuthRequestBuilder()),
+            attemptToReturnJSONObject: true,
+            encrypted: true
+        )
     )
-
-    static func addAuthorizationHeader(req: NSMutableURLRequest) -> NSMutableURLRequest {
-        req.addValue(TreatMe.client.authHeaders["Authorization"]!, forHTTPHeaderField: "Authorization")
-        return req
-    }
 
     func start() {
         // Subscribe to every group the user has access to
@@ -65,39 +70,39 @@ class PusherClient {
         self.pusher.disconnect()
     }
 
-    func subscribe(id: String) -> PresencePusherChannel? {
+    func subscribe(_ id: String) -> PusherPresenceChannel? {
         let pusherId = "presence-" + id
 
         if let channel = self.pusher.connection.channels.channels[pusherId] {
-            return channel as? PresencePusherChannel
+            return channel as? PusherPresenceChannel
         } else {
             debugPrint("Subscribed to \(pusherId)")
-            return self.pusher.subscribe(pusherId) as? PresencePusherChannel
+            return self.pusher.subscribe(pusherId) as? PusherPresenceChannel
         }
     }
 
     // Listens for pusher events that are in the given events and calls the callback with the json parsed data
-    func listen<T: Decodable>(onlyEvent: PusherClientEvent, callback: (channelId: String, event: PusherClientEvent, data: T) -> Void) -> String {
-        return self.pusher.bind() { (data: AnyObject?) in
+    func listen<T: Decodable>(_ onlyEvent: PusherClientEvent, callback: @escaping (_ channelId: String, _ event: PusherClientEvent, _ data: T) -> Void) -> String {
+        return self.pusher.bind() { (data: Any?) in
             guard let data = data as? [String: AnyObject] else {
                 return
             }
 
             if let channel = data["channel"] as? String,
                 let eventString = data["event"] as? String,
-                let event = PusherClientEvent(rawValue: eventString) where event == onlyEvent,
+                let event = PusherClientEvent(rawValue: eventString) , event == onlyEvent,
                 let msg = data["data"] as? NSString,
-                let msgData = msg.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false),
-                let msgJson = try? NSJSONSerialization.JSONObjectWithData(msgData, options: []),
+                let msgData = msg.data(using: String.Encoding.utf8.rawValue, allowLossyConversion: false),
+                let msgJson = try? JSONSerialization.jsonObject(with: msgData, options: []),
                 let data = try? T.decode(msgJson) {
-                    let channelId = channel.stringByReplacingOccurrencesOfString("presence-", withString: "", options: .AnchoredSearch, range: nil)
-                    callback(channelId: channelId, event: event, data: data)
+                    let channelId = channel.replacingOccurrences(of: "presence-", with: "", options: .anchored, range: nil)
+                    callback(channelId, event, data)
             }
         }
     }
 
-    func unlisten(callbackId: String) {
-        self.pusher.unbind(callbackId)
+    func unlisten(_ callbackId: String) {
+        self.pusher.unbind(callbackId: callbackId)
     }
 
 }

@@ -11,53 +11,55 @@ import Alamofire
 import PromiseKit
 import Decodable
 
-enum ResponseError: ErrorType {
+enum ResponseError: Error {
     // Status code errors
-    case BadRequest
-    case AuthenticationError
-    case AuthorizationError
-    case NotFound
-    case Conflict
-    case UnknownError(Int)
+    case badRequest
+    case authenticationError
+    case authorizationError
+    case notFound
+    case conflict
+    case unknownError(Int)
 
     // Errors reading response
-    case InvalidResponse
-    case MalformedJson
+    case invalidResponse
+    case malformedJson
 }
 
 struct Response {
-    let httpResponse: NSHTTPURLResponse
-    let data: NSData?
+    let httpResponse: HTTPURLResponse
+    let data: Data?
 }
 
-extension NSHTTPURLResponse {
+extension DefaultDataResponse {
     func checkStatus() -> ResponseError? {
-        guard (200..<400).contains(self.statusCode) else {
-            switch self.statusCode {
-            case 400: return .BadRequest
-            case 401: return .AuthenticationError
-            case 403: return .AuthorizationError
-            case 404: return .NotFound
-            case 409: return .Conflict
-            default: return .UnknownError(self.statusCode)
+        if let status = self.response?.statusCode {
+            guard (200..<400).contains(status) else {
+                switch status {
+                case 400: return .badRequest
+                case 401: return .authenticationError
+                case 403: return .authorizationError
+                case 404: return .notFound
+                case 409: return .conflict
+                default: return .unknownError(status)
+                }
             }
         }
         return nil
     }
 }
 
-extension Request {
+extension DataRequest {
 
     func response() -> Promise<Response> {
         return Promise { resolve, reject in
-            self.response { req, res, data, err in
-                guard err == nil else {
-                    reject(err!)
+            self.response { res in
+                guard res.error == nil else {
+                    reject(res.error!)
                     return
                 }
 
-                guard let res = res, let data = data else {
-                    reject(ResponseError.InvalidResponse)
+                guard let response = res.response, let data = res.data else {
+                    reject(ResponseError.invalidResponse)
                     return
                 }
 
@@ -65,7 +67,7 @@ extension Request {
                     debugPrint("Status check failed: \(error)")
                     reject(error)
                 } else {
-                    resolve(Response(httpResponse: res, data: data))
+                    resolve(Response(httpResponse: response, data: data))
                 }
             }
         }
@@ -73,12 +75,12 @@ extension Request {
 
     func responseObject<T: Decodable>() -> Promise<(T, Response)> {
         return self.response().then { res -> (T, Response) in
-            if let json = Request.JSONResponseSerializer().serializeResponse(self.request, res.httpResponse, res.data, nil).value {
+            if let json = DataRequest.jsonResponseSerializer().serializeResponse(self.request, res.httpResponse, res.data, nil).value {
 
                 let t = try T.decode(json)
                 return (t, res)
             } else {
-                throw ResponseError.MalformedJson
+                throw ResponseError.malformedJson
             }
         }.onError { error in
             debugPrint("Error getting response: \(error)")
@@ -87,12 +89,12 @@ extension Request {
 
     func responseArray<T: Decodable>() -> Promise<([T], Response)> {
         return self.response().then { res -> ([T], Response) in
-            if let json = Request.JSONResponseSerializer().serializeResponse(self.request, res.httpResponse, res.data, nil).value {
+            if let json = DataRequest.jsonResponseSerializer().serializeResponse(self.request, res.httpResponse, res.data, nil).value {
 
                 let t: [T] = try [T].decode(json)
                 return (t, res)
             } else {
-                throw ResponseError.MalformedJson
+                throw ResponseError.malformedJson
             }
 
         }.onError { error in

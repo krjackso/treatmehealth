@@ -13,8 +13,8 @@ import PromiseKit
 let bootstrapUrl: String = Configuration.instance.get("TreatMe.BootstrapUrl")
 let MESSAGE_LIMIT = 50
 
-enum TreatMeError: ErrorType {
-    case InvalidImage
+enum TreatMeError: Error {
+    case invalidImage
 }
 
 class TreatMeClient {
@@ -32,9 +32,9 @@ class TreatMeClient {
     // Request the bootstrapped urls
     func bootstrap() -> Promise<BootstrapData> {
         if let data = self.bootstrapData {
-            return Promise(data)
+            return Promise(value: data)
         } else {
-            return Alamofire.request(.GET, bootstrapUrl).responseObject().then { (data: BootstrapData, _) -> BootstrapData in
+            return Alamofire.request(bootstrapUrl).responseObject().then { (data: BootstrapData, _) -> BootstrapData in
 
                 self.bootstrapData = data
                 return data
@@ -43,14 +43,14 @@ class TreatMeClient {
     }
 
     // Use a username and password to construct a Basic Authorization header to log the user in
-    func login(username: String, password: String) -> Promise<Void> {
+    func login(_ username: String, password: String) -> Promise<Void> {
         return bootstrap().then { data in
-            let credentialData = "\(username):\(password)".dataUsingEncoding(NSUTF8StringEncoding)!
-            let base64Credentials = credentialData.base64EncodedStringWithOptions([])
+            let credentialData = "\(username):\(password)".data(using: String.Encoding.utf8)!
+            let base64Credentials = credentialData.base64EncodedString()
 
             let headers = ["Authorization": "Basic \(base64Credentials)"]
 
-            return Alamofire.request(.POST, data.login, headers: headers)
+            return Alamofire.request(data.login, method: .post, headers: headers)
                 .responseObject().then { (data: LoginResult, _) -> Void in
                     Auth.instance.setAuthentication(username, href: data.href, accessToken: data.accessToken, refreshToken: data.refreshToken, expiresIn: data.expiresIn)
                 }
@@ -60,17 +60,17 @@ class TreatMeClient {
     func logout() -> Promise<Void> {
         return bootstrap().then { data in
             return self.withAuthentication() { headers in
-                return Alamofire.request(.POST, data.logout, headers: headers).response().asVoid()
-            }
+                return Alamofire.request(data.logout, method: .post, headers: headers).response()
+            }.asVoid()
         }
     }
 
     // Get an invitiation by email to check if one exists
-    func getInvitation(email: String) -> Promise<Invitation> {
+    func getInvitation(_ email: String) -> Promise<Invitation> {
         return bootstrap().then { data in
-            return Alamofire.request(.GET, data.getInvite + email).responseObject().then { (invite: Invitation, res) -> Invitation in
+            return Alamofire.request(data.getInvite + email).responseObject().then { (invite: Invitation, res) -> Invitation in
                 if res.httpResponse.statusCode == 404 {
-                    throw ResponseError.NotFound
+                    throw ResponseError.notFound
                 }
 
                 return invite
@@ -79,16 +79,16 @@ class TreatMeClient {
     }
 
     // Checks if a username is available
-    func checkUsername(username: String) -> Promise<Bool> {
+    func checkUsername(_ username: String) -> Promise<Bool> {
         return bootstrap().then { data in
-            return Alamofire.request(.HEAD, data.checkName + username).response().then { res in
+            return Alamofire.request(data.checkName + username, method: .head).response().then { res in
                 return res.httpResponse.statusCode == 204
             }
         }
     }
 
     // Registers the user
-    func registerUser(email: String, firstName: String, lastName: String, username: String, password: String) -> Promise<Void> {
+    func registerUser(_ email: String, firstName: String, lastName: String, username: String, password: String) -> Promise<Void> {
 
         return bootstrap().then { data in
             let registerData = [
@@ -99,7 +99,7 @@ class TreatMeClient {
                 "password": password
             ]
 
-            return Alamofire.request(.PUT, data.register, parameters: registerData, encoding: .JSON).responseObject().then { (data: LoginResult, _) -> Void in
+            return Alamofire.request(data.register, method: .put, parameters: registerData, encoding: JSONEncoding.default).responseObject().then { (data: LoginResult, _) -> Void in
 
                 Auth.instance.setAuthentication(username, href: data.href, accessToken: data.accessToken, refreshToken: data.refreshToken, expiresIn: data.expiresIn)
             }
@@ -107,16 +107,16 @@ class TreatMeClient {
     }
 
     // Resets a password using username or email
-    func resetPassword(identifier: String) -> Promise<Void> {
+    func resetPassword(_ identifier: String) -> Promise<Void> {
         return bootstrap().then { data in
             let url = data.resetPassword + identifier
-            return Alamofire.request(.GET, url).response().asVoid()
+            return Alamofire.request(url).response().asVoid()
         }
     }
 
-    func updateDeviceToken(token: String) -> Promise<Void> {
-        guard let authUser = TreatMe.data.authenticatedUser, deviceHref = authUser.deviceTokenHref else {
-            return Promise(error: ResponseError.AuthenticationError)
+    func updateDeviceToken(_ token: String) -> Promise<Void> {
+        guard let authUser = TreatMe.data.authenticatedUser, let deviceHref = authUser.deviceTokenHref else {
+            return Promise(error: ResponseError.authenticationError)
         }
 
         return withAuthentication() { headers in
@@ -125,14 +125,14 @@ class TreatMeClient {
                 "token": token
             ]
 
-            return Alamofire.request(.PUT, deviceHref, headers: headers, parameters: data, encoding: .JSON).response().asVoid()
+            return Alamofire.request(deviceHref, method: .put, parameters: data, encoding: JSONEncoding.default, headers: headers).response().asVoid()
         }
     }
 
     // Gets a user from an href
-    func getUser(href: String) -> Promise<User> {
+    func getUser(_ href: String) -> Promise<User> {
         return withAuthentication() { headers in
-            return Alamofire.request(.GET, href, headers: headers).responseObject().then { (user: User, _) -> User in
+            return Alamofire.request(href, headers: headers).responseObject().then { (user: User, _) -> User in
                 TreatMe.data.userCache[href] = user
                 return user
             }
@@ -140,10 +140,10 @@ class TreatMeClient {
     }
 
     // Uploads a picture for the authenticated user's profile
-    func uploadProfilePicture(image: UIImage) -> Promise<String> {
+    func uploadProfilePicture(_ image: UIImage) -> Promise<String> {
         guard let authUser = TreatMe.data.authenticatedUser,
             let imageHref = authUser.imageHref else {
-            return Promise(error: ResponseError.AuthenticationError)
+            return Promise(error: ResponseError.authenticationError)
         }
 
         var resizedImage = image;
@@ -152,54 +152,60 @@ class TreatMeClient {
         }
 
         guard let png = UIImagePNGRepresentation(resizedImage) else {
-            return Promise(error: TreatMeError.InvalidImage)
+            return Promise(error: TreatMeError.invalidImage)
         }
-        let base64 = png.base64EncodedDataWithOptions(.EncodingEndLineWithCarriageReturn)
+        let base64 = png.base64EncodedString()
 
         return withAuthentication() { headers in
 
-            let (promise, fulfill, reject) = Promise<Response>.pendingPromise()
+            let (promise, fulfill, reject) = Promise<Response>.pending()
 
-                Alamofire.upload(.POST, imageHref, headers: headers, multipartFormData: { multipart in
-                    multipart.appendBodyPart(data: base64, name: "image")
-                }) { result in
+            Alamofire.upload(
+                multipartFormData: { multipartFormData in
+                    multipartFormData.append(png, withName: "image")
+                },
+                to: imageHref,
+                method: .post,
+                headers: headers,
+                encodingCompletion: { result in
                     switch result {
-                    case .Success(let upload, _, _):
+                    case .success(let upload, _, _):
                         upload.response().then { res -> Void in
                             fulfill(res)
-                        }.error { error in
+                        }.catch { error in
                             reject(error)
                         }
-                    case .Failure(let error): reject(error)
+                    case .failure(let error): reject(error)
                     }
                 }
+            )
 
             return promise.then { res in
-                if let data = res.data, imageLocation = String(data: data, encoding: NSUTF8StringEncoding) {
-                    TreatMe.data.userImages[authUser] = Promise(imageLocation)
+                if let data = res.data, let imageLocation = String(data: data, encoding: String.Encoding.utf8) {
+                    TreatMe.data.userImages[authUser] = Promise(value: imageLocation)
 
                     return TreatMe.data.userImages[authUser]!
                 } else {
-                    return Promise(error: TreatMeError.InvalidImage)
+                    return Promise(error: TreatMeError.invalidImage)
                 }
             }
         }
     }
 
     // Get the actual url for a user's image
-    func getUserImage(user: User) -> Promise<String> {
+    func getUserImage(_ user: User) -> Promise<String> {
         guard let imageHref = user.imageHref else {
-            return Promise(error: TreatMeError.InvalidImage)
+            return Promise(error: TreatMeError.invalidImage)
         }
 
         TreatMe.data.userImages[user] = withAuthentication() { headers in
             let noCacheHeaders = headers.insert("cache-control", v: "no-cache")
 
-            return Alamofire.request(.GET, imageHref, headers: noCacheHeaders).response().then { res in
-                if let data = res.data, imageLocation = String(data: data, encoding: NSUTF8StringEncoding) {
-                    return Promise(imageLocation)
+            return Alamofire.request(imageHref, headers: noCacheHeaders).response().then { res in
+                if let data = res.data, let imageLocation = String(data: data, encoding: String.Encoding.utf8) {
+                    return Promise(value: imageLocation)
                 } else {
-                    return Promise(error: TreatMeError.InvalidImage)
+                    return Promise(error: TreatMeError.invalidImage)
                 }
             }
         }
@@ -208,13 +214,13 @@ class TreatMeClient {
     }
 
     // Get the groups that a user belongs to
-    func getUserGroups(user: User) -> Promise<[Group]> {
+    func getUserGroups(_ user: User) -> Promise<[Group]> {
         guard let href = user.groupsHref else {
-            return Promise([])
+            return Promise(value: [])
         }
 
         return withAuthentication() { headers in
-            Alamofire.request(.GET, href, headers: headers).responseArray().then { (groups: [Group], _) -> [Group] in
+            Alamofire.request(href, headers: headers).responseArray().then { (groups: [Group], _) -> [Group] in
                 TreatMe.data.userGroups[user] = groups
                 return groups
             }
@@ -222,35 +228,35 @@ class TreatMeClient {
     }
 
     // Returns the first channel where the only members are the given user and authenticated user
-    func channelForUser(user: User) -> Promise<Channel> {
+    func channelForUser(_ user: User) -> Promise<Channel> {
         if let authUser = TreatMe.data.authenticatedUser {
-            if let userChannel = Array(TreatMe.data.userChannels.values).find({ $0.otherUser == user }) {
-                return Promise(userChannel)
+            if let userChannel = Array(TreatMe.data.userChannels.values).first(where: { $0.otherUser == user }) {
+                return Promise(value: userChannel)
             } else {
                 return TreatMe.client.requestUserChannel(authUser, withUser: user)
             }
         } else {
-            return Promise(error: ResponseError.AuthorizationError)
+            return Promise(error: ResponseError.authorizationError)
         }
     }
 
     // Get the conversations a user has opened
-    private func getUserChannels(user: User) -> Promise<[Channel]> {
+    fileprivate func getUserChannels(_ user: User) -> Promise<[Channel]> {
         guard let href = user.channelsHref else {
-            return Promise([])
+            return Promise(value: [])
         }
 
         return withAuthentication() { headers in
-            Alamofire.request(.GET, href, headers: headers).responseArray().then { (chans: [Channel], _) -> [Channel] in
+            Alamofire.request(href, headers: headers).responseArray().then { (chans: [Channel], _) -> [Channel] in
                 return chans
             }
         }
     }
 
     // Request a user channel. If successful, then private messages can be made over the channel
-    private func requestUserChannel(authUser: User, withUser user: User) -> Promise<Channel> {
+    fileprivate func requestUserChannel(_ authUser: User, withUser user: User) -> Promise<Channel> {
         guard let href = authUser.channelsHref else {
-            return Promise(error: ResponseError.BadRequest)
+            return Promise(error: ResponseError.badRequest)
         }
 
         let userChannelData = [
@@ -258,7 +264,7 @@ class TreatMeClient {
         ]
 
         return withAuthentication() { headers in
-            Alamofire.request(.PUT, href, headers: headers, parameters: userChannelData, encoding: .JSON).responseObject().then { (channel: Channel, _) -> Channel in
+            Alamofire.request(href, method: .put, parameters: userChannelData, encoding: JSONEncoding.default, headers: headers).responseObject().then { (channel: Channel, _) -> Channel in
                 TreatMe.data.userChannels[channel.id] = channel
                 return channel
             }
@@ -277,9 +283,9 @@ class TreatMeClient {
     }
 
     // Get the channels for a group
-    private func getGroupChannels(group: Group) -> Promise<[Channel]> {
+    fileprivate func getGroupChannels(_ group: Group) -> Promise<[Channel]> {
         return withAuthentication() { headers in
-            Alamofire.request(.GET, group.channelsHref, headers: headers).responseArray().then { (channels: [Channel], _) -> [Channel] in
+            Alamofire.request(group.channelsHref, headers: headers).responseArray().then { (channels: [Channel], _) -> [Channel] in
                 TreatMe.data.groupChannels[group] = channels
                 channels.forEach {
                     print("Channel", $0)
@@ -291,9 +297,9 @@ class TreatMeClient {
     }
 
     // Get the users for a group
-    func getGroupUsers(group: Group) -> Promise<[User]> {
+    func getGroupUsers(_ group: Group) -> Promise<[User]> {
         return withAuthentication() { headers in
-            Alamofire.request(.GET, group.usersHref, headers: headers).responseArray().then { (users: [User], _) -> [User] in
+            Alamofire.request(group.usersHref, headers: headers).responseArray().then { (users: [User], _) -> [User] in
                 TreatMe.data.groupUsers[group] = users
                 return users
             }
@@ -307,38 +313,38 @@ class TreatMeClient {
                 return TreatMe.client.getUserGroups(user)
             }
             .then { (groups: [Group]) -> Promise<([[Channel]],[[User]])> in
-                TreatMe.data.groups = groups.sort({$0.name < $1.name})
+                TreatMe.data.groups = groups.sorted(by: {$0.name < $1.name})
 
-                let getGroupChannels = when(groups.map { group in
+                let getGroupChannels = when(fulfilled: groups.map { group in
                     return TreatMe.client.getGroupChannels(group)
                 })
 
-                let getGroupUsers = when(groups.map { group in
+                let getGroupUsers = when(fulfilled: groups.map { group in
                     return TreatMe.client.getGroupUsers(group)
                 })
 
-                return when(getGroupChannels, getGroupUsers)
+                return when(fulfilled: getGroupChannels, getGroupUsers)
             }.asVoid()
     }
 
 
     // Get the messages for a channel
     // if lastMessage is specified, starts from that message
-    func getChannelMessages(channel: Channel, lastMessage: Message?) -> Promise<[Message]> {
+    func getChannelMessages(_ channel: Channel, lastMessage: Message?) -> Promise<[Message]> {
         return withAuthentication() { headers in
             var query: [String: AnyObject] = [
-                "limit": MESSAGE_LIMIT
+                "limit": MESSAGE_LIMIT as AnyObject
             ]
 
             if let lastId = lastMessage?.id {
-                query["lastId"] = lastId
+                query["lastId"] = lastId as AnyObject?
             }
 
             return Alamofire.request(
-                .GET,
                 channel.messagesHref,
-                headers: headers,
-                parameters: query
+                parameters: query,
+                encoding: URLEncoding.queryString,
+                headers: headers
             ).responseObject().then { (list: ListMessages, _) -> [Message] in
                 TreatMe.data.channelUnread[channel] = list.unread
                 return list.messages
@@ -347,14 +353,14 @@ class TreatMeClient {
     }
 
     // Post a message to a channel
-    func sendMessage(message: String, toChannel channel: Channel) -> Promise<Message> {
+    func sendMessage(_ message: String, toChannel channel: Channel) -> Promise<Message> {
         return withAuthentication { headers in
 
             let messageData = [
                 "content": message
             ]
 
-            return Alamofire.request(.PUT, channel.messagesHref, headers: headers, parameters: messageData, encoding: .JSON).responseObject().then { (message: Message, _) -> Message in
+            return Alamofire.request(channel.messagesHref, method: .put, parameters: messageData, encoding: JSONEncoding.default, headers: headers).responseObject().then { (message: Message, _) -> Message in
 
                 return message
             }
@@ -362,9 +368,9 @@ class TreatMeClient {
     }
 
     // Marks a channel as having been read to update the badge number
-    func markChannelRead(channel: Channel) -> Promise<Void> {
+    func markChannelRead(_ channel: Channel) -> Promise<Void> {
         return withAuthentication { headers in
-            return Alamofire.request(.POST, channel.markReadHref, headers: headers).response().asVoid().then { _ -> Void in
+            return Alamofire.request(channel.markReadHref, method: .post, headers: headers).response().asVoid().then { _ -> Void in
                 TreatMe.data.channelUnread[channel] = 0
             }
         }
@@ -374,24 +380,24 @@ class TreatMeClient {
     func checkAuth() -> Promise<Bool> {
         return bootstrap().then { data in
             return self.withAuthentication() { headers in
-                return Alamofire.request(.HEAD, data.checkAuth, headers: headers).response().then { response in
+                return Alamofire.request(data.checkAuth, method: .head, headers: headers).response().then { response in
                     return response.httpResponse.statusCode == 200
                 }
             }
         }.recover { error -> Bool in
             switch(error) {
-                case ResponseError.AuthenticationError: return false
-                case ResponseError.AuthorizationError: return false
+                case ResponseError.authenticationError: return false
+                case ResponseError.authorizationError: return false
                 default: throw error
             }
         }
     }
 
     // Performs the authentication refresh
-    private func refreshAuth() -> Promise<[String:String]> {
+    fileprivate func refreshAuth() -> Promise<[String:String]> {
 
         guard let refreshToken = Auth.instance.refreshToken else {
-            return Promise(error: ResponseError.AuthenticationError)
+            return Promise(error: ResponseError.authenticationError)
         }
 
         let refreshData = [
@@ -399,14 +405,14 @@ class TreatMeClient {
         ]
 
         return bootstrap().then { data in
-            return Alamofire.request(.POST, data.refresh, parameters: refreshData, encoding: .JSON).responseObject().then { (data: RefreshResult, _) -> [String: String] in
+            return Alamofire.request(data.refresh, method: .post, parameters: refreshData, encoding: JSONEncoding.default).responseObject().then { (data: RefreshResult, _) -> [String: String] in
 
                 Auth.instance.refreshAccess(data.accessToken, expiresIn: data.expiresIn)
                 return self.authHeaders
             }.onError { error in
                 debugPrint("Error refreshing authentication: \(error)")
 
-                if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate, window = delegate.window {
+                if let delegate = UIApplication.shared.delegate as? AppDelegate, let window = delegate.window {
                     Flow.goToLogin(window)
                 }
             }
@@ -414,7 +420,7 @@ class TreatMeClient {
     }
 
     // If the provided promise fails due to authentication, do the auth refresh and try again
-    private func withAuthentication<T>(headersOpt: [String: String]? = nil, makeRequest: ([String: String]) -> Promise<T>) -> Promise<T> {
+    fileprivate func withAuthentication<T>(_ headersOpt: [String: String]? = nil, makeRequest: @escaping ([String: String]) -> Promise<T>) -> Promise<T> {
 
         let headers = headersOpt ?? [:]
 
@@ -427,7 +433,7 @@ class TreatMeClient {
             let headersWithAuth = headers.merge(authHeaders)
             return makeRequest(headersWithAuth).recover { error -> Promise<T> in
                 switch error {
-                case ResponseError.AuthenticationError:
+                case ResponseError.authenticationError:
                     return self.refreshAuth().then { authHeaders in
                         let headersWithAuth = headers.merge(authHeaders)
                         return makeRequest(headersWithAuth)

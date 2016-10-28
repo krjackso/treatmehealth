@@ -21,10 +21,10 @@ struct UserProfileImage {
 
     static func defaultImage() -> UIImage {
         let image = UIImage(named: "smiley-icon")!
-        return image.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        return image.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
     }
 
-    static func colorForUser(user: User) -> UIColor {
+    static func colorForUser(_ user: User) -> UIColor {
         if userColors[user] == nil {
             let idHash: Int = user.id.unicodeScalars.reduce(0) { (sofar, v) in
                 return sofar + Int(v.value)

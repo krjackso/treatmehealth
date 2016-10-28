@@ -20,8 +20,8 @@ class LeftMenuViewController: UITableViewController {
     var users: [User] {
         get {
             var users = TreatMe.data.users
-            if let authUser = TreatMe.data.authenticatedUser, idx = users.indexOf(authUser) {
-                users.removeAtIndex(idx)
+            if let authUser = TreatMe.data.authenticatedUser, let idx = users.index(of: authUser) {
+                users.remove(at: idx)
             }
             return users
         }
@@ -30,12 +30,12 @@ class LeftMenuViewController: UITableViewController {
     var userChannels: [User: Channel] {
         get {
             var users = TreatMe.data.users
-            if let authUser = TreatMe.data.authenticatedUser, idx = users.indexOf(authUser) {
-                users.removeAtIndex(idx)
+            if let authUser = TreatMe.data.authenticatedUser, let idx = users.index(of: authUser) {
+                users.remove(at: idx)
             }
 
             return users.mapAssociate { user in
-                let channel = Array(TreatMe.data.userChannels.values).find { $0.otherUser == user }
+                let channel = Array(TreatMe.data.userChannels.values).first { $0.otherUser == user }
                 return channel.map { (user, $0) }
             }
         }
@@ -49,7 +49,7 @@ class LeftMenuViewController: UITableViewController {
 
     var groups: [Group] {
         get {
-            return Array(self.groupChannels.keys).sort { (g1, g2) in
+            return Array(self.groupChannels.keys).sorted { (g1, g2) in
                 g1.name < g2.name
             }
         }
@@ -64,9 +64,9 @@ class LeftMenuViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
 
-        self.tableView.registerClass(ChannelTableCell.self, forCellReuseIdentifier: ChannelTableCell.Identifier)
+        self.tableView.register(ChannelTableCell.self, forCellReuseIdentifier: ChannelTableCell.Identifier)
 
         PusherClient.instance.listen(.Channel) { (channelId, event, data: Channel) in
             delay(1.0) { [unowned self] in
@@ -74,33 +74,14 @@ class LeftMenuViewController: UITableViewController {
             }
         }
 
-        self.groups.forEach { group in
-            if let channel = PusherClient.instance.subscribe(group.id) {
-                channel.onUpdateMembers = { members in
-                    let presenceUsers = members.flatMap { member -> PresenceUser? in
-                        guard let username = member.userInfo?["username"] as? String else {
-                            return nil
-                        }
-
-                        guard member.userId != TreatMe.data.authenticatedUser?.id else {
-                            return nil
-                        }
-
-                        return PresenceUser(id: member.userId, username: username)
-                    }
-                    self.updateOnline(group, users: presenceUsers)
-                }
-            }
-        }
-
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.updateUnread), name: TreatMeNotifications.RefreshUnread.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateUnread), name: NSNotification.Name(rawValue: TreatMeNotifications.RefreshUnread.rawValue), object: nil)
     }
 
-    func updateOnline(group: Group, users: [PresenceUser]) {
+    func updateOnline(_ group: Group, users: [PresenceUser]) {
         TreatMe.data.onlineGroupUsers[group] = users
 
-        let missingUsers = users.contains({ user in
-            return self.users.find { $0.id == user.id } == nil
+        let missingUsers = users.contains(where: { user in
+            return self.users.first { $0.id == user.id } == nil
         })
 
         if missingUsers {
@@ -118,47 +99,47 @@ class LeftMenuViewController: UITableViewController {
         }
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         self.tableView.reloadData()
     }
 
-    func closeLeftMenu(sender: AnyObject?) {
-        self.evo_drawerController?.closeDrawerAnimated(true, completion: nil)
+    func closeLeftMenu(_ sender: AnyObject?) {
+        self.evo_drawerController?.closeDrawer(animated: true, completion: nil)
     }
 
     // MARK: - UITableViewDelegate
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let section = indexPath.section
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = (indexPath as NSIndexPath).section
 
         if section < self.groups.count {
             let group = self.groups[section]
-            if let channel = self.groupChannels[group]?[indexPath.row] {
+            if let channel = self.groupChannels[group]?[(indexPath as NSIndexPath).row] {
                 self.selectChannel(channel, atIndex: indexPath)
             }
         } else {
-            let user = users[indexPath.row]
+            let user = users[(indexPath as NSIndexPath).row]
 
             TreatMe.client.channelForUser(user).then { channel -> Void in
                 self.selectChannel(channel, atIndex: indexPath)
-            }.error { _ in
-                Drop.down("Sorry, something went wrong", state: TMState.Error)
+            }.catch { _ in
+                Drop.down("Sorry, something went wrong", state: TMState.error)
             }
         }
     }
 
-    func selectChannel(channel: Channel, atIndex indexPath: NSIndexPath) {
+    func selectChannel(_ channel: Channel, atIndex indexPath: IndexPath) {
         TreatMe.data.selectedChannelId = channel.id
 
-        UIView.animateWithDuration(0.25, animations: {
+        UIView.animate(withDuration: 0.25, animations: {
             self.tableView.visibleCells.forEach { cell in
                 if let cell = cell as? ChannelTableCell {
                     cell.setActive(false)
                 }
             }
 
-            if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? ChannelTableCell {
+            if let cell = self.tableView.cellForRow(at: indexPath) as? ChannelTableCell {
                 cell.setActive(true)
             }
         }, completion: { _ in
@@ -166,18 +147,18 @@ class LeftMenuViewController: UITableViewController {
         })
     }
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 30.0
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let section = indexPath.section
+        let section = (indexPath as NSIndexPath).section
 
         if section < self.usersSection {
             let group = self.groups[section]
-            if let channel = self.groupChannels[group]?[indexPath.row],
-               let cell = tableView.dequeueReusableCellWithIdentifier(ChannelTableCell.Identifier) as? ChannelTableCell {
+            if let channel = self.groupChannels[group]?[(indexPath as NSIndexPath).row],
+               let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableCell.Identifier) as? ChannelTableCell {
                 cell.channelLabel.text = "#" + channel.name
 
                 cell.setActive(TreatMe.data.selectedChannel == channel)
@@ -187,8 +168,8 @@ class LeftMenuViewController: UITableViewController {
                 return cell
             }
         } else {
-            if let cell = tableView.dequeueReusableCellWithIdentifier(ChannelTableCell.Identifier) as? ChannelTableCell {
-                let user = self.users[indexPath.row]
+            if let cell = tableView.dequeueReusableCell(withIdentifier: ChannelTableCell.Identifier) as? ChannelTableCell {
+                let user = self.users[(indexPath as NSIndexPath).row]
                 cell.channelLabel.text = user.username
 
                 if let channel = userChannels[user] {
@@ -209,7 +190,7 @@ class LeftMenuViewController: UITableViewController {
         return UITableViewCell()
     }
 
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section < self.groups.count {
             return groups[section].name
         } else {
@@ -218,7 +199,7 @@ class LeftMenuViewController: UITableViewController {
     }
 
     // MARK: - UITableViewDataSource
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section < self.groups.count {
             return groupChannels[groups[section]]?.count ?? 0
         } else {
@@ -226,7 +207,7 @@ class LeftMenuViewController: UITableViewController {
         }
     }
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return self.groupChannels.keys.count + 1
     }
 

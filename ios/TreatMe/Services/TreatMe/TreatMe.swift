@@ -10,7 +10,7 @@ import Foundation
 
 class TreatMe {
     static let client = TreatMeClient()
-    private(set) static var data = TreatMeData()
+    fileprivate(set) static var data = TreatMeData()
 
     static func resetData() {
         TreatMe.data = TreatMeData()

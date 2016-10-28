@@ -11,16 +11,16 @@ import PromiseKit
 
 extension Promise {
 
-    func mapError(body: (ErrorType -> ErrorType)) -> Promise {
-        if self.rejected, let error = self.error {
+    func mapError(_ body: ((Error) -> Error)) -> Promise {
+        if self.isRejected, let error = self.error {
             return Promise(error: body(error))
         } else {
             return self
         }
     }
 
-    func onError(body: (ErrorType -> Void)) -> Promise {
-        self.error(body)
+    func onError(_ body: @escaping ((Error) -> Void)) -> Promise {
+        self.catch(execute: body)
         return self
     }
 

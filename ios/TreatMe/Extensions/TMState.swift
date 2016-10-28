@@ -10,34 +10,34 @@ import Foundation
 import SwiftyDrop
 
 enum TMState: DropStatable {
-    case Error
-    case Warn
-    case Success
-    case Info
-    case Busy
+    case error
+    case warn
+    case success
+    case info
+    case busy
 
     var backgroundColor: UIColor? {
         switch self {
-        case .Error: return .TMRed()
-        case .Warn: return .TMOrange()
-        case .Success: return .TMGreen()
-        case .Info: return .TMBlue()
-        case .Busy: return nil
+        case .error: return .TMRed()
+        case .warn: return .TMOrange()
+        case .success: return .TMGreen()
+        case .info: return .TMBlue()
+        case .busy: return nil
         }
     }
     var font: UIFont? {
         switch self {
-        default: return UIFont.systemFontOfSize(17.0)
+        default: return UIFont.systemFont(ofSize: 17.0)
         }
     }
     var textColor: UIColor? {
         switch self {
-        default: return .whiteColor()
+        default: return UIColor.white
         }
     }
     var blurEffect: UIBlurEffect? {
         switch self {
-        case .Busy: return UIBlurEffect(style: .Dark)
+        case .busy: return UIBlurEffect(style: .dark)
         default: return nil
         }
     }

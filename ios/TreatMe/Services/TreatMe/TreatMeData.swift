@@ -22,7 +22,7 @@ struct BootstrapData: Decodable {
     let pusherAuth: String
     let resetPassword: String
 
-    static func decode(json: AnyObject) throws -> BootstrapData {
+    public static func decode(_ json: Any) throws -> BootstrapData {
         return try BootstrapData(
             login: json => "login",
             register: json => "register",
@@ -41,7 +41,7 @@ struct RefreshResult: Decodable {
     let accessToken: String
     let expiresIn: Double
 
-    static func decode(json: AnyObject) throws -> RefreshResult {
+    public static func decode(_ json: Any) throws -> RefreshResult {
         return try RefreshResult(
             accessToken: json => "accessToken",
             expiresIn: json => "expiresIn"
@@ -55,7 +55,7 @@ struct LoginResult: Decodable {
     let expiresIn: Double
     let href: String
 
-    static func decode(json: AnyObject) throws -> LoginResult {
+    public static func decode(_ json: Any) throws -> LoginResult {
         return try LoginResult(
             accessToken: json => "accessToken",
             refreshToken: json => "refreshToken",
@@ -69,7 +69,7 @@ struct Invitation: Decodable {
     let firstName: String
     let lastName: String
 
-    static func decode(json: AnyObject) throws -> Invitation {
+    public static func decode(_ json: Any) throws -> Invitation {
         return try Invitation(
             firstName: json => "firstName",
             lastName: json => "lastName"
@@ -89,7 +89,7 @@ struct Group: Hashable, Decodable {
         return id.hashValue
     }
 
-    static func decode(json: AnyObject) throws -> Group {
+    public static func decode(_ json: Any) throws -> Group {
         return try Group(
             href: json => "href",
             id: json => "id",
@@ -120,7 +120,7 @@ struct Channel: Hashable, Decodable {
         return id.hashValue
     }
 
-    static func decode(json: AnyObject) throws -> Channel {
+    public static func decode(_ json: Any) throws -> Channel {
         return try Channel(
             href: json => "href",
             id: json => "id",
@@ -141,7 +141,7 @@ struct Channel: Hashable, Decodable {
             if let authUser = TreatMe.data.authenticatedUser {
                 let otherUsers = self.users.filter { $0 != authUser.id }
                 let usernames = otherUsers.mapMaybe { TreatMe.data.idUsers[$0]?.username }
-                return usernames.joinWithSeparator(", ")
+                return usernames.joined(separator: ", ")
             } else {
                 return ""
             }
@@ -152,8 +152,8 @@ struct Channel: Hashable, Decodable {
     var otherUser: User? {
         get {
             var users = self.users.mapMaybe { TreatMe.data.idUsers[$0] }
-            if let authUser = TreatMe.data.authenticatedUser, idx = users.indexOf(authUser) {
-                users.removeAtIndex(idx)
+            if let authUser = TreatMe.data.authenticatedUser, let idx = users.index(of: authUser) {
+                users.remove(at: idx)
             }
 
             return users.first
@@ -179,7 +179,7 @@ struct User: Hashable, Decodable {
         return id.hashValue
     }
 
-    static func decode(json: AnyObject) throws -> User {
+    public static func decode(_ json: Any) throws -> User {
         return try User(
             id: json => "id",
             username: json => "username",
@@ -200,7 +200,7 @@ func ==(lhs: User, rhs: User) -> Bool {
 struct Message: Hashable, Decodable {
     let id: String
     let content: String
-    let time: NSDate
+    let time: Date
     let userId: String
     let channelId: String
 
@@ -208,7 +208,7 @@ struct Message: Hashable, Decodable {
         return id.hashValue
     }
 
-    static func decode(json: AnyObject) throws -> Message {
+    public static func decode(_ json: Any) throws -> Message {
         return try Message(
             id: json => "id",
             content: json => "content",
@@ -226,7 +226,7 @@ struct ListMessages: Decodable {
     let unread: Int
     let messages: [Message]
 
-    static func decode(json: AnyObject) throws -> ListMessages {
+    public static func decode(_ json: Any) throws -> ListMessages {
         return try ListMessages(
             unread: json => "unread",
             messages: json => "messages"
@@ -239,7 +239,7 @@ struct PusherMessage: Decodable {
     let unread: Int?
     let notifies: [String]?
 
-    static func decode(json: AnyObject) throws -> PusherMessage {
+    public static func decode(_ json: Any) throws -> PusherMessage {
         return try PusherMessage(
             message: json => "message",
             unread: json =>? "unread",
@@ -266,7 +266,7 @@ class TreatMeData {
         set(value) {
             if let val = value {
                 keychain.set(val, forKey: "selectedChannelId")
-                NSNotificationCenter.defaultCenter().postNotificationName(TreatMeNotifications.RefreshChat.rawValue, object: self)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: TreatMeNotifications.RefreshChat.rawValue), object: self)
             }
         }
     }
@@ -307,26 +307,26 @@ class TreatMeData {
     var groupUsers: [Group: [User]] = [:]
 
     // Channel to messages
-    private(set) var channelMessages: [Channel: [Message]] = [:]
+    fileprivate(set) var channelMessages: [Channel: [Message]] = [:]
 
     // Channel id to channel for group and user channels
     var channels: [String: Channel] {
         get {
-            let groupChannels = Array(self.groupChannels.values.flatten()).indexBy { $0.id }
+            let groupChannels = Array(self.groupChannels.values.joined()).indexBy { $0.id }
             return groupChannels.merge(userChannels)
         }
     }
 
     var channelUnread: [Channel: Int] = [:] {
         didSet {
-            NSNotificationCenter.defaultCenter().postNotificationName(TreatMeNotifications.RefreshUnread.rawValue, object: self)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: TreatMeNotifications.RefreshUnread.rawValue), object: self)
         }
     }
 
     // All users from all groups
     var users: [User] {
         get {
-            return Array(Set(self.groupUsers.values.flatten()))
+            return Array(Set(self.groupUsers.values.joined()))
         }
     }
 
@@ -339,7 +339,7 @@ class TreatMeData {
 
     var idMessages: [String: Message] {
         get {
-            return Array(channelMessages.values.flatten()).indexBy { $0.id }
+            return Array(channelMessages.values.joined()).indexBy { $0.id }
         }
     }
 
@@ -353,19 +353,19 @@ class TreatMeData {
     var onlineGroupUsers: [Group: [PresenceUser]] = [:]
     var onlineUsers: [PresenceUser] {
         get {
-            return Array(self.onlineGroupUsers.values.flatten())
+            return Array(self.onlineGroupUsers.values.joined())
         }
     }
 
     init() {
         PusherClient.instance.listen(.Channel) { (channelId, event, channel: Channel) in
             if let groupId = channel.groupId,
-                let group = self.groups.find({$0.id == groupId}) {
-                    guard self.groupChannels[group]?.find({$0.id == channel.id}) == nil else {
+                let group = self.groups.first(where: {$0.id == groupId}) {
+                guard self.groupChannels[group]?.first(where: {$0.id == channel.id}) == nil else {
                         return
                     }
 
-                    self.groupChannels[group]?.insert(channel, atIndex: 0)
+                    self.groupChannels[group]?.insert(channel, at: 0)
             } else {
                 guard self.userChannels[channel.id] == nil else {
                     return
@@ -383,7 +383,7 @@ class TreatMeData {
                 if let unread = pMessage.unread {
                     TreatMe.data.channelUnread[channel] = unread
                 } else if let notifyUsers = pMessage.notifies,
-                    authId = TreatMe.data.authenticatedUser?.id where notifyUsers.contains(authId) {
+                    let authId = TreatMe.data.authenticatedUser?.id , notifyUsers.contains(authId) {
 
                     let oldValue = TreatMe.data.channelUnread[channel] ?? 0
                     TreatMe.data.channelUnread[channel] = oldValue + 1
@@ -394,7 +394,7 @@ class TreatMeData {
     }
 
     // Inserts a message and returns the index of the message that was inserted
-    func insertMessage(message: Message, forChannel channel: Channel, notify: Bool) -> Int? {
+    func insertMessage(_ message: Message, forChannel channel: Channel, notify: Bool) -> Int? {
         if let (_, index) = insertMessages([message], forChannel: channel, notify: notify).first {
             return index
         }
@@ -402,7 +402,7 @@ class TreatMeData {
     }
 
     // Inserts messages and returns the index each was inserted at
-    func insertMessages(messages: [Message], forChannel channel: Channel, notify: Bool) -> [Message: Int] {
+    func insertMessages(_ messages: [Message], forChannel channel: Channel, notify: Bool) -> [Message: Int] {
         return synchronized(self) {
             if self.channelMessages[channel] == nil {
                 self.channelMessages[channel] = []
@@ -411,32 +411,36 @@ class TreatMeData {
             let newMessages = messages.filter({ !self.channelMessages[channel]!.contains($0) })
 
             if !newMessages.isEmpty {
-                self.channelMessages[channel]!.insertContentsOf(newMessages, at: 0)
-                self.channelMessages[channel]!.sortInPlace({$0.time > $1.time})
+                self.channelMessages[channel]!.insert(contentsOf: newMessages, at: 0)
+                self.channelMessages[channel]!.sort(by: {$0.time > $1.time})
 
                 if notify {
                     newMessages.forEach { message in
                         let info = [
                             "channel": channel.id,
                             "message": message.id,
-                            "index": self.channelMessages[channel]?.indexOf(message) ?? 0
-                        ] as [NSObject: AnyObject]
+                            "index": self.channelMessages[channel]?.index(of: message) ?? 0
+                        ] as [AnyHashable: Any]
 
-                        NSNotificationCenter.defaultCenter().postNotificationName(TreatMeNotifications.NewMessage.rawValue, object: self, userInfo: info)
+                        NotificationCenter.default.post(
+                            name: NSNotification.Name(rawValue: TreatMeNotifications.NewMessage.rawValue),
+                            object: self,
+                            userInfo: info
+                        )
                     }
                 }
             }
 
             return messages.mapAssociate { message in
-                self.channelMessages[channel]?.indexOf(message).map { (message, $0) }
+                self.channelMessages[channel]?.index(of: message).map { (message, $0) }
             }
         }
     }
 
     // Replaces the messages for a channel.  Assumes the caller handles the data change afterwards.
-    func replaceMessages(messages: [Message], forChannel channel: Channel) {
+    func replaceMessages(_ messages: [Message], forChannel channel: Channel) {
         return synchronized(self) {
-            self.channelMessages[channel] = messages.sort({$0.time > $1.time})
+            self.channelMessages[channel] = messages.sorted(by: {$0.time > $1.time})
         }
     }
 

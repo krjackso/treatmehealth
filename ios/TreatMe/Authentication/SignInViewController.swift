@@ -20,25 +20,25 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         checkEnableButtons()
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
 
         if let username = Auth.instance.username {
             usernameField.text = username
         }
 
         usernameField.delegate = self
-        usernameField.returnKeyType = .Next
+        usernameField.returnKeyType = .next
 
         passwordField.delegate = self
         passwordField.clearsOnBeginEditing = true
-        passwordField.returnKeyType = .Done
+        passwordField.returnKeyType = .done
 
-        signInButton.setTitleColor(UIColor.TMBlue(), forState: .Normal)
-        signInButton.setTitleColor(UIColor.TMBlue().colorWithAlphaComponent(0.5), forState: .Disabled)
-        registerButton.setTitleColor(UIColor.TMBlue(), forState: .Normal)
-        registerButton.setTitleColor(UIColor.TMBlue().colorWithAlphaComponent(0.5), forState: .Disabled)
+        signInButton.setTitleColor(UIColor.TMBlue(), for: UIControlState())
+        signInButton.setTitleColor(UIColor.TMBlue().withAlphaComponent(0.5), for: .disabled)
+        registerButton.setTitleColor(UIColor.TMBlue(), for: UIControlState())
+        registerButton.setTitleColor(UIColor.TMBlue().withAlphaComponent(0.5), for: .disabled)
 
-        forgotPasswordButton.setTitleColor(UIColor.TMBlue(), forState: .Normal)
+        forgotPasswordButton.setTitleColor(UIColor.TMBlue(), for: UIControlState())
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,27 +46,27 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func usernameFieldEditingEnd(sender: AnyObject) {
+    @IBAction func usernameFieldEditingEnd(_ sender: AnyObject) {
         checkEnableButtons()
     }
 
-    @IBAction func passwordFieldEditingEnd(sender: AnyObject) {
+    @IBAction func passwordFieldEditingEnd(_ sender: AnyObject) {
         checkEnableButtons()
     }
 
     func checkEnableButtons() -> Bool {
-        if let username = usernameField?.text, password = passwordField?.text {
+        if let username = usernameField?.text, let password = passwordField?.text {
             let enableButtons = username.isUsername() && password.isPassword()
-            signInButton.enabled = enableButtons
+            signInButton.isEnabled = enableButtons
         } else {
-            signInButton.enabled = false
+            signInButton.isEnabled = false
         }
-        signInButton.alpha = signInButton.enabled ? 1.0 : 0.5
-        return signInButton.enabled
+        signInButton.alpha = signInButton.isEnabled ? 1.0 : 0.5
+        return signInButton.isEnabled
     }
 
-    @IBAction func doSignIn(sender: AnyObject) {
-        if let username = usernameField?.text, password = passwordField?.text {
+    @IBAction func doSignIn(_ sender: AnyObject) {
+        if let username = usernameField?.text, let password = passwordField?.text {
 
             usernameField.resignFirstResponder()
             passwordField.resignFirstResponder()
@@ -74,49 +74,49 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
             TreatMe.client.login(username, password: password).then { Void -> Void in
                 Drop.upAll()
                 Flow.goToMain(self.view.window!)
-            }.error { error -> Void in
+            }.catch { error -> Void in
                 switch error {
-                case ResponseError.AuthenticationError:
-                    Drop.down("Looks like an invalid username or password", state: TMState.Error)
+                case ResponseError.authenticationError:
+                    Drop.down("Looks like an invalid username or password", state: TMState.error)
                 default:
-                    Drop.down("Sorry, we were unable to sign you in. Please try again in a moment.", state: TMState.Warn)
+                    Drop.down("Sorry, we were unable to sign you in. Please try again in a moment.", state: TMState.warn)
                 }
             }
 
         }
     }
 
-    @IBAction func doForgotPassword(sender: AnyObject) {
-        let alert = UIAlertController(title: "Forgot Password", message: "Enter your username or email address below and we will email you with instructions for resetting your password", preferredStyle: UIAlertControllerStyle.Alert)
+    @IBAction func doForgotPassword(_ sender: AnyObject) {
+        let alert = UIAlertController(title: "Forgot Password", message: "Enter your username or email address below and we will email you with instructions for resetting your password", preferredStyle: UIAlertControllerStyle.alert)
 
-        let reset = UIAlertAction(title: "Reset Password", style: .Destructive) { (action) in
+        let reset = UIAlertAction(title: "Reset Password", style: .destructive) { (action) in
             let usernameOrEmail = alert.textFields?.first?.text ?? ""
 
-            Drop.down("Give me just one second...", state: TMState.Busy)
+            Drop.down("Give me just one second...", state: TMState.busy)
 
             TreatMe.client.resetPassword(usernameOrEmail).then { _ -> Void in
-                Drop.down("Password reset email successfully sent.  Please check your email and follow the instructions", state: TMState.Success, duration: 60)
-            }.error { error in
+                Drop.down("Password reset email successfully sent.  Please check your email and follow the instructions", state: TMState.success, duration: 60)
+            }.catch { error in
                 switch error {
-                case ResponseError.NotFound: Drop.down("Password reset failed. Please make sure the username or email is correct", state: TMState.Error)
-                default: Drop.down("Password reset failed. Please try again", state: TMState.Error)
+                case ResponseError.notFound: Drop.down("Password reset failed. Please make sure the username or email is correct", state: TMState.error)
+                default: Drop.down("Password reset failed. Please try again", state: TMState.error)
                 }
             }
 
         }
 
-        let cancel = UIAlertAction(title: "Cancel", style: .Default, handler: nil)
+        let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
 
         alert.addAction(reset)
         alert.addAction(cancel)
-        alert.addTextFieldWithConfigurationHandler({ textField in
+        alert.addTextField(configurationHandler: { textField in
             textField.placeholder = "Username or email"
         })
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
 
     // MARK - UITextFieldDelegate
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == usernameField {
             passwordField.becomeFirstResponder()
         } else if textField == passwordField && checkEnableButtons() {

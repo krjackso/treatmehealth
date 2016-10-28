@@ -9,7 +9,7 @@
 import UIKit
 
 protocol MessageCollectionViewDelegateLayout: UICollectionViewDelegateFlowLayout {
-    func collectionView(collectionView: UICollectionView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+    func collectionView(_ collectionView: UICollectionView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat
 }
 
 class MessageCollectionViewLayout: UICollectionViewFlowLayout {
@@ -23,7 +23,7 @@ class MessageCollectionViewLayout: UICollectionViewFlowLayout {
         }
     }
 
-    var contentSize: CGSize = CGSizeZero
+    var contentSize: CGSize = CGSize.zero
     var attrCache: [UICollectionViewLayoutAttributes] = []
 
     let rowPadding: CGFloat = 0.0
@@ -39,15 +39,15 @@ class MessageCollectionViewLayout: UICollectionViewFlowLayout {
     }
 
     func commonInit() {
-        self.scrollDirection = .Vertical
+        self.scrollDirection = .vertical
     }
 
-    override func collectionViewContentSize() -> CGSize {
+    override var collectionViewContentSize : CGSize {
         return self.contentSize
     }
 
-    override func prepareLayout() {
-        guard let collectionView = self.collectionView, delegate = self.layoutDelegate else {
+    override func prepare() {
+        guard let collectionView = self.collectionView, let delegate = self.layoutDelegate else {
             return
         }
 
@@ -55,12 +55,12 @@ class MessageCollectionViewLayout: UICollectionViewFlowLayout {
 
         let width = collectionView.bounds.width
 
-        let height: CGFloat = (0..<collectionView.numberOfItemsInSection(0)).reduce(rowPadding) { (sofar, index) -> CGFloat in
+        let height: CGFloat = (0..<collectionView.numberOfItems(inSection: 0)).reduce(rowPadding) { (sofar, index) -> CGFloat in
 
-            let indexPath = NSIndexPath(forItem: index, inSection: 0)
+            let indexPath = IndexPath(item: index, section: 0)
             let cellHeight = delegate.collectionView(collectionView, heightForRowAtIndexPath: indexPath)
 
-            let cellAttrs = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
+            let cellAttrs = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             cellAttrs.frame = CGRect(x: 0, y: sofar, width: width, height: cellHeight)
             cellAttrs.transform = collectionView.transform
             attrCache.append(cellAttrs)
@@ -71,7 +71,7 @@ class MessageCollectionViewLayout: UICollectionViewFlowLayout {
         self.contentSize = CGSize(width: width, height: height)
     }
 
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         return attrCache.filter({ $0.frame.intersects(rect) })
     }
 

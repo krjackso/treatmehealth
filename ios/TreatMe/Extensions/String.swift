@@ -15,14 +15,14 @@ let passRegex = "^.{6,}$"
 
 extension String {
     func isEmail() -> Bool {
-        return !self.isEmpty && self.rangeOfString(emailRegex, options: .RegularExpressionSearch) != nil
+        return !self.isEmpty && self.range(of: emailRegex, options: .regularExpression) != nil
     }
 
     func isUsername() -> Bool {
-        return !self.isEmpty && self.rangeOfString(usernameRegex, options: .RegularExpressionSearch) != nil
+        return !self.isEmpty && self.range(of: usernameRegex, options: .regularExpression) != nil
     }
 
     func isPassword() -> Bool {
-        return !self.isEmpty && self.rangeOfString(passRegex, options: .RegularExpressionSearch) != nil
+        return !self.isEmpty && self.range(of: passRegex, options: .regularExpression) != nil
     }
 }

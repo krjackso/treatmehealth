@@ -35,8 +35,8 @@ class ChannelTableCell: UITableViewCell {
         unread.translatesAutoresizingMaskIntoConstraints = false
         unread.clipsToBounds = true
         unread.layer.cornerRadius = 7
-        unread.textAlignment = .Center
-        unread.font = UIFont.systemFontOfSize(14.0)
+        unread.textAlignment = .center
+        unread.font = UIFont.systemFont(ofSize: 14.0)
 
         return unread
     }()
@@ -49,25 +49,25 @@ class ChannelTableCell: UITableViewCell {
             unreadLabel
         ].forEach(self.addSubview)
 
-        self.selectionStyle = .None
+        self.selectionStyle = .none
 
         self.updateConstraints()
     }
 
     override func updateConstraints() {
-        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .Width, multiplier: 1.0, constant: 10))
-        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .Height, multiplier: 1.0, constant: 10))
-        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1.0, constant: 0))
-        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .Left, relatedBy: .Equal, toItem: self, attribute: .Left, multiplier: 1.0, constant: 10))
+        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1.0, constant: 10))
+        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: 10))
+        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: onlineIndicator, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 10))
 
-        self.addConstraint(NSLayoutConstraint(item: channelLabel, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1.0, constant: 0))
-        self.addConstraint(NSLayoutConstraint(item: channelLabel, attribute: .Left, relatedBy: .Equal, toItem: onlineIndicator, attribute: .Right, multiplier: 1.0, constant: 5))
+        self.addConstraint(NSLayoutConstraint(item: channelLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: channelLabel, attribute: .left, relatedBy: .equal, toItem: onlineIndicator, attribute: .right, multiplier: 1.0, constant: 5))
 
-        self.addConstraint(NSLayoutConstraint(item: unreadLabel, attribute: .Width, relatedBy: .GreaterThanOrEqual, toItem: nil, attribute: .Width, multiplier: 1.0, constant: 18))
-        self.addConstraint(NSLayoutConstraint(item: unreadLabel, attribute: .Width, relatedBy: .LessThanOrEqual, toItem: nil, attribute: .Width, multiplier: 1.0, constant: 22))
-        self.addConstraint(NSLayoutConstraint(item: unreadLabel, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .Height, multiplier: 1.0, constant: 18))
-        self.addConstraint(NSLayoutConstraint(item: unreadLabel, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1.0, constant: 0))
-        self.addConstraint(NSLayoutConstraint(item: unreadLabel, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: -10))
+        self.addConstraint(NSLayoutConstraint(item: unreadLabel, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .width, multiplier: 1.0, constant: 18))
+        self.addConstraint(NSLayoutConstraint(item: unreadLabel, attribute: .width, relatedBy: .lessThanOrEqual, toItem: nil, attribute: .width, multiplier: 1.0, constant: 22))
+        self.addConstraint(NSLayoutConstraint(item: unreadLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: 18))
+        self.addConstraint(NSLayoutConstraint(item: unreadLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: unreadLabel, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: -10))
 
         super.updateConstraints()
     }
@@ -76,34 +76,34 @@ class ChannelTableCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setActive(active: Bool) {
+    func setActive(_ active: Bool) {
         if active {
             self.backgroundColor = UIColor.TMOrange()
             self.channelLabel.textColor = UIColor.TMLightGray()
             self.onlineIndicator.backgroundColor = UIColor.TMLightGray()
         } else {
-            self.backgroundColor = UIColor.blackColor()
+            self.backgroundColor = UIColor.black
             self.channelLabel.textColor = UIColor.TMLightGray()
             self.onlineIndicator.backgroundColor = UIColor.TMOrange()
         }
     }
 
-    func setOnline(online: Bool) {
+    func setOnline(_ online: Bool) {
         if online {
-            self.onlineIndicator.hidden = false
+            self.onlineIndicator.isHidden = false
         } else {
-            self.onlineIndicator.hidden = true
+            self.onlineIndicator.isHidden = true
         }
     }
 
-    func setUnread(unread: Int) {
+    func setUnread(_ unread: Int) {
         if unread == 0 {
-            self.unreadLabel.hidden = true
+            self.unreadLabel.isHidden = true
         } else if unread < 10 {
-            self.unreadLabel.hidden = false
+            self.unreadLabel.isHidden = false
             self.unreadLabel.text = "\(unread)"
         } else {
-            self.unreadLabel.hidden = false
+            self.unreadLabel.isHidden = false
             self.unreadLabel.text = "9+"
         }
         self.unreadLabel.sizeToFit()

@@ -3,24 +3,24 @@
 import UIKit
 
 class UIPaddedLabel: UILabel {
-    var contentInset:UIEdgeInsets = UIEdgeInsetsZero {
+    var contentInset:UIEdgeInsets = UIEdgeInsets.zero {
         didSet {
             setNeedsDisplay()
         }
     }
 
-    convenience init(insets: UIEdgeInsets = UIEdgeInsetsZero, text: String? = nil) {
-        self.init(frame:CGRectZero)
+    convenience init(insets: UIEdgeInsets = UIEdgeInsets.zero, text: String? = nil) {
+        self.init(frame:CGRect.zero)
         contentInset = insets
         self.text = text
     }
 
-    override func intrinsicContentSize() -> CGSize {
-        let size = super.intrinsicContentSize()
+    override var intrinsicContentSize : CGSize {
+        let size = super.intrinsicContentSize
         return CGSize(width: size.width + contentInset.left + contentInset.right, height: size.height + contentInset.top + contentInset.bottom)
     }
 
-    override func drawTextInRect(rect: CGRect) {
-        super.drawTextInRect(UIEdgeInsetsInsetRect(rect, contentInset))
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: UIEdgeInsetsInsetRect(rect, contentInset))
     }
 }

@@ -12,15 +12,15 @@ class Configuration {
 
     static let instance = Configuration()
 
-    private let configName = NSBundle.mainBundle().objectForInfoDictionaryKey("Configuration") as! String
-    private let configFile = NSBundle.mainBundle().pathForResource("Configuration", ofType: "plist")!
+    fileprivate let configName = Bundle.main.object(forInfoDictionaryKey: "Configuration") as! String
+    fileprivate let configFile = Bundle.main.path(forResource: "Configuration", ofType: "plist")!
 
-    private lazy var config: [String: AnyObject] = { [unowned self] in
+    fileprivate lazy var config: [String: AnyObject] = { [unowned self] in
         let allConfigs = NSDictionary(contentsOfFile: self.configFile) as! [String: AnyObject]
         return allConfigs[self.configName] as! [String: AnyObject]
     }()
 
-    func get<T>(key: String) -> T {
+    func get<T>(_ key: String) -> T {
         if let val = config[key] as? T {
             return val
         } else {
@@ -29,7 +29,7 @@ class Configuration {
         }
     }
 
-    func get<T>(key: String) -> T? {
+    func get<T>(_ key: String) -> T? {
         return config[key] as? T
     }
 

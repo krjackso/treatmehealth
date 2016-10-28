@@ -10,16 +10,16 @@ import UIKit
 import PromiseKit
 
 enum RegistrationStep {
-    case Email
-    case Name
-    case Username
-    case Password
+    case email
+    case name
+    case username
+    case password
 }
 
 class RegisterViewController: UIViewController, UITextFieldDelegate {
 
     var stepsCompleted: [RegistrationStep] = []
-    let orderedSteps: [RegistrationStep] = [.Email, .Name, .Username, .Password]
+    let orderedSteps: [RegistrationStep] = [.email, .name, .username, .password]
 
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
@@ -46,16 +46,16 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
             passwordField,
             confirmPasswordField
         ].forEach { field in
-            field.delegate = self
-            field.returnKeyType = .Done
+            field?.delegate = self
+            field?.returnKeyType = .done
         }
 
-        nextButton.setTitleColor(UIColor.TMBlue(), forState: .Normal)
-        nextButton.setTitleColor(UIColor.TMBlue().colorWithAlphaComponent(0.5), forState: .Disabled)
+        nextButton.setTitleColor(UIColor.TMBlue(), for: UIControlState())
+        nextButton.setTitleColor(UIColor.TMBlue().withAlphaComponent(0.5), for: .disabled)
         errorLabel.textColor = UIColor.TMRed()
 
-        errorLabel.hidden = true
-        self.navigationController?.navigationBarHidden = false
+        errorLabel.isHidden = true
+        self.navigationController?.isNavigationBarHidden = false
         adjustFormHeight()
     }
 
@@ -64,16 +64,16 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
             formView.removeConstraint(bottom)
         }
 
-        if stepsCompleted.contains(.Password) {
+        if stepsCompleted.contains(.password) {
 
-        } else if stepsCompleted.contains(.Username) {
-            formBottomConstraint = NSLayoutConstraint(item: formView, attribute: .Bottom, relatedBy: .GreaterThanOrEqual, toItem: confirmPasswordField, attribute: .Bottom, multiplier: 1.0, constant: formViewPadding)
-        } else if stepsCompleted.contains(.Name) {
-            formBottomConstraint = NSLayoutConstraint(item: formView, attribute: .Bottom, relatedBy: .GreaterThanOrEqual, toItem: usernameField, attribute: .Bottom, multiplier: 1.0, constant: formViewPadding)
-        } else if stepsCompleted.contains(.Email) {
-            formBottomConstraint = NSLayoutConstraint(item: formView, attribute: .Bottom, relatedBy: .GreaterThanOrEqual, toItem: firstNameField, attribute: .Bottom, multiplier: 1.0, constant: formViewPadding)
+        } else if stepsCompleted.contains(.username) {
+            formBottomConstraint = NSLayoutConstraint(item: formView, attribute: .bottom, relatedBy: .greaterThanOrEqual, toItem: confirmPasswordField, attribute: .bottom, multiplier: 1.0, constant: formViewPadding)
+        } else if stepsCompleted.contains(.name) {
+            formBottomConstraint = NSLayoutConstraint(item: formView, attribute: .bottom, relatedBy: .greaterThanOrEqual, toItem: usernameField, attribute: .bottom, multiplier: 1.0, constant: formViewPadding)
+        } else if stepsCompleted.contains(.email) {
+            formBottomConstraint = NSLayoutConstraint(item: formView, attribute: .bottom, relatedBy: .greaterThanOrEqual, toItem: firstNameField, attribute: .bottom, multiplier: 1.0, constant: formViewPadding)
         } else {
-            formBottomConstraint = NSLayoutConstraint(item: formView, attribute: .Bottom, relatedBy: .GreaterThanOrEqual, toItem: emailField, attribute: .Bottom, multiplier: 1.0, constant: formViewPadding)
+            formBottomConstraint = NSLayoutConstraint(item: formView, attribute: .bottom, relatedBy: .greaterThanOrEqual, toItem: emailField, attribute: .bottom, multiplier: 1.0, constant: formViewPadding)
         }
 
         if let bottom = formBottomConstraint {
@@ -81,23 +81,23 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         }
 
         if !stepsCompleted.isEmpty {
-            UIView.animateWithDuration(0.5) {
+            UIView.animate(withDuration: 0.5, animations: {
                 self.view.layoutIfNeeded()
-            }
+            }) 
         }
     }
 
-    func validateStep(step: RegistrationStep) -> Promise<Bool> {
+    func validateStep(_ step: RegistrationStep) -> Promise<Bool> {
         switch step {
-        case .Email:
-            if let email = emailField.text where email.isEmail() {
+        case .email:
+            if let email = emailField.text , email.isEmail() {
                 return TreatMe.client.getInvitation(email).then { invitation -> Bool in
                     self.firstNameField.text = invitation.firstName
                     self.lastNameField.text = invitation.lastName
                     return true
-                }.recover { (error: ErrorType) -> Bool in
+                }.recover { (error: Error) -> Bool in
                     switch error {
-                    case ResponseError.NotFound:
+                    case ResponseError.notFound:
                         self.setError("No invitation for \(email)")
                     default:
                         self.setError("Unknown error. Please try again")
@@ -107,18 +107,18 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                 }
             } else {
                 self.setError("Must specify an email")
-                return Promise(false)
+                return Promise(value: false)
             }
-        case .Name:
-            if let firstName = firstNameField.text, lastName = lastNameField.text
-                where !firstName.isEmpty && !lastName.isEmpty {
-                    return Promise(true)
+        case .name:
+            if let firstName = firstNameField.text, let lastName = lastNameField.text
+                , !firstName.isEmpty && !lastName.isEmpty {
+                    return Promise(value: true)
             } else {
                 setError("Specify both first and last name")
-                return Promise(false)
+                return Promise(value: false)
             }
-        case .Username:
-            if let username = usernameField.text where username.isUsername() {
+        case .username:
+            if let username = usernameField.text , username.isUsername() {
                 return TreatMe.client.checkUsername(username).then { available -> Bool in
 
                     if !available {
@@ -129,42 +129,42 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                 }
             } else {
                 setError("Username must be at least 4 characters and contain only letters and numbers");
-                return Promise(false)
+                return Promise(value: false)
             }
-        case .Password:
-            if let password = passwordField.text, confirmPassword = confirmPasswordField.text {
+        case .password:
+            if let password = passwordField.text, let confirmPassword = confirmPasswordField.text {
                 if !password.isPassword() {
                     setError("Password must be at least 6 characters long")
-                    return Promise(false)
+                    return Promise(value: false)
                 } else {
                     if password != confirmPassword {
                         setError("Passwords must match")
-                        return Promise(false)
+                        return Promise(value: false)
                     } else {
-                        return Promise(true)
+                        return Promise(value: true)
                     }
                 }
             } else {
                 setError("Must specify a password")
-                return Promise(false)
+                return Promise(value: false)
             }
         }
     }
 
-    func setError(error: String) {
-        errorLabel.hidden = false
+    func setError(_ error: String) {
+        errorLabel.isHidden = false
         errorLabel.text = error
     }
 
-    @IBAction func doNext(sender: AnyObject) {
-        self.errorLabel.hidden = true
+    @IBAction func doNext(_ sender: AnyObject) {
+        self.errorLabel.isHidden = true
         let currentStep = orderedSteps[stepsCompleted.count]
 
         // Vaidate based on current step
         validateStep(currentStep).then { success -> Void in
             if (success) {
                 switch currentStep {
-                case .Password:
+                case .password:
                     TreatMe.client.registerUser(self.emailField.text!,
                         firstName: self.firstNameField.text!,
                         lastName: self.lastNameField.text!,
@@ -172,9 +172,9 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                         password: self.passwordField.text!).then
                     { data -> Void in
                         Flow.goToMain(self)
-                    }.error { error -> Void in
+                    }.catch { error -> Void in
                         switch error {
-                        case ResponseError.Conflict:
+                        case ResponseError.conflict:
                             self.setError("There is already an account with this email or username")
                         default:
                             self.setError("Registration failed: \(error)")
@@ -189,7 +189,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     }
 
     // MARK - UITextFieldDelegate
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return false
     }

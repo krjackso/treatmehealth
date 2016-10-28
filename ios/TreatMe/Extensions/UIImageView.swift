@@ -12,13 +12,11 @@ import Kingfisher
 
 extension UIImageView {
 
-    func setImageWithUrlString(urlString: String) -> Promise<Void> {
-        guard let url = NSURL(string: urlString) else {
-            return Promise(error: NSURLError.BadURL)
-        }
+    func setImageWithUrlString(_ urlString: String) -> Promise<Void> {
+        let url = URL(string: urlString)
 
-        let (promise, resolve, reject) = Promise<Void>.pendingPromise()
-        self.kf_setImageWithURL(url, placeholderImage: self.image, optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+        let (promise, resolve, reject) = Promise<Void>.pending()
+        self.kf.setImage(with: url, placeholder: self.image, options: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
 
             if let error = error {
                 return reject(error)
@@ -29,13 +27,13 @@ extension UIImageView {
         return promise
     }
 
-    private func getAndSetUserImage(user: User) -> Promise<Void> {
+    fileprivate func getAndSetUserImage(_ user: User) -> Promise<Void> {
         return TreatMe.client.getUserImage(user).then { imageSource -> Void in
             return self.setImageWithUrlString(imageSource)
         }.asVoid()
     }
 
-    func setImageForUser(user: User) -> Promise<Void> {
+    func setImageForUser(_ user: User) -> Promise<Void> {
         if let _ = user.imageHref {
             if let imageSource = TreatMe.data.userImages[user] {
                 return imageSource.then { imageSource -> Void in
@@ -47,7 +45,7 @@ extension UIImageView {
                 return self.getAndSetUserImage(user)
             }
         } else {
-            return Promise(error: TreatMeError.InvalidImage)
+            return Promise(error: TreatMeError.invalidImage)
         }
     }
 }

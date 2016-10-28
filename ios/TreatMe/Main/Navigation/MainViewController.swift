@@ -15,8 +15,8 @@ class MainViewController: DrawerController {
     convenience init() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
-        let main = storyboard.instantiateViewControllerWithIdentifier("MainNavController")
-        let left = storyboard.instantiateViewControllerWithIdentifier("LeftNavController")
+        let main = storyboard.instantiateViewController(withIdentifier: "MainNavController")
+        let left = storyboard.instantiateViewController(withIdentifier: "LeftNavController")
 
         self.init(centerViewController: main, leftDrawerViewController: left, rightDrawerViewController: nil)
     }
@@ -24,7 +24,7 @@ class MainViewController: DrawerController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.closeDrawerGestureModeMask = .All
+        self.closeDrawerGestureModeMask = .all
     }
 
 }

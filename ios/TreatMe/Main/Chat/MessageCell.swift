@@ -16,16 +16,16 @@ class MessageCell: UICollectionViewCell {
     static let nonTextHeight: CGFloat = 30.0
     static let horizontalPad: CGFloat = 65.0
 
-    static let messageTextFont: UIFont = UIFont.systemFontOfSize(13.0)
-    let usernameTextFont = UIFont.boldSystemFontOfSize(13.0)
-    let timestampFont = UIFont.italicSystemFontOfSize(12.0)
+    static let messageTextFont: UIFont = UIFont.systemFont(ofSize: 13.0)
+    let usernameTextFont = UIFont.boldSystemFont(ofSize: 13.0)
+    let timestampFont = UIFont.italicSystemFont(ofSize: 12.0)
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var timestampLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var messageLabel: ActiveLabel!
 
-    private var user: User?
+    fileprivate var user: User?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -37,35 +37,35 @@ class MessageCell: UICollectionViewCell {
         messageLabel.customize { label in
             label.numberOfLines = 0
             label.font = MessageCell.messageTextFont
-            label.lineBreakMode = .ByWordWrapping
-            label.textAlignment = .Left
+            label.lineBreakMode = .byWordWrapping
+            label.textAlignment = .left
             label.hashtagColor = UIColor.TMBlue()
             label.mentionColor = UIColor.TMBlue()
             label.URLColor = UIColor.TMBlue()
         }
 
         imageView.layer.cornerRadius = 5.0
-        imageView.tintColor = UIColor.whiteColor()
+        imageView.tintColor = UIColor.white
 
-        self.backgroundColor = UIColor.whiteColor()
+        self.backgroundColor = UIColor.white
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateUserImage), name: TreatMeNotifications.RefreshUserImage.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUserImage), name: NSNotification.Name(rawValue: TreatMeNotifications.RefreshUserImage.rawValue), object: nil)
     }
 
-    private func setDefaultPictureForUser(user: User) {
+    fileprivate func setDefaultPictureForUser(_ user: User) {
         self.imageView.backgroundColor = UserProfileImage.colorForUser(user)
         self.imageView.image = UserProfileImage.defaultImage()
     }
 
     func updateUserImage() {
         if let user = self.user {
-            self.imageView.setImageForUser(user).error { _ -> Void in
+            self.imageView.setImageForUser(user).catch { _ -> Void in
                 self.setDefaultPictureForUser(user)
             }
         }
     }
 
-    func setUser(user: User) {
+    func setUser(_ user: User) {
         if user != self.user {
             self.user = user
             self.usernameLabel.text = user.username
