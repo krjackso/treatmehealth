@@ -15,8 +15,8 @@ type BootstrapResponse struct {
 	Login       string `json:"login"`
 	Register    string `json:"register"`
 	Logout      string `json:"logout"`
-	CheckAuth   string `json:"check_auth"`
-	RefreshAuth string `json:"refresh_auth"`
+	CheckAuth   string `json:"checkAuth"`
+	RefreshAuth string `json:"refreshAuth"`
 }
 
 func NewRouter(userModel models.UserModel) *chi.Mux {
@@ -33,15 +33,14 @@ func NewRouter(userModel models.UserModel) *chi.Mux {
 	router.Route(routes.Base, func(router chi.Router) {
 		router.Get("/bootstrap", func(w http.ResponseWriter, r *http.Request) {
 			render.JSON(w, r, &BootstrapResponse{
-				Login:       routes.Login,
-				Register:    routes.PutUser,
-				Logout:      routes.Logout,
-				CheckAuth:   routes.CheckAuth,
-				RefreshAuth: routes.RefreshAuth,
+				Login:       routes.Absolute(routes.Login),
+				Register:    routes.Absolute(routes.PutUser),
+				Logout:      routes.Absolute(routes.Logout),
+				CheckAuth:   routes.Absolute(routes.CheckAuth),
+				RefreshAuth: routes.Absolute(routes.RefreshAuth),
 			})
 		})
 
-		router.Head(routes.CheckAuth, authCtl.Index)
 		router.Post(routes.Login, authCtl.Login)
 		router.Post(routes.RefreshAuth, authCtl.Refresh)
 		router.Put(routes.PutUser, userCtl.Put)
@@ -50,6 +49,7 @@ func NewRouter(userModel models.UserModel) *chi.Mux {
 		router.Group(func(router chi.Router) {
 			router.Use(Authenticated)
 
+			router.Head(routes.CheckAuth, authCtl.Index)
 			router.Post(routes.Logout, authCtl.Logout)
 			router.Get(routes.GetUser, userCtl.Get)
 		})

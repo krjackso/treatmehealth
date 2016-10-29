@@ -22,14 +22,14 @@ type AuthController interface {
 }
 
 type AuthResponse struct {
-	AccessToken  string `json:"access_token"`
-	RefreshToken string `json:"refresh_token,omitempty"`
-	ExpiresAt    int64  `json:"expires_at"`
+	AccessToken  string `json:"accessToken"`
+	RefreshToken string `json:"refreshToken,omitempty"`
+	ExpiresAt    int64  `json:"expiresAt"`
 	Href         string `json:"href"`
 }
 
 func (self *AuthControllerImpl) Index(w http.ResponseWriter, r *http.Request) {
-
+	render.Status(r, http.StatusOK)
 }
 
 func (self *AuthControllerImpl) Login(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +64,7 @@ func (self *AuthControllerImpl) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	accessToken, expiresAt := models.NewAccessToken(user.Id)
+	accessToken, expiresAt := authutil.NewAccessToken(user.Id)
 
 	render.JSON(w, r, &AuthResponse{
 		RefreshToken: refreshToken.Token,
@@ -118,7 +118,7 @@ func (self *AuthControllerImpl) Refresh(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	accessToken, expiresAt := models.NewAccessToken(user.Id)
+	accessToken, expiresAt := authutil.NewAccessToken(user.Id)
 
 	render.JSON(w, r, &AuthResponse{
 		AccessToken: accessToken,

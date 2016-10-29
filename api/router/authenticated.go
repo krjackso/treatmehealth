@@ -3,7 +3,6 @@ package router
 import (
 	"net/http"
 
-	"github.com/krjackso/treatmehealth/api/models"
 	"github.com/krjackso/treatmehealth/api/util/authutil"
 )
 
@@ -16,7 +15,7 @@ func Authenticated(next http.Handler) http.Handler {
 			return
 		}
 
-		userId, valid := models.VerifyAccessToken(bearer)
+		userId, valid := authutil.VerifyAccessToken(bearer)
 
 		if !valid {
 			http.Error(w, "", http.StatusUnauthorized)

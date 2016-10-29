@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/krjackso/treatmehealth/api/models"
 	rt "github.com/krjackso/treatmehealth/api/router"
+	"github.com/krjackso/treatmehealth/api/util/authutil"
 	"github.com/pressly/chi"
 	"os"
 	"testing"
@@ -22,8 +23,8 @@ var testUser *models.User = &models.User{
 	Dob:        testUserDob,
 }
 
-var testAuthToken1, _ = models.NewAccessToken(1)
-var testAuthToken2, _ = models.NewAccessToken(2)
+var testAuthToken1, _ = authutil.NewAccessToken(1)
+var testAuthToken2, _ = authutil.NewAccessToken(2)
 
 func (self *UserModelMock) GetById(ctx context.Context, id int64) (*models.User, error) {
 	if id == testUser.Id {

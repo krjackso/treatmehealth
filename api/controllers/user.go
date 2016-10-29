@@ -137,7 +137,7 @@ func (self *UserControllerImpl) Put(w http.ResponseWriter, r *http.Request) {
 		println("Error adding refresh token: " + err.Error())
 	}
 
-	accessToken, expiresAt := models.NewAccessToken(user.Id)
+	accessToken, expiresAt := authutil.NewAccessToken(user.Id)
 
 	render.Status(r, http.StatusCreated)
 	render.JSON(w, r, &AuthResponse{

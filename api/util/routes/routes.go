@@ -16,10 +16,10 @@ const (
 	CheckAuth   = "/auth"
 )
 
-func absolute(withoutBase string) string {
+func Absolute(withoutBase string) string {
 	return Domain + Base + withoutBase
 }
 
 func HyperGetUser(userId int64) string {
-	return absolute("/users/" + strconv.FormatInt(userId, 10))
+	return Absolute("/users/" + strconv.FormatInt(userId, 10))
 }
