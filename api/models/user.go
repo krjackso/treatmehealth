@@ -9,11 +9,11 @@ import (
 )
 
 type User struct {
-	Id         int64 `datastore:"-"`
-	Username   string
-	Email      string
-	Zip        string
-	Dob        time.Time
+	Id         int64      `json:"id" datastore:"-"`
+	Username   string     `json:"username"`
+	Email      string     `json:"email"`
+	Zip        string     `json:"zip"`
+	Dob        time.Time  `json:"dob"`
 	Credential Credential `json:"-" datastore:",noindex"`
 	CreatedAt  time.Time  `json:"-"`
 }

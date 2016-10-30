@@ -8,12 +8,13 @@ const (
 	Domain = "http://localhost:8080"
 	Base   = "/api"
 
-	GetUser     = "/users/:id"
-	PutUser     = "/users"
-	Login       = "/auth/login"
-	Logout      = "/auth/logout"
-	RefreshAuth = "/auth/refresh"
-	CheckAuth   = "/auth"
+	GetUser              = "/users/:id"
+	PutUser              = "/users"
+	Login                = "/auth/login"
+	Logout               = "/auth/logout"
+	RefreshAuth          = "/auth/refresh"
+	CheckAuth            = "/auth"
+	RequestPasswordReset = "/auth/resetPassword"
 )
 
 func Absolute(withoutBase string) string {

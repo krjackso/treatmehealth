@@ -16,15 +16,16 @@ type AuthControllerImpl struct {
 }
 
 type AuthController interface {
-	Index(http.ResponseWriter, http.Request)
-	Login(http.ResponseWriter, http.Request)
-	Refresh(http.ResponseWriter, http.Request)
+	Index(http.ResponseWriter, *http.Request)
+	Login(http.ResponseWriter, *http.Request)
+	Refresh(http.ResponseWriter, *http.Request)
+	RequestPasswordReset(http.ResponseWriter, *http.Request)
 }
 
 type AuthResponse struct {
 	AccessToken  string `json:"accessToken"`
 	RefreshToken string `json:"refreshToken,omitempty"`
-	ExpiresAt    int64  `json:"expiresAt"`
+	ExpiresIn    int64  `json:"expiresIn"`
 	Href         string `json:"href"`
 }
 
@@ -64,12 +65,12 @@ func (self *AuthControllerImpl) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	accessToken, expiresAt := authutil.NewAccessToken(user.Id)
+	accessToken, expiresIn := authutil.NewAccessToken(user.Id)
 
 	render.JSON(w, r, &AuthResponse{
 		RefreshToken: refreshToken.Token,
 		AccessToken:  accessToken,
-		ExpiresAt:    expiresAt,
+		ExpiresIn:    expiresIn,
 		Href:         routes.HyperGetUser(user.Id),
 	})
 }
@@ -118,11 +119,15 @@ func (self *AuthControllerImpl) Refresh(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	accessToken, expiresAt := authutil.NewAccessToken(user.Id)
+	accessToken, expiresIn := authutil.NewAccessToken(user.Id)
 
 	render.JSON(w, r, &AuthResponse{
 		AccessToken: accessToken,
-		ExpiresAt:   expiresAt,
+		ExpiresIn:   expiresIn,
 		Href:        routes.HyperGetUser(user.Id),
 	})
+}
+
+func (self *AuthControllerImpl) RequestPasswordReset(w http.ResponseWriter, r *http.Request) {
+	render.Status(r, http.StatusOK)
 }

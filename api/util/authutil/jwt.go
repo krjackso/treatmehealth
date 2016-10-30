@@ -13,8 +13,8 @@ const (
 	jwtAccessExpire = 30 * time.Minute
 )
 
-func NewAccessToken(userId int64) (token string, expiresAt int64) {
-	expiresAt = time.Now().Add(jwtAccessExpire).Unix()
+func NewAccessToken(userId int64) (token string, expiresIn int64) {
+	expiresAt := time.Now().Add(jwtAccessExpire).Unix()
 
 	claims := &jwt.StandardClaims{
 		Issuer:    jwtIssuer,
@@ -30,7 +30,7 @@ func NewAccessToken(userId int64) (token string, expiresAt int64) {
 		panic(err)
 	}
 
-	return token, expiresAt
+	return token, int64(jwtAccessExpire.Seconds())
 }
 
 func VerifyAccessToken(tokenString string) (userId int64, ok bool) {

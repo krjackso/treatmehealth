@@ -64,8 +64,8 @@ func validateUserData(data PutUserData) error {
 	eighteenYearsAgo := time.Now().AddDate(-18, 0, 0)
 
 	switch {
-	case len([]rune(data.Username)) < 6:
-		return errors.New("Username must be at least 6 characters")
+	case len([]rune(data.Username)) < 4:
+		return errors.New("Username must be at least 4 characters")
 	case !govalidator.IsEmail(data.Email):
 		return errors.New("Invalid email address")
 	case len([]rune(data.Password)) < 6:
@@ -137,12 +137,12 @@ func (self *UserControllerImpl) Put(w http.ResponseWriter, r *http.Request) {
 		println("Error adding refresh token: " + err.Error())
 	}
 
-	accessToken, expiresAt := authutil.NewAccessToken(user.Id)
+	accessToken, expiresIn := authutil.NewAccessToken(user.Id)
 
 	render.Status(r, http.StatusCreated)
 	render.JSON(w, r, &AuthResponse{
 		RefreshToken: refreshToken.Token,
 		AccessToken:  accessToken,
-		ExpiresAt:    expiresAt,
+		ExpiresIn:    expiresIn,
 	})
 }

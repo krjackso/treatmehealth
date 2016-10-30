@@ -46,7 +46,7 @@ var putCases = map[string]struct {
 	data       PutUserData
 	statusCode int
 }{
-	"short username": {PutUserData{"u", "email@example.com", "password", "90210", "07/02/1992"}, http.StatusBadRequest},
+	"short username": {PutUserData{"exa", "email@example.com", "password", "90210", "07/02/1992"}, http.StatusBadRequest},
 	"short password": {PutUserData{"exampleuser", "email@example.com", "p", "90210", "07/02/1992"}, http.StatusBadRequest},
 	"bad email":      {PutUserData{"exampleuser", "email", "password", "90210", "07/02/1992"}, http.StatusBadRequest},
 	"missing zip":    {PutUserData{"exampleuser", "email@example.com", "password", "", "07/02/1992"}, http.StatusBadRequest},
