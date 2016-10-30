@@ -11,34 +11,174 @@ import SwiftyDrop
 
 class SignInViewController: UIViewController, UITextFieldDelegate {
 
-    @IBOutlet weak var usernameField: UITextField!
-    @IBOutlet weak var passwordField: UITextField!
-    @IBOutlet weak var signInButton: UIButton!
-    @IBOutlet weak var registerButton: UIButton!
-    @IBOutlet weak var forgotPasswordButton: UIButton!
+    lazy var treatMeLabel: UILabel = { [unowned self] in
+        let label = UILabel()
+        label.text = "TreatMe Health"
+        label.textColor = UIColor.black
+        label.font = UIFont.systemFont(ofSize: 21.0)
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        return label
+    }()
+
+    lazy var usernameField: UITextField = { [unowned self] in
+        let field = UITextField()
+        field.placeholder = "username"
+        field.minimumFontSize = 17.0
+        field.adjustsFontSizeToFitWidth = true
+        field.borderStyle = UITextBorderStyle.roundedRect
+        field.layer.cornerRadius = 5.0
+        field.backgroundColor = UIColor.white
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.returnKeyType = .next
+        field.keyboardType = UIKeyboardType.default
+        field.autocapitalizationType = .none
+
+        if let username = Auth.instance.username {
+            field.text = username
+        }
+
+        return field
+    }()
+
+    lazy var passwordField: UITextField = { [unowned self] in
+        let field = UITextField()
+        field.placeholder = "password"
+        field.minimumFontSize = 17.0
+        field.adjustsFontSizeToFitWidth = true
+        field.borderStyle = UITextBorderStyle.roundedRect
+        field.layer.cornerRadius = 5.0
+        field.backgroundColor = UIColor.white
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.clearsOnBeginEditing = true
+        field.returnKeyType = .done
+        field.keyboardType = UIKeyboardType.default
+        field.autocapitalizationType = .none
+        field.isSecureTextEntry = true
+        
+        return field
+    }()
+
+    lazy var signInButton: UIButton = { [unowned self] in
+        let button = UIButton()
+        button.setTitle("Sign In", for: .normal)
+        button.setTitleColor(UIColor.TMBlue(), for: .normal)
+        button.setTitleColor(UIColor.TMBlue().withAlphaComponent(0.5), for: .disabled)
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        button.addTarget(self, action: #selector(self.doSignIn), for: .touchUpInside)
+
+        return button
+    }()
+
+    lazy var registerButton: UIButton = { [unowned self] in
+        let button = UIButton()
+        button.setTitle("Sign Up", for: .normal)
+        button.setTitleColor(UIColor.TMBlue(), for: .normal)
+        button.setTitleColor(UIColor.TMBlue().withAlphaComponent(0.5), for: .disabled)
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        button.addTarget(self, action: #selector(self.doRegister), for: .touchUpInside)
+
+        return button
+    }()
+
+    lazy var forgotPasswordButton: UIButton = { [unowned self] in
+        let button = UIButton()
+        button.setTitle("Forgot your password?", for: .normal)
+        button.setTitleColor(UIColor.TMBlue(), for: .normal)
+        button.setTitleColor(UIColor.TMBlue().withAlphaComponent(0.5), for: .disabled)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 11.0)
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        button.addTarget(self, action: #selector(self.doForgotPassword), for: .touchUpInside)
+
+        return button
+    }()
+
+    lazy var contentView: UIView = { [unowned self] in
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         checkEnableButtons()
-        self.navigationController?.isNavigationBarHidden = true
-
-        if let username = Auth.instance.username {
-            usernameField.text = username
-        }
 
         usernameField.delegate = self
-        usernameField.returnKeyType = .next
-
         passwordField.delegate = self
-        passwordField.clearsOnBeginEditing = true
-        passwordField.returnKeyType = .done
 
-        signInButton.setTitleColor(UIColor.TMBlue(), for: UIControlState())
-        signInButton.setTitleColor(UIColor.TMBlue().withAlphaComponent(0.5), for: .disabled)
-        registerButton.setTitleColor(UIColor.TMBlue(), for: UIControlState())
-        registerButton.setTitleColor(UIColor.TMBlue().withAlphaComponent(0.5), for: .disabled)
+        [
+            usernameField,
+            passwordField,
+            signInButton,
+            registerButton
+        ].forEach(contentView.addSubview)
 
-        forgotPasswordButton.setTitleColor(UIColor.TMBlue(), for: UIControlState())
+        self.view.addSubview(treatMeLabel)
+        self.view.addSubview(contentView)
+        self.view.addSubview(forgotPasswordButton)
+
+        self.view.backgroundColor = UIColor.offWhite()
+    }
+
+    override func updateViewConstraints() {
+        self.view.layoutMargins = UIEdgeInsets(top: 40.0, left: 40.0, bottom: 20.0, right: 40.0)
+
+        // TreatMe Label
+        self.view.addConstraints([
+            NSLayoutConstraint(item: treatMeLabel, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1.0, constant: self.view.layoutMargins.top),
+            NSLayoutConstraint(item: treatMeLabel, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1.0, constant: 0),
+        ])
+
+        // Content View
+        self.view.addConstraints([
+            NSLayoutConstraint(item: contentView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: contentView, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: self.view.layoutMargins.left),
+            NSLayoutConstraint(item: contentView, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1.0, constant: -1 * self.view.layoutMargins.right),
+        ])
+
+        // Forgot password
+        self.view.addConstraints([
+            NSLayoutConstraint(item: forgotPasswordButton, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: forgotPasswordButton, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1.0, constant: self.view.layoutMargins.left),
+            NSLayoutConstraint(item: forgotPasswordButton, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1.0, constant: -1 * self.view.layoutMargins.right),
+            NSLayoutConstraint(item: forgotPasswordButton, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1.0, constant: -1 * self.view.layoutMargins.bottom),
+        ])
+
+        // Username field
+        contentView.addConstraints([
+            NSLayoutConstraint(item: passwordField, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: usernameField, attribute: .left, relatedBy: .equal, toItem: contentView, attribute: .left, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: usernameField, attribute: .right, relatedBy: .equal, toItem: contentView, attribute: .right, multiplier: 1.0, constant: 0),
+        ])
+
+        // Password field
+        contentView.addConstraints([
+            NSLayoutConstraint(item: passwordField, attribute: .top, relatedBy: .equal, toItem: usernameField, attribute: .bottom, multiplier: 1.0, constant: 20),
+            NSLayoutConstraint(item: passwordField, attribute: .left, relatedBy: .equal, toItem: contentView, attribute: .left, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: passwordField, attribute: .right, relatedBy: .equal, toItem: contentView, attribute: .right, multiplier: 1.0, constant: 0),
+        ])
+
+        // Register button
+        contentView.addConstraints([
+            NSLayoutConstraint(item: registerButton, attribute: .top, relatedBy: .equal, toItem: passwordField, attribute: .bottom, multiplier: 1.0, constant: 20),
+            NSLayoutConstraint(item: registerButton, attribute: .left, relatedBy: .equal, toItem: contentView, attribute: .left, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: registerButton, attribute: .right, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1.0, constant: -10),
+            NSLayoutConstraint(item: registerButton, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: 0),
+        ])
+
+        // Sign In button
+        contentView.addConstraints([
+            NSLayoutConstraint(item: signInButton, attribute: .top, relatedBy: .equal, toItem: passwordField, attribute: .bottom, multiplier: 1.0, constant: 20),
+            NSLayoutConstraint(item: signInButton, attribute: .left, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1.0, constant: 10),
+            NSLayoutConstraint(item: signInButton, attribute: .right, relatedBy: .equal, toItem: contentView, attribute: .right, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: signInButton, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: 0),
+        ])
+
+        super.updateViewConstraints()
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,16 +186,12 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func usernameFieldEditingEnd(_ sender: AnyObject) {
-        checkEnableButtons()
-    }
-
-    @IBAction func passwordFieldEditingEnd(_ sender: AnyObject) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         checkEnableButtons()
     }
 
     func checkEnableButtons() -> Bool {
-        if let username = usernameField?.text, let password = passwordField?.text {
+        if let username = usernameField.text, let password = passwordField.text {
             let enableButtons = username.isUsername() && password.isPassword()
             signInButton.isEnabled = enableButtons
         } else {
@@ -65,8 +201,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         return signInButton.isEnabled
     }
 
-    @IBAction func doSignIn(_ sender: AnyObject) {
-        if let username = usernameField?.text, let password = passwordField?.text {
+    func doSignIn(_ sender: AnyObject) {
+        if let username = usernameField.text, let password = passwordField.text {
 
             usernameField.resignFirstResponder()
             passwordField.resignFirstResponder()
@@ -86,7 +222,12 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    @IBAction func doForgotPassword(_ sender: AnyObject) {
+    func doRegister(_ sender: AnyObject) {
+        let register = RegisterViewController()
+        self.present(register, animated: true, completion: nil)
+    }
+
+    func doForgotPassword(_ sender: AnyObject) {
         let alert = UIAlertController(title: "Forgot Password", message: "Enter your username or email address below and we will email you with instructions for resetting your password", preferredStyle: UIAlertControllerStyle.alert)
 
         let reset = UIAlertAction(title: "Reset Password", style: .destructive) { (action) in

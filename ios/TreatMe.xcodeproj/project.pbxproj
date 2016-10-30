@@ -60,7 +60,6 @@
 		CCEDC9261C827CAE00941D63 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC9251C827CAE00941D63 /* Auth.swift */; };
 		CCEDC9291C82801D00941D63 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC9281C82801D00941D63 /* Date.swift */; };
 		CCEDC92C1C82BB6600941D63 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCEDC92B1C82BB6600941D63 /* Main.storyboard */; };
-		CCEDC92E1C82BCBB00941D63 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCEDC92D1C82BCBB00941D63 /* SignIn.storyboard */; };
 		CCEDC9301C82CD2A00941D63 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC92F1C82CD2A00941D63 /* RegisterViewController.swift */; };
 		CCEDC9321C82D9DD00941D63 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC9311C82D9DD00941D63 /* String.swift */; };
 /* End PBXBuildFile section */
@@ -144,7 +143,6 @@
 		CCEDC9251C827CAE00941D63 /* Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		CCEDC9281C82801D00941D63 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		CCEDC92B1C82BB6600941D63 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		CCEDC92D1C82BCBB00941D63 /* SignIn.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SignIn.storyboard; sourceTree = "<group>"; };
 		CCEDC92F1C82CD2A00941D63 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		CCEDC9311C82D9DD00941D63 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -319,7 +317,6 @@
 		CCEDC91D1C824F5B00941D63 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				CCEDC92D1C82BCBB00941D63 /* SignIn.storyboard */,
 				CCEDC91E1C8250E400941D63 /* SignInViewController.swift */,
 				CCEDC9251C827CAE00941D63 /* Auth.swift */,
 				CCEDC92F1C82CD2A00941D63 /* RegisterViewController.swift */,
@@ -498,7 +495,6 @@
 			files = (
 				CC5AD6201CC2B9F400780092 /* HockeySDKResources.bundle in Resources */,
 				CC513D451C82320600CCCDD0 /* LaunchScreen.storyboard in Resources */,
-				CCEDC92E1C82BCBB00941D63 /* SignIn.storyboard in Resources */,
 				CC513D421C82320600CCCDD0 /* Assets.xcassets in Resources */,
 				CC22AF751CB6047800D38CF5 /* Configuration.plist in Resources */,
 				CCEDC92C1C82BB6600941D63 /* Main.storyboard in Resources */,

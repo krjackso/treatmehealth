@@ -8,6 +8,7 @@
 
 import UIKit
 import PromiseKit
+import SwiftyDrop
 
 class RegisterViewController: UIViewController, UITextFieldDelegate {
 
@@ -25,17 +26,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         return view
     }()
 
-    lazy var nextButton: UIButton = { [unowned self] in
-        let button = UIButton(type: .system)
-        button.setTitle("Sign Up", for: UIControlState())
-        button.setTitleColor(UIColor.TMBlue(), for: UIControlState())
-        button.setTitleColor(UIColor.TMBlue().withAlphaComponent(0.5), for: .disabled)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+    lazy var titleLabel: UILabel = { [unowned self] in
+        let label = UILabel()
+        label.text = "Sign Up for TreatMe"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor.black
+        label.font = UIFont.systemFont(ofSize: 21.0)
 
-        button.addTarget(self, action: #selector(self.doRegister), for: .touchUpInside)
-
-        return button
+        return label
     }()
 
     lazy var emailLabel: UILabel = { [unowned self] in
@@ -57,7 +55,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         field.layer.cornerRadius = 5.0
         field.backgroundColor = UIColor.white
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.returnKeyType = .done
+        field.returnKeyType = .next
         field.keyboardType = UIKeyboardType.emailAddress
         field.autocapitalizationType = .none
 
@@ -76,14 +74,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
 
     lazy var usernameField: UITextField = { [unowned self] in
         let field = UITextField()
-        field.placeholder = "user"
+        field.placeholder = "username"
         field.minimumFontSize = 17.0
         field.adjustsFontSizeToFitWidth = true
         field.borderStyle = UITextBorderStyle.roundedRect
         field.layer.cornerRadius = 5.0
         field.backgroundColor = UIColor.white
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.returnKeyType = .done
+        field.returnKeyType = .next
         field.keyboardType = UIKeyboardType.default
         field.autocapitalizationType = .none
 
@@ -109,7 +107,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         field.layer.cornerRadius = 5.0
         field.backgroundColor = UIColor.white
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.returnKeyType = .done
+        field.returnKeyType = .next
         field.keyboardType = UIKeyboardType.default
         field.autocapitalizationType = .none
         field.isSecureTextEntry = true
@@ -126,7 +124,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         field.layer.cornerRadius = 5.0
         field.backgroundColor = UIColor.white
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.returnKeyType = .done
+        field.returnKeyType = .next
         field.keyboardType = UIKeyboardType.default
         field.autocapitalizationType = .none
         field.isSecureTextEntry = true
@@ -153,7 +151,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         field.layer.cornerRadius = 5.0
         field.backgroundColor = UIColor.white
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.returnKeyType = .done
+        field.returnKeyType = .next
         field.keyboardType = UIKeyboardType.numbersAndPunctuation
         field.autocapitalizationType = .none
 
@@ -193,14 +191,29 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         return field
     }()
 
-    lazy var errorLabel: UILabel = { [unowned self] in
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor.TMRed()
-        label.isHidden = true
-        label.numberOfLines = 0
+    lazy var nextButton: UIButton = { [unowned self] in
+        let button = UIButton(type: .system)
+        button.setTitle("Sign Up", for: UIControlState())
+        button.setTitleColor(UIColor.TMBlue(), for: UIControlState())
+        button.setTitleColor(UIColor.TMBlue().withAlphaComponent(0.5), for: .disabled)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
 
-        return label
+        button.addTarget(self, action: #selector(self.doRegister), for: .touchUpInside)
+
+        return button
+    }()
+
+    lazy var cancelButton: UIButton = { [unowned self] in
+        let button = UIButton(type: .system)
+        button.setTitle("Cancel", for: UIControlState())
+        button.setTitleColor(UIColor.TMRed(), for: UIControlState())
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+
+        button.addTarget(self, action: #selector(self.doCancel), for: .touchUpInside)
+
+        return button
     }()
 
     var bottomConstraint: NSLayoutConstraint?
@@ -225,6 +238,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         dobField.inputView = datePicker
 
         [
+            titleLabel,
             emailLabel,
             emailField,
             usernameLabel,
@@ -237,7 +251,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
             dobLabel,
             dobField,
             nextButton,
-            errorLabel
+            cancelButton,
         ].forEach(self.contentView.addSubview)
 
         self.scrollView.addSubview(contentView)
@@ -302,17 +316,23 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
             field.addConstraint(constraint)
         }
 
+        // Title label
+        contentView.addConstraints([
+            NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1.0, constant: contentView.layoutMargins.top + 40.0),
+            NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .greaterThanOrEqual, toItem: contentView, attribute: .centerX, multiplier: 1.0, constant: 0),
+        ])
+
         // Email label
         contentView.addConstraints([
-            NSLayoutConstraint(item: emailLabel, attribute: .bottom, relatedBy: .equal, toItem: emailField, attribute: .top, multiplier: 1.0, constant: -5),
+            NSLayoutConstraint(item: emailLabel, attribute: .top, relatedBy: .equal, toItem: titleLabel, attribute: .bottom, multiplier: 1.0, constant: 20),
             NSLayoutConstraint(item: emailLabel, attribute: .left, relatedBy: .greaterThanOrEqual, toItem: emailField, attribute: .left, multiplier: 1.0, constant: 0),
             NSLayoutConstraint(item: emailField, attribute: .right, relatedBy: .lessThanOrEqual, toItem: emailField, attribute: .right, multiplier: 1.0, constant: 0),
         ])
 
         // Email field
         contentView.addConstraints([
+            NSLayoutConstraint(item: emailField, attribute: .top, relatedBy: .equal, toItem: emailLabel, attribute: .bottom, multiplier: 1.0, constant: 5),
             NSLayoutConstraint(item: emailField, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1.0, constant: 0.0),
-            NSLayoutConstraint(item: emailField, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1.0, constant: contentView.layoutMargins.top + 40.0),
             NSLayoutConstraint(item: emailField, attribute: .left, relatedBy: .greaterThanOrEqual, toItem: contentView, attribute: .left, multiplier: 1.0, constant: self.view.layoutMargins.left),
             NSLayoutConstraint(item: emailField, attribute: .right, relatedBy: .lessThanOrEqual, toItem: contentView, attribute: .right, multiplier: 1.0, constant: -1 * self.view.layoutMargins
                 .right),
@@ -395,16 +415,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         contentView.addConstraints([
             NSLayoutConstraint(item: nextButton, attribute: .top, relatedBy: .equal, toItem: dobField, attribute: .bottom, multiplier: 1.0, constant: 20),
             NSLayoutConstraint(item: nextButton, attribute: .right, relatedBy: .equal, toItem: dobField, attribute: .right, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: nextButton, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: -1 * self.view.layoutMargins.bottom),
         ])
 
-        // Error label
+        // Cancel button
         contentView.addConstraints([
-            NSLayoutConstraint(item: errorLabel, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1.0, constant: 0.0),
-            NSLayoutConstraint(item: errorLabel, attribute: .top, relatedBy: .equal, toItem: nextButton, attribute: .bottom, multiplier: 1.0, constant: 20),
-            NSLayoutConstraint(item: errorLabel, attribute: .left, relatedBy: .greaterThanOrEqual, toItem: contentView, attribute: .left, multiplier: 1.0, constant: self.view.layoutMargins.left),
-            NSLayoutConstraint(item: errorLabel, attribute: .right, relatedBy: .lessThanOrEqual, toItem: contentView, attribute: .right, multiplier: 1.0, constant: -1 * self.view.layoutMargins
-                .right),
-            NSLayoutConstraint(item: errorLabel, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: -1 * self.view.layoutMargins.bottom),
+            NSLayoutConstraint(item: cancelButton, attribute: .top, relatedBy: .equal, toItem: dobField, attribute: .bottom, multiplier: 1.0, constant: 20),
+            NSLayoutConstraint(item: cancelButton, attribute: .left, relatedBy: .equal, toItem: dobField, attribute: .left, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: cancelButton, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: -1 * self.view.layoutMargins.bottom),
         ])
 
         super.updateViewConstraints()
@@ -437,12 +455,11 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     }
 
     func setError(_ error: String) {
-        errorLabel.isHidden = false
-        errorLabel.text = error
+        Drop.down(error, state: TMState.error, duration: 5)
     }
 
     func doRegister(_ sender: AnyObject) {
-        self.errorLabel.isHidden = true
+        Drop.upAll()
 
         // Vaidate based on current step
         if (validate()) {
@@ -458,19 +475,33 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                     switch error {
                     case ResponseError.conflict:
                         self.setError("There is already an account with this email or username")
-                    case TreatMeError.apiError(let reason):
-                        self.setError(reason)
+                    case ResponseError.badRequest(let r):
+                        if let reason = r {
+                            self.setError(reason)
+                        }
                     default:
                         self.setError("Registration failed: \(error)")
                     }
             }
         }
+    }
 
+    func doCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 
     // MARK - UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        switch textField {
+        case emailField: usernameField.becomeFirstResponder()
+        case usernameField: passwordField.becomeFirstResponder()
+        case passwordField: confirmPasswordField.becomeFirstResponder()
+        case confirmPasswordField: zipField.becomeFirstResponder()
+        case zipField: dobField.becomeFirstResponder()
+        default:
+            textField.resignFirstResponder()
+        }
+
         return false
     }
 

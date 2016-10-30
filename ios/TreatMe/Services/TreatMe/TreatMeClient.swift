@@ -15,7 +15,6 @@ let MESSAGE_LIMIT = 50
 
 enum TreatMeError: Error {
     case invalidImage
-    case apiError(String)
 }
 
 class TreatMeClient {
@@ -81,12 +80,6 @@ class TreatMeClient {
             return Alamofire.request(data.register, method: .put, parameters: registerData, encoding: JSONEncoding.default).responseObject().then { (data: LoginResult, _) -> Void in
 
                 Auth.instance.setAuthentication(username, href: data.href, accessToken: data.accessToken, refreshToken: data.refreshToken, expiresIn: data.expiresIn)
-            }.recover { error -> Promise<Void> in
-                if let err = error as? ErrorResponse, let text = err.text {
-                    return Promise(error: TreatMeError.apiError(text))
-                } else {
-                    return Promise(error: error)
-                }
             }
         }
     }
@@ -241,7 +234,7 @@ class TreatMeClient {
     // Request a user channel. If successful, then private messages can be made over the channel
     fileprivate func requestUserChannel(_ authUser: User, withUser user: User) -> Promise<Channel> {
         guard let href = authUser.channelsHref else {
-            return Promise(error: ResponseError.badRequest)
+            return Promise(error: ResponseError.badRequest(nil))
         }
 
         let userChannelData = [

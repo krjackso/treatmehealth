@@ -13,7 +13,7 @@ import Decodable
 
 enum ResponseError: Error {
     // Status code errors
-    case badRequest
+    case badRequest(String?)
     case authenticationError
     case authorizationError
     case notFound
@@ -30,17 +30,16 @@ struct Response {
     let data: Data?
 }
 
-struct ErrorResponse: Error {
-    let error: ResponseError
-    let text: String?
-}
-
 extension DefaultDataResponse {
     func checkStatus() -> ResponseError? {
         if let status = self.response?.statusCode {
             guard (200..<400).contains(status) else {
                 switch status {
-                case 400: return .badRequest
+                case 400:
+                    if let data = self.data, let text = String(data: data, encoding: String.Encoding.utf8) {
+                        return .badRequest(text)
+                    }
+                    return .badRequest(nil)
                 case 401: return .authenticationError
                 case 403: return .authorizationError
                 case 404: return .notFound
@@ -68,8 +67,7 @@ extension DataRequest {
                 }
 
                 if let error = res.checkStatus() {
-                    let text = String(data: data, encoding: String.Encoding.utf8)
-                    reject(ErrorResponse(error: error, text: text))
+                    reject(error)
                 } else {
                     resolve(Response(httpResponse: response, data: data))
                 }

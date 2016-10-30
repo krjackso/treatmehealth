@@ -20,11 +20,8 @@ open class Flow {
     open static func goToLogin(_ source: UIViewController) { goToLogin(Either.Left(source)) }
     open static func goToLogin(_ source: UIWindow) { goToLogin(Either.Right(source)) }
     open static func goToLogin(_ source: Either<UIViewController, UIWindow>) {
-        let storyboard = UIStoryboard(name: "SignIn", bundle: nil)
-
-        if let signIn = storyboard.instantiateInitialViewController() {
-            presentController(signIn, fromSource: source)
-        }
+        let signIn = SignInViewController()
+        presentController(signIn, fromSource: source)
     }
 
     open static func goToMain(_ source: UIViewController) { goToMain(Either.Left(source)) }
@@ -40,7 +37,6 @@ open class Flow {
 
             // Show something to the user
             Drop.down("Something went wrong when loading your data. Please login again.", state: TMState.error, duration: 180)
-            Flow.goToLogin(source)
         }
         .then { _ -> Void in
 
