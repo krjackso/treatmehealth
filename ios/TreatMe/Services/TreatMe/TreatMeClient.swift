@@ -15,6 +15,7 @@ let MESSAGE_LIMIT = 50
 
 enum TreatMeError: Error {
     case invalidImage
+    case apiError(String)
 }
 
 class TreatMeClient {
@@ -65,43 +66,27 @@ class TreatMeClient {
         }
     }
 
-    // Get an invitiation by email to check if one exists
-    func getInvitation(_ email: String) -> Promise<Invitation> {
-        return bootstrap().then { data in
-            return Alamofire.request(data.getInvite + email).responseObject().then { (invite: Invitation, res) -> Invitation in
-                if res.httpResponse.statusCode == 404 {
-                    throw ResponseError.notFound
-                }
-
-                return invite
-            }
-        }
-    }
-
-    // Checks if a username is available
-    func checkUsername(_ username: String) -> Promise<Bool> {
-        return bootstrap().then { data in
-            return Alamofire.request(data.checkName + username, method: .head).response().then { res in
-                return res.httpResponse.statusCode == 204
-            }
-        }
-    }
-
     // Registers the user
-    func registerUser(_ email: String, firstName: String, lastName: String, username: String, password: String) -> Promise<Void> {
+    func registerUser(username: String, email: String, dob: String, zip: String, password: String) -> Promise<Void> {
 
         return bootstrap().then { data in
             let registerData = [
-                "email": email,
-                "firstName": firstName,
-                "lastName": lastName,
                 "username": username,
+                "email": email,
+                "dob": dob,
+                "zip": zip,
                 "password": password
             ]
 
             return Alamofire.request(data.register, method: .put, parameters: registerData, encoding: JSONEncoding.default).responseObject().then { (data: LoginResult, _) -> Void in
 
                 Auth.instance.setAuthentication(username, href: data.href, accessToken: data.accessToken, refreshToken: data.refreshToken, expiresIn: data.expiresIn)
+            }.recover { error -> Promise<Void> in
+                if let err = error as? ErrorResponse, let text = err.text {
+                    return Promise(error: TreatMeError.apiError(text))
+                } else {
+                    return Promise(error: error)
+                }
             }
         }
     }
@@ -396,16 +381,19 @@ class TreatMeClient {
     // Performs the authentication refresh
     fileprivate func refreshAuth() -> Promise<[String:String]> {
 
-        guard let refreshToken = Auth.instance.refreshToken else {
+        guard let refreshToken = Auth.instance.refreshToken, let username = Auth.instance.username else {
             return Promise(error: ResponseError.authenticationError)
         }
 
-        let refreshData = [
-            "refreshToken": refreshToken
+        let credentialData = "\(username):\(refreshToken)".data(using: String.Encoding.utf8)!
+        let base64Credentials = credentialData.base64EncodedString()
+
+        let refreshHeaders = [
+            "Authorization": "Basic \(base64Credentials)"
         ]
 
         return bootstrap().then { data in
-            return Alamofire.request(data.refresh, method: .post, parameters: refreshData, encoding: JSONEncoding.default).responseObject().then { (data: RefreshResult, _) -> [String: String] in
+            return Alamofire.request(data.refreshAuth, method: .post, headers: refreshHeaders).responseObject().then { (data: RefreshResult, _) -> [String: String] in
 
                 Auth.instance.refreshAccess(data.accessToken, expiresIn: data.expiresIn)
                 return self.authHeaders

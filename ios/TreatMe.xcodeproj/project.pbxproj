@@ -49,6 +49,7 @@
 		CC66E4591C8BE211008049AE /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66E4581C8BE211008049AE /* MainViewController.swift */; };
 		CC66E45B1C8FE087008049AE /* TreatMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC66E45A1C8FE087008049AE /* TreatMe.swift */; };
 		CC823D021DC1BCEB00A760B2 /* PusherSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC823D011DC1BCEB00A760B2 /* PusherSwift.framework */; };
+		CC823D051DC59C8F00A760B2 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC823D041DC59C8F00A760B2 /* UIViewController.swift */; };
 		CCA6E8771CCC7D2300BE9BD8 /* ChannelTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA6E8761CCC7D2300BE9BD8 /* ChannelTableCell.swift */; };
 		CCCC49D71CB04B3600E36ABE /* CameraViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCCC49D61CB04B3600E36ABE /* CameraViewController.framework */; };
 		CCCC49DA1CB19FED00E36ABE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC49D91CB19FED00E36ABE /* ProfileViewController.swift */; };
@@ -57,7 +58,7 @@
 		CCEDC91F1C8250E400941D63 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC91E1C8250E400941D63 /* SignInViewController.swift */; };
 		CCEDC9241C825A4400941D63 /* TreatMeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC9231C825A4400941D63 /* TreatMeClient.swift */; };
 		CCEDC9261C827CAE00941D63 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC9251C827CAE00941D63 /* Auth.swift */; };
-		CCEDC9291C82801D00941D63 /* NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC9281C82801D00941D63 /* NSDate.swift */; };
+		CCEDC9291C82801D00941D63 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC9281C82801D00941D63 /* Date.swift */; };
 		CCEDC92C1C82BB6600941D63 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCEDC92B1C82BB6600941D63 /* Main.storyboard */; };
 		CCEDC92E1C82BCBB00941D63 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCEDC92D1C82BCBB00941D63 /* SignIn.storyboard */; };
 		CCEDC9301C82CD2A00941D63 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEDC92F1C82CD2A00941D63 /* RegisterViewController.swift */; };
@@ -131,6 +132,8 @@
 		CC66E4581C8BE211008049AE /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		CC66E45A1C8FE087008049AE /* TreatMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreatMe.swift; sourceTree = "<group>"; };
 		CC823D011DC1BCEB00A760B2 /* PusherSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PusherSwift.framework; path = Carthage/Build/iOS/PusherSwift.framework; sourceTree = "<group>"; };
+		CC823D031DC55E5200A760B2 /* TreatMe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TreatMe.entitlements; sourceTree = "<group>"; };
+		CC823D041DC59C8F00A760B2 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		CCA6E8761CCC7D2300BE9BD8 /* ChannelTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelTableCell.swift; sourceTree = "<group>"; };
 		CCCC49D61CB04B3600E36ABE /* CameraViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CameraViewController.framework; path = Carthage/Build/iOS/CameraViewController.framework; sourceTree = "<group>"; };
 		CCCC49D91CB19FED00E36ABE /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -139,7 +142,7 @@
 		CCEDC91E1C8250E400941D63 /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		CCEDC9231C825A4400941D63 /* TreatMeClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreatMeClient.swift; sourceTree = "<group>"; };
 		CCEDC9251C827CAE00941D63 /* Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
-		CCEDC9281C82801D00941D63 /* NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDate.swift; sourceTree = "<group>"; };
+		CCEDC9281C82801D00941D63 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		CCEDC92B1C82BB6600941D63 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		CCEDC92D1C82BCBB00941D63 /* SignIn.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SignIn.storyboard; sourceTree = "<group>"; };
 		CCEDC92F1C82CD2A00941D63 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
@@ -240,6 +243,7 @@
 		CC513D371C82320600CCCDD0 /* TreatMe */ = {
 			isa = PBXGroup;
 			children = (
+				CC823D031DC55E5200A760B2 /* TreatMe.entitlements */,
 				CCEDC92A1C82BA0000941D63 /* Main */,
 				CCEDC9271C827FFF00941D63 /* Extensions */,
 				CCEDC9221C8259D000941D63 /* Services */,
@@ -337,7 +341,7 @@
 		CCEDC9271C827FFF00941D63 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				CCEDC9281C82801D00941D63 /* NSDate.swift */,
+				CCEDC9281C82801D00941D63 /* Date.swift */,
 				CCEDC9311C82D9DD00941D63 /* String.swift */,
 				CC4C79821C855D7400462D2D /* Alamofire+Promise+Decodable.swift */,
 				CC5649981C8976B7006C21AD /* Promise.swift */,
@@ -350,6 +354,7 @@
 				CC22AF781CB9F11500D38CF5 /* TMState.swift */,
 				CC5AD6231CC73C5200780092 /* UIImageView.swift */,
 				CC341C901CCF30F8007A4016 /* UIPaddedLabel.swift */,
+				CC823D041DC59C8F00A760B2 /* UIViewController.swift */,
 			);
 			name = Extensions;
 			path = TreatMe/Extensions;
@@ -442,6 +447,9 @@
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
 								enabled = 1;
 							};
 							com.apple.Push = {
@@ -562,6 +570,7 @@
 				CC24F8BB1CCDD0DD001B96B4 /* ChatTitleView.swift in Sources */,
 				CC0DAF1F1CACC21E006DD68B /* Array.swift in Sources */,
 				CC0DAF1A1C97D312006DD68B /* UIColor.swift in Sources */,
+				CC823D051DC59C8F00A760B2 /* UIViewController.swift in Sources */,
 				CCEDC91F1C8250E400941D63 /* SignInViewController.swift in Sources */,
 				CC4C79831C855D7400462D2D /* Alamofire+Promise+Decodable.swift in Sources */,
 				CC22AF791CB9F11500D38CF5 /* TMState.swift in Sources */,
@@ -579,7 +588,7 @@
 				CC0DAF271CAE30B7006DD68B /* Delay.swift in Sources */,
 				CCCC49DA1CB19FED00E36ABE /* ProfileViewController.swift in Sources */,
 				CC66E4551C8BE148008049AE /* LeftMenuViewController.swift in Sources */,
-				CCEDC9291C82801D00941D63 /* NSDate.swift in Sources */,
+				CCEDC9291C82801D00941D63 /* Date.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -675,6 +684,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TreatMe/TreatMe.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 0.1;
@@ -764,6 +774,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TreatMe/TreatMe.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 0.1;

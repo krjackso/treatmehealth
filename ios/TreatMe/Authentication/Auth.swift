@@ -11,6 +11,8 @@ import KeychainSwift
 
 class Auth {
 
+    private init() { }
+
     static let instance = Auth()
 
     let keychain = KeychainSwift()
@@ -66,7 +68,7 @@ class Auth {
         }
     }
 
-    func setAuthentication(_ username: String, href: String, accessToken: String, refreshToken: String?, expiresIn: Double) {
+    func setAuthentication(_ username: String, href: String, accessToken: String, refreshToken: String, expiresIn: Double) {
         self.username = username
         self.userHref = href
         self.accessToken = accessToken

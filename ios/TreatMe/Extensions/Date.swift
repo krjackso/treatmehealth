@@ -38,4 +38,10 @@ extension Date {
 
         return "\(timePart) \(dayPart)"
     }
+
+    func dateFormat() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        return formatter.string(from: self)
+    }
 }

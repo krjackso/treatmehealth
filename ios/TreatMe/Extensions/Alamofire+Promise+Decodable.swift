@@ -30,6 +30,11 @@ struct Response {
     let data: Data?
 }
 
+struct ErrorResponse: Error {
+    let error: ResponseError
+    let text: String?
+}
+
 extension DefaultDataResponse {
     func checkStatus() -> ResponseError? {
         if let status = self.response?.statusCode {
@@ -49,7 +54,6 @@ extension DefaultDataResponse {
 }
 
 extension DataRequest {
-
     func response() -> Promise<Response> {
         return Promise { resolve, reject in
             self.response { res in
@@ -64,8 +68,8 @@ extension DataRequest {
                 }
 
                 if let error = res.checkStatus() {
-                    debugPrint("Status check failed: \(error)")
-                    reject(error)
+                    let text = String(data: data, encoding: String.Encoding.utf8)
+                    reject(ErrorResponse(error: error, text: text))
                 } else {
                     resolve(Response(httpResponse: response, data: data))
                 }

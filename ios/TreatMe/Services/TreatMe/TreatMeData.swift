@@ -15,11 +15,8 @@ struct BootstrapData: Decodable {
     let login: String
     let register: String
     let logout: String
-    let refresh: String
+    let refreshAuth: String
     let checkAuth: String
-    let getInvite: String
-    let checkName: String
-    let pusherAuth: String
     let resetPassword: String
 
     public static func decode(_ json: Any) throws -> BootstrapData {
@@ -27,11 +24,8 @@ struct BootstrapData: Decodable {
             login: json => "login",
             register: json => "register",
             logout: json => "logout",
-            refresh: json => "refresh",
+            refreshAuth: json => "refreshAuth",
             checkAuth: json => "checkAuth",
-            getInvite: json => "getInvite",
-            checkName: json => "checkName",
-            pusherAuth: json => "pusherAuth",
             resetPassword: json => "resetPassword"
         )
     }

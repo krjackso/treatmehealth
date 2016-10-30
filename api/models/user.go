@@ -3,6 +3,7 @@ package models
 import (
 	"cloud.google.com/go/datastore"
 	"context"
+	"strings"
 	"time"
 
 	"github.com/krjackso/treatmehealth/api/services"
@@ -58,7 +59,7 @@ func (self *UserModelImpl) GetById(ctx context.Context, id int64) (*User, error)
 
 func (self *UserModelImpl) GetByUsername(ctx context.Context, username string) (*User, error) {
 	ctx = self.Datastore.NewContext(ctx)
-	query := datastore.NewQuery("User").Filter("Username =", username).Limit(1)
+	query := datastore.NewQuery("User").Filter("Username =", strings.ToLower(username)).Limit(1)
 
 	results := self.Datastore.Client.Run(ctx, query)
 
@@ -80,7 +81,7 @@ func (self *UserModelImpl) GetByUsername(ctx context.Context, username string) (
 
 func (self *UserModelImpl) GetByEmail(ctx context.Context, email string) (*User, error) {
 	ctx = self.Datastore.NewContext(ctx)
-	query := datastore.NewQuery("User").Filter("Email =", email).Limit(1)
+	query := datastore.NewQuery("User").Filter("Email =", strings.ToLower(email)).Limit(1)
 
 	results := self.Datastore.Client.Run(ctx, query)
 
@@ -113,8 +114,8 @@ func (self *UserModelImpl) Create(ctx context.Context, username string, email st
 	key := NewUserKey(ctx, 0)
 
 	user := &User{
-		Username:   username,
-		Email:      email,
+		Username:   strings.ToLower(username),
+		Email:      strings.ToLower(email),
 		Credential: credential,
 		Zip:        zip,
 		Dob:        dob.UTC(),
